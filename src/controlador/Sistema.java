@@ -1,19 +1,15 @@
 package controlador;
 
-import java.awt.List;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-
+import negocio.*;
+import negocio.views.EventoReclamoView;
+import negocio.views.ReclamoView;
+import persistencia.AdmPersistenciaReclamo;
 import persistencia.AdmPersistenciaUsuario;
 import vista.VistaCliente;
 import vista.VistaEventoReclamo;
 import vista.VistaReclamoTPromXOperador;
-import negocio.Cliente;
-import negocio.EnumRoles;
-import negocio.Producto;
-import negocio.Reclamo;
-import negocio.Usuario;
+
+import java.util.*;
 
 public class Sistema {
 
@@ -47,6 +43,21 @@ public class Sistema {
 
 	public Collection<VistaEventoReclamo> getTratamientoReclamo() {
 		return null;
+	}
+
+	public Collection<ReclamoView> getReclamos(){
+		Collection<ReclamoView> reclamosView = Collections.emptyList();
+		for (Reclamo reclamo : AdmPersistenciaReclamo.getInstancia().buscarReclamos()) {
+			Collection<EventoReclamoView> eventosReclamoView = Collections.emptyList();
+			for (EventoReclamo eventoReclamo : reclamo.getEventos()) {
+				EventoReclamoView evento = new EventoReclamoView(eventoReclamo.getEstado(), eventoReclamo.getFecha(), eventoReclamo.getDetalle());
+				eventosReclamoView.add(evento);
+			}
+			ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
+					reclamo.getTipoReclamo(), reclamo.isEstaSolucionado(), eventosReclamoView);
+			reclamosView.add(reclamoV);
+		}
+		return reclamosView;
 	}
 	
 //	public void iniciarReclamo(String desc, int codigo_cliente, int operador, int cod_responsable, boolean es_compuesto){

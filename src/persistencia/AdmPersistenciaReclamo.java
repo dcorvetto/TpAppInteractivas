@@ -1,23 +1,14 @@
 package persistencia;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.Vector;
-
 import negocio.Reclamo;
 import negocio.reclamos.ItemFacturaReclamo;
 import negocio.reclamos.ItemProductoReclamo;
 import negocio.reclamos.ItemProductoReclamoFaltantes;
-import negocio.reclamos.ReclamoCantidad;
-import negocio.reclamos.ReclamoCompuesto;
-import negocio.reclamos.ReclamoFacturacion;
-import negocio.reclamos.ReclamoFaltantes;
-import negocio.reclamos.ReclamoProducto;
-import negocio.reclamos.ReclamoZona;
+
+import java.sql.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Vector;
 
 
 public class AdmPersistenciaReclamo extends AdministradorPersistencia 
@@ -115,7 +106,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				sfalt.setInt(1, r.getNumero());
 			//	sfalt.setInt(2, ifalt.getProducto().getCodigo());
 				sfalt.setInt(3, ifalt.getCantidadFaltante());
-				sfalt.setInt(4, ifalt.getCantidadFacturada());
+//				sfalt.setInt(4, ifalt.getCantidadFacturada());
 				sfalt.execute();
 				break;
 			case "cant":
@@ -219,12 +210,52 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				r.setTiempoRespuesta(tiempoRespuesta);
 				r.setTipoReclamo(tipoReclamo);
 				r.setZona(zona);
-				
-				
 			}
-			
+
 			PoolConnection.getPoolConnection().realeaseConnection(con);
 			return r;
+		}
+		catch (Exception e)
+		{
+			System.out.println();
+		}
+		return null;
+	}
+
+	public Collection<Reclamo> buscarReclamos()
+	{
+		try
+		{
+			Collection<Reclamo> reclamos = Collections.emptyList();
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("select * from Reclamo");			//agregar campos
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				int cod = result.getInt(1);
+				String descripcion = result.getString(2);
+				int cliente = result.getInt(3);
+				int usuario = result.getInt(4);
+				int responsable = result.getInt(5);
+				boolean solucionado = result.getBoolean(6);
+				float tiempoRespuesta = result.getFloat(7);
+				String zona = result.getString(8);
+				String tipoReclamo = result.getString(9);
+
+				Reclamo r = new Reclamo();
+				r.setNumero(cod);
+				r.setDescripcion(descripcion);
+				r.setEstaSolucionado(solucionado);
+				//r.setOperador(); /*llamar AdmPersistenciaUsuario buscarUsuario(int id)*/
+				//r.setResponsable(); /*llamar AdmPersistenciaUsuario buscarUsuario(int id)*/
+				r.setTiempoRespuesta(tiempoRespuesta);
+				r.setTipoReclamo(tipoReclamo);
+				r.setZona(zona);
+				reclamos.add(r);
+			}
+
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+			return reclamos;
 		}
 		catch (Exception e)
 		{

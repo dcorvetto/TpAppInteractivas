@@ -32,4 +32,12 @@ public class EventoReclamo {
 	public Date getFecha() {
 		return fecha;
 	}
+
+	public EnumEstado getEstado() {
+		return estado;
+	}
+
+	public String getDetalle() {
+		return detalle;
+	}
 }

@@ -1,20 +1,11 @@
 package vista;
 
-import java.awt.EventQueue;
+import controlador.Sistema;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JTextField;
-import javax.swing.JButton;
-
-import controlador.Sistema;
 
 public class VistaLogin {
 
@@ -68,8 +59,7 @@ public class VistaLogin {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-//				Integer codigoUsuario = Sistema.getInstancia().login(fieldUsuario.getText(), passFieldContrasenia.getText());
-				Integer codigoUsuario = 1;//TODO BORRAR!
+				Integer codigoUsuario = Sistema.getInstancia().login(fieldUsuario.getText(), passFieldContrasenia.getText());
 				if(codigoUsuario==null){
 					JOptionPane.showMessageDialog(frmLogin, "Usuario o contraseña incorrectos");
 				}else{

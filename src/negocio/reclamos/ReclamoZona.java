@@ -1,4 +1,4 @@
-package negocio.Reclamos;
+package negocio.reclamos;
 
 public class ReclamoZona {
 	private String zona;

@@ -2,7 +2,7 @@
 
 Verificar se tiene git instalado. Instrucciones: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 
-1- Hacer click en "Fork" y elegir usuario
+1- En github web, hacer click en "Fork" y elegir usuario
 
 2- Posicionarse en el directorio donde se desee descargar el repositorio en consola (cmd en windows)
 
@@ -51,6 +51,6 @@ Antes de empezar a trabajar en el codigo recuerden siempre hacer un ```git fetch
 El comando ```git status``` les puede ser de utilidad para verificar el estado de su repositorio en cualquier momento.
 
 7- En github web podes verificar que en TU repositorio aparece una leyenda como esta:
-"This branch is even with yair-code:master.:master."
+"This branch is even with yair-code:master"
 
 De ser así, su repositorio y el master son iguales. :)

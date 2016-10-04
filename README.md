@@ -11,7 +11,7 @@ Verificar se tiene git instalado. Instrucciones: https://git-scm.com/book/en/v2/
 4- En la consola ingresar : git clone [url del paso anterior]
 
 5- Indicar por consola: git remote add upstream git@github.com:yair-code/TpAppInteractivas.git
-(si falla, probar con git remote add upstream git@github.com:yair-code/TpAppInteractivas.git)
+(si falla, probar con git remote add upstream https://github.com/yair-code/TpAppInteractivas.git)
 
 6- Indicar: git remote -v   y comprobar figuren 'origin' y 'upstream'. 'Origin' debe tener la url de tu repositorio y 'upstream' la url del repositorio master.
 

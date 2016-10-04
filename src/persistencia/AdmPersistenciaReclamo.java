@@ -9,15 +9,15 @@ import java.sql.Timestamp;
 import java.util.Vector;
 
 import negocio.Reclamo;
-import negocio.Reclamos.ItemFacturaReclamo;
-import negocio.Reclamos.ItemProductoReclamo;
-import negocio.Reclamos.ItemProductoReclamoFaltantes;
-import negocio.Reclamos.ReclamoCantidad;
-import negocio.Reclamos.ReclamoCompuesto;
-import negocio.Reclamos.ReclamoFacturacion;
-import negocio.Reclamos.ReclamoFaltantes;
-import negocio.Reclamos.ReclamoProducto;
-import negocio.Reclamos.ReclamoZona;
+import negocio.reclamos.ItemFacturaReclamo;
+import negocio.reclamos.ItemProductoReclamo;
+import negocio.reclamos.ItemProductoReclamoFaltantes;
+import negocio.reclamos.ReclamoCantidad;
+import negocio.reclamos.ReclamoCompuesto;
+import negocio.reclamos.ReclamoFacturacion;
+import negocio.reclamos.ReclamoFaltantes;
+import negocio.reclamos.ReclamoProducto;
+import negocio.reclamos.ReclamoZona;
 
 
 public class AdmPersistenciaReclamo extends AdministradorPersistencia 

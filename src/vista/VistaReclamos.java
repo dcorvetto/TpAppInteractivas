@@ -1,15 +1,9 @@
 package vista;
 
-import java.awt.BorderLayout;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.TableHeaderUI;
-import javax.swing.table.TableModel;
-import javax.swing.JTable;
-import javax.swing.JButton;
-import java.awt.Font;
+import java.awt.*;
 
 public class VistaReclamos extends JFrame {
 

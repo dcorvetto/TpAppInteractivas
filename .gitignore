@@ -18,3 +18,9 @@ hs_err_pid*
 .classpath
 .project
 TpAppInteractivas.iml
+
+.idea/
+.metadata/
+.settings/
+
+bin/

@@ -1,0 +1,5 @@
+jdbc=jdbc:sqlserver://
+servidor=127.0.0.1/TPO_GrupoIV
+usuario=sa
+password=sqlserver
+conexiones=3

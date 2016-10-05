@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Vector;
-
 import negocio.Reclamo;
 import negocio.reclamos.ItemFacturaReclamo;
 import negocio.reclamos.ItemProductoReclamo;
@@ -163,7 +162,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				sfalt.setInt(1, r.getNumero());
 				sfalt.setInt(2, ifalt.getProducto().getCodigo());
 				sfalt.setInt(3, ifalt.getCantidadFaltante());
-//				sfalt.setInt(4, ifalt.getCantidadFacturada());
+				sfalt.setInt(4, ifalt.getCantidadFacturada());
 				sfalt.execute();
 				break;
 			case "cant":
@@ -300,8 +299,8 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				r.setNumero(cod);
 				r.setDescripcion(descripcion);
 				r.setEstaSolucionado(solucionado);
-				//r.setOperador(); /*llamar AdmPersistenciaUsuario buscarUsuario(int id)*/
-				//r.setResponsable(); /*llamar AdmPersistenciaUsuario buscarUsuario(int id)*/
+				r.setOperador(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
+				r.setResponsable(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
 				r.setTiempoRespuesta(tiempoRespuesta);
 				r.setTipoReclamo(tipoReclamo);
 				r.setZona(zona);

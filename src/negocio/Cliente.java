@@ -6,15 +6,17 @@ import java.util.Collection;
 public class Cliente {
 	private int codigo_cliente;
 	private String nombre;
+	private int dni;
 	private String domicilio;
 	private String telefono;
 	private String mail;
 	private Collection<Reclamo> reclamos;
 	private Usuario usuarioCreador;
 	
-	public Cliente(int codigo, String nombre, String dmicilio, String telefono, String mail){
+	public Cliente(int codigo, String nombre, int dni, String dmicilio, String telefono, String mail){
 		codigo_cliente=codigo;
 		this.nombre=nombre;
+		this.dni=dni;
 		this.domicilio=domicilio;
 		this.telefono=telefono;
 		this.mail=mail;
@@ -27,6 +29,14 @@ public class Cliente {
 
 	public int getCodigo_cliente() {
 		return codigo_cliente;
+	}
+
+	public int getDni() {
+		return dni;
+	}
+
+	public void setDni(int dni) {
+		this.dni = dni;
 	}
 
 	public void setCodigo_cliente(int codigo_cliente) {

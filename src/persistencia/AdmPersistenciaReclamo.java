@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Vector;
 
 import negocio.Reclamo;
@@ -42,8 +44,40 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		{
 			Reclamo r = (Reclamo)d;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
+			switch(r.getTipoReclamo()){
+			case "producto":
+				PreparedStatement s = con.prepareStatement("delete from ItemProductoReclamo where idReclamo=?");
+				s.setString(1, String.valueOf(r.getNumero())); 
+				s.execute();
+				break;
+			case "faltante":
+				PreparedStatement sfalt = con.prepareStatement("delete from ItemProductoReclamoFaltantes where idReclamo=?");
+				sfalt.setString(1, String.valueOf(r.getNumero())); 
+				sfalt.execute();
+				break;
+			case "cant":
+				PreparedStatement sc = con.prepareStatement("delete from ItemProductoReclamo where idReclamo=?");
+				sc.setString(1, String.valueOf(r.getNumero())); 
+				sc.execute();
+				break;
+			case "facturacion":
+				PreparedStatement sfact = con.prepareStatement("delete from ItemFacturaReclamo where idReclamo=?");
+				sfact.setString(1, String.valueOf(r.getNumero())); 
+				sfact.execute();
+				break;
+			case "compuesto":
+				PreparedStatement scomp = con.prepareStatement("delete from ReclamoCompuesto where idReclamoPadre=?");			
+				scomp.setString(1, String.valueOf(r.getNumero())); 
+				scomp.execute();
+				break;
+			}
+			
+			/*Por las dudas borro posibles reclamos compuestos asociados*/
+			PreparedStatement scomp = con.prepareStatement("delete from ReclamoCompuesto where idReclamoHijo=?");			
+			scomp.setString(1, String.valueOf(r.getNumero())); 
+			scomp.execute();
+					
 			PreparedStatement s = con.prepareStatement("delete from Reclamo where numero = ?");
-			/* hacer borrado en cascada o crearlo en la base? */
 			s.setLong(1, r.getNumero());
 			s.execute();
 			PoolConnection.getPoolConnection().realeaseConnection(con);
@@ -52,8 +86,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		{
 			System.out.println("Error al borrar Reclamo");
 			e.printStackTrace();
-		}
-		
+		}	
 
 	}
 
@@ -91,55 +124,69 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		return 0;
 	}
 	
+	public void insertarReclamoCompuesto(int idReclamoPadre, Reclamo reclamo){
+		try
+		{
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("insert into ReclamoCompuesto values (?,?)");
+			//agregar campos
+			s.setInt(1,idReclamoPadre);
+			s.setInt(2,reclamo.getNumero());
+			
+			s.execute();
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+		}
+		catch(Exception e){
+			System.out.println("Error al insertar Reclamo Compuesto");
+			e.printStackTrace();
+		}
+	}
+	
 	public void insertarItems(int reclamo, Object o){
 		try
 		{
 			Reclamo r = buscarReclamo(reclamo);
-			
+			Connection con = PoolConnection.getPoolConnection().getConnection();
 			switch(r.getTipoReclamo()){
 			case "producto":
 				ItemProductoReclamo i = (ItemProductoReclamo) o;
-				Connection con = PoolConnection.getPoolConnection().getConnection();
 				PreparedStatement s = con.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
 				//agregar campos
 				s.setInt(1, r.getNumero());
 				s.setInt(2, i.getCantidad());
-			//	s.setInt(3, i.getProducto().getCodigo()); /*falta producto*/
+				s.setInt(3, i.getProducto().getCodigo()); 
 				s.execute();
 				break;
 			case "faltante":
 				ItemProductoReclamoFaltantes ifalt = (ItemProductoReclamoFaltantes) o;
-				Connection confalt = PoolConnection.getPoolConnection().getConnection();
-				PreparedStatement sfalt= confalt.prepareStatement("insert into ItemProductoReclamos values (?,?,?)");
+				PreparedStatement sfalt= con.prepareStatement("insert into ItemProductoReclamoFaltantes values (?,?,?,?)");
 				//agregar campos
 				sfalt.setInt(1, r.getNumero());
-			//	sfalt.setInt(2, ifalt.getProducto().getCodigo());
+				sfalt.setInt(2, ifalt.getProducto().getCodigo());
 				sfalt.setInt(3, ifalt.getCantidadFaltante());
 				sfalt.setInt(4, ifalt.getCantidadFacturada());
 				sfalt.execute();
 				break;
 			case "cant":
 				ItemProductoReclamo ic = (ItemProductoReclamo) o;
-				Connection conc = PoolConnection.getPoolConnection().getConnection();
-				PreparedStatement sc = conc.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
+				PreparedStatement sc = con.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
 				//agregar campos
 				sc.setInt(1, r.getNumero());
 				sc.setInt(2, ic.getCantidad());
-			//	sc.setInt(3, ic.getProducto().getCodigo()); /*falta producto*/
+				sc.setInt(3, ic.getProducto().getCodigo()); 
 				sc.execute();
 				break;
 			case "facturacion":
 				ItemFacturaReclamo ifact = (ItemFacturaReclamo) o;
-				Connection conf = PoolConnection.getPoolConnection().getConnection();
-				PreparedStatement sf = conf.prepareStatement("insert into ItemFacturaReclamo values (?,?,?)");
+				PreparedStatement sf = con.prepareStatement("insert into ItemFacturaReclamo values (?,?,?)");
 				//agregar campos
 				sf.setInt(1, r.getNumero());
-			//	sf.setInt(2, ifact.getFactura().getIdFactura()); /*falta Factura*/
+				sf.setInt(2, ifact.getFactura().getIdFactura());
 				sf.setDate(3, (Date) ifact.getFechaFactura());
 				sf.execute();
 				break;
 			}
-			
+			PoolConnection.getPoolConnection().realeaseConnection(con);
 		}
 		catch(Exception e)
 		{
@@ -147,7 +194,6 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			e.printStackTrace();
 		}
 	}
-
 	
 	
 	@Override
@@ -195,7 +241,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		{
 			Reclamo r = null;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("select * from Reclamo where numero = ?");			//agregar campos
+			PreparedStatement s = con.prepareStatement("select * from Reclamo where numero = ?");
 			s.setLong(1,numero);
 			ResultSet result = s.executeQuery();
 			while (result.next())
@@ -214,13 +260,11 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				r.setNumero(cod);
 				r.setDescripcion(descripcion);
 				r.setEstaSolucionado(solucionado);
-				//r.setOperador(); /*llamar AdmPersistenciaUsuario buscarUsuario(int id)*/
-				//r.setResponsable(); /*llamar AdmPersistenciaUsuario buscarUsuario(int id)*/
+				r.setOperador(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
+				r.setResponsable(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
 				r.setTiempoRespuesta(tiempoRespuesta);
 				r.setTipoReclamo(tipoReclamo);
 				r.setZona(zona);
-				
-				
 			}
 			
 			PoolConnection.getPoolConnection().realeaseConnection(con);

@@ -120,7 +120,7 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 		{
 			Usuario usu = null;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("select u.* from usuario u where usuario=?");			//agregar campos
+			PreparedStatement s = con.prepareStatement("select u.* from usuario u where codigo=?");
 			s.setString(1, String.valueOf(numero));
 			ResultSet result = s.executeQuery();
 			while (result.next())

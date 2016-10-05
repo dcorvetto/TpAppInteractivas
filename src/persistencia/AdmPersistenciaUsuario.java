@@ -152,7 +152,7 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 		try
 		{
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("select r.description from UsuarioRol ur"
+			PreparedStatement s = con.prepareStatement("select r.descripcion from UsuarioRol ur"
 					+ " join rol r on r.idRol=ur.idRol"
 					+ " where idUsuario=?");			
 			s.setInt(1,idUsuario);

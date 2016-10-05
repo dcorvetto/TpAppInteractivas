@@ -1,5 +1,0 @@
-jdbc=jdbc:sqlserver://
-servidor=127.0.0.1
-usuario=sa
-password=sqlserver
-conexiones=3

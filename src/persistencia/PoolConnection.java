@@ -35,7 +35,7 @@ public class PoolConnection
 		try
 		{
 			//Setear driver
-			  Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String dbConnectString = jdbc + servidor + ";databaseName=TPO_GrupoIV"; 
             Connection con = DriverManager.getConnection (dbConnectString, usuario, password);
             

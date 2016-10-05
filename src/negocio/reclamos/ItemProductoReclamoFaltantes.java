@@ -8,6 +8,12 @@ public class ItemProductoReclamoFaltantes {
 	private int cantidadFaltante;
 	private int cantidadFacturada;
 	
+	
+	
+	public ItemProductoReclamoFaltantes() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public ItemProductoReclamoFaltantes(Producto producto,
 			int cantidadFaltante, int cantidadFacturada) {
 		super();

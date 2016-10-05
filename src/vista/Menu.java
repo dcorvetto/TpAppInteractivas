@@ -2,6 +2,7 @@ package vista;
 
 import controlador.Sistema;
 import negocio.EnumRoles;
+import vista.reclamos.NuevoReclamoProductoVista;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -45,16 +46,61 @@ public class Menu extends JFrame {
         jMenu3.setText("Reclamos");
         jMenu3.setBounds(39, 0, 57, 23);
         jMenuItem1 = new JMenuItem();
-        if (roles.contains(EnumRoles.CALL_CENTER) || roles.contains(EnumRoles.CONSULTA) || roles.contains(EnumRoles.ADMINISTRACION)) {
-            jMenu3.add(jMenuItem1);
-            jMenuItem1.setText("Ver Reclamos");
-            jMenuItem1.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    JFrame vistaReclamos = new VistaReclamos(codigoUsuario);
-                    vistaReclamos.setVisible(true);
+        if (roles.contains(EnumRoles.CALL_CENTER) || roles.contains(EnumRoles.ADMINISTRACION)) {
+            jMenuItem2 = new JMenuItem();
+            jMenu3.add(jMenuItem2);
+            jMenuItem2.setText("Nuevo Reclamo");
+
+            JMenu jMenuReclamoProducto = new JMenu(); // ReclamoProducto(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad) { // Map<codigo_producto,cantidad>
+            jMenuReclamoProducto.setText("Producto");
+            jMenuReclamoProducto.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JFrame nuevoReclamoProductoVista = new NuevoReclamoProductoVista(codigoUsuario);
+                    nuevoReclamoProductoVista.setVisible(true);
                 }
             });
+            jMenu3.add(jMenuReclamoProducto);
+            JMenu jMenuReclamoCantidades = new JMenu(); // ReclamoCantidades(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad) { // Map<codigo_producto,cantidad>
+            jMenuReclamoCantidades.setText("Cantidades");
+            jMenuReclamoCantidades.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+            jMenu3.add(jMenuReclamoCantidades);
+            JMenu jMenuReclamoZona = new JMenu(); // ReclamoZona(int codigo_cliente, String zona) {
+            jMenuReclamoZona.setText("Zona");
+            jMenuReclamoZona.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+            jMenu3.add(jMenuReclamoZona);
+            JMenu jMenuReclamoFactura = new JMenu(); // ReclamoFactura(int codigo_cliente, Date fecha, int cod_factura) {
+            jMenuReclamoFactura.setText("Factura");
+            jMenuReclamoFactura.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+            jMenu3.add(jMenuReclamoFactura);
+            JMenu jMenuReclamoFaltantes = new JMenu(); // ReclamoFaltantes(int codigo_cliente, int cod_producto, int cant_socilitada, int cant_recibidad) {
+            jMenuReclamoFaltantes.setText("Faltantes");
+            jMenuReclamoFaltantes.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+            jMenu3.add(jMenuReclamoFaltantes);
         }
+        jMenu3.add(jMenuItem1);
+        jMenuItem1.setText("Ver Reclamos");
+        jMenuItem1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                JFrame vistaReclamos = new VistaReclamos(codigoUsuario);
+                vistaReclamos.setVisible(true);
+            }
+        });
 //		jMenuItem2 = new JMenuItem();
 //		jMenu3.add(jMenuItem2);
 //		jMenuItem2.setText("Tratamiento reclamos");

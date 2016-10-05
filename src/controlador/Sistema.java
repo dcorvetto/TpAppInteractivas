@@ -6,7 +6,6 @@ import negocio.views.ReclamoView;
 import persistencia.AdmPersistenciaReclamo;
 import persistencia.AdmPersistenciaUsuario;
 import vista.VistaCliente;
-import vista.VistaEventoReclamo;
 import vista.VistaReclamoTPromXOperador;
 
 import java.util.*;
@@ -41,21 +40,47 @@ public class Sistema {
 		return null;
 	}
 
-	public Collection<VistaEventoReclamo> getTratamientoReclamo() {
-		return null;
-	}
-
-	public Collection<ReclamoView> getReclamos(){
-		Collection<ReclamoView> reclamosView = Collections.emptyList();
-		for (Reclamo reclamo : AdmPersistenciaReclamo.getInstancia().buscarReclamos()) {
-			Collection<EventoReclamoView> eventosReclamoView = Collections.emptyList();
+	public Collection<EventoReclamoView> getTratamientoReclamo(int numeroReclamo) {
+		Reclamo reclamo = buscarReclamo(numeroReclamo);
+		Collection<EventoReclamoView> eventosReclamoView = Collections.emptyList();
+		if (reclamo != null) {
 			for (EventoReclamo eventoReclamo : reclamo.getEventos()) {
 				EventoReclamoView evento = new EventoReclamoView(eventoReclamo.getEstado(), eventoReclamo.getFecha(), eventoReclamo.getDetalle());
 				eventosReclamoView.add(evento);
 			}
-			ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
-					reclamo.getTipoReclamo(), reclamo.isEstaSolucionado(), eventosReclamoView);
-			reclamosView.add(reclamoV);
+		}
+		return eventosReclamoView;
+	}
+
+	public Collection<ReclamoView> getReclamosParaUsuario(int numUsuario){
+		Collection<String> tiposDeReclamos = Collections.emptyList();
+		Collection<EnumRoles> roles = Sistema.getInstancia().rolesUsuario(numUsuario);
+		if(roles.contains(EnumRoles.ADMINISTRACION) || roles.contains(EnumRoles.CALL_CENTER) || roles.contains(EnumRoles.CONSULTA)){
+			tiposDeReclamos.add("producto");
+			tiposDeReclamos.add("faltante");
+			tiposDeReclamos.add("cant");
+			tiposDeReclamos.add("facturacion");
+			tiposDeReclamos.add("zona");
+		}
+		if(roles.contains(EnumRoles.DISTRIBUCION)){
+			tiposDeReclamos.add("producto");
+			tiposDeReclamos.add("faltante");
+			tiposDeReclamos.add("cant");
+		}
+		if(roles.contains(EnumRoles.ZONA_ENTREGA)){
+			tiposDeReclamos.add("zona");
+		}
+		if(roles.contains(EnumRoles.FACTURACION)){
+			tiposDeReclamos.add("facturacion");
+		}
+
+		Collection<ReclamoView> reclamosView = Collections.emptyList();
+		for (Reclamo reclamo : AdmPersistenciaReclamo.getInstancia().buscarReclamos()) {
+			if(tiposDeReclamos.contains(reclamo.getTipoReclamo())){
+				ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
+						reclamo.getTipoReclamo(), reclamo.isEstaSolucionado());
+				reclamosView.add(reclamoV);
+			}
 		}
 		return reclamosView;
 	}

@@ -1,20 +1,16 @@
 package negocio.views;
 
-import java.util.Collection;
-
 public class ReclamoView {
     private int numero;
     private String descripcion;
     private String tipoReclamo;
     private boolean estaSolucionado;
-    private Collection<EventoReclamoView> eventosReclamo;
 
-    public ReclamoView(int numero, String descripcion, String tipoReclamo, boolean estaSolucionado, Collection<EventoReclamoView> eventosReclamo) {
+    public ReclamoView(int numero, String descripcion, String tipoReclamo, boolean estaSolucionado) {
         this.numero = numero;
         this.descripcion = descripcion;
         this.tipoReclamo = tipoReclamo;
         this.estaSolucionado = estaSolucionado;
-        this.eventosReclamo = eventosReclamo;
     }
 
     public ReclamoView() {
@@ -52,11 +48,4 @@ public class ReclamoView {
         this.estaSolucionado = estaSolucionado;
     }
 
-    public Collection<EventoReclamoView> getEventosReclamo() {
-        return eventosReclamo;
-    }
-
-    public void setEventosReclamo(Collection<EventoReclamoView> eventosReclamo) {
-        this.eventosReclamo = eventosReclamo;
-    }
 }

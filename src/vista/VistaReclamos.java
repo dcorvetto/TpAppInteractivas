@@ -6,6 +6,8 @@ import negocio.views.ReclamoView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.util.Vector;
 
 public class VistaReclamos extends JFrame {
@@ -34,16 +36,27 @@ public class VistaReclamos extends JFrame {
         nombresColumnas.add("Solucionado");
         nombresColumnas.add("Descripcion");
 
-        //Se pasan valores de la collection de reclamos a vector porque la tabla solo acepta Vector :(
-        Vector<String> data = new Vector<>();
+        //Se pasan valores de la collection de reclamos a vectores porque la tabla solo acepta Vectores de vectores... :@
+        Vector<String> dataNumero = new Vector<>();
+        Vector<String> dataTipoReclamo = new Vector<>();
+        Vector<String> dataEstaSolucionado = new Vector<>();
+        Vector<String> dataDescripcion = new Vector<>();
         for (ReclamoView reclamoView : Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario)) {
-            data.add(String.valueOf(reclamoView.getNumero()));
-            data.add(String.valueOf(reclamoView.getTipoReclamo()));
-            data.add(String.valueOf(reclamoView.isEstaSolucionado()));
-            data.add(String.valueOf(reclamoView.getDescripcion()));
+            dataNumero.add(String.valueOf(reclamoView.getNumero()));
+            dataTipoReclamo.add(String.valueOf(reclamoView.getTipoReclamo()));
+            dataEstaSolucionado.add(String.valueOf(reclamoView.isEstaSolucionado()));
+            dataDescripcion.add(String.valueOf(reclamoView.getDescripcion()));
         }
 
-        table = new JTable(data, nombresColumnas);
+        Vector<Vector<String>> data = new Vector<>();
+        data.add(dataNumero);
+        data.add(dataTipoReclamo);
+        data.add(dataEstaSolucionado);
+        data.add(dataDescripcion);
+
+        TableModel model = new DefaultTableModel(data, nombresColumnas);
+
+        table = new JTable(model);
         table.setBounds(0, 20, 389, 185);
         table.setFillsViewportHeight(true);
         jScrollPane = new JScrollPane(table);

@@ -4,20 +4,21 @@ import java.util.Collection;
 
 public class Usuario {
 	
-	private String apellido;
-	private int codigo;
-	private Collection <EnumRoles> roles; 	
-	private String clave;
 	private String nombre;
+	private String apellido;
+	private Collection <EnumRoles> roles; 	
+	private int codigo;
 	private String usuario;
+	private String clave;
 	
-	public Usuario(int codigo, String apellido, String clave, String nombre, String usuario){
-		this.codigo=codigo;
-		this.apellido=apellido;
-		this.clave=clave;
-		this.nombre=nombre;
-		this.usuario=usuario;
+	public Usuario(String nombre, String apellido, int codigo, String usuario, String clave) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.codigo = codigo;
+		this.usuario = usuario;
+		this.clave = clave;
 	}
+	
 
 	public int getCodigo() {
 		return codigo;

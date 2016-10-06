@@ -1,5 +1,8 @@
 package persistencia;
 
+import negocio.EnumRoles;
+import negocio.Usuario;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,9 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
-import negocio.EnumRoles;
-import negocio.Usuario;
 
 public class AdmPersistenciaUsuario extends AdministradorPersistencia 
 {
@@ -62,12 +62,13 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 			ResultSet result = s.executeQuery(senten);
 			while (result.next())
 			{
+
 				int codigo = result.getInt(1);
 				String nom = result.getString(2);
 				String apellido = result.getString(3);
 				String usuario = result.getString(4);
 				String clave = result.getString(5);
-				Usuario usu = new  Usuario(codigo, apellido, clave, nom, usuario);
+				Usuario usu = new  Usuario(nom, apellido, codigo, usuario, clave);
 				rta.add(usu);
 				
 			}
@@ -98,7 +99,7 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 				String apellido = result.getString(3);
 				String u = result.getString(4);
 				String clave = result.getString(5);
-				usu = new  Usuario(codigo, apellido, clave, nom, u);
+				usu = new  Usuario(nom, apellido, codigo, u, clave);
 			}
 			List<EnumRoles> listaRoles = buscarRoles(usu.getCodigo());
 			
@@ -130,7 +131,7 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 				String apellido = result.getString(3);
 				String u = result.getString(4);
 				String clave = result.getString(5);
-				usu = new  Usuario(codigo, apellido, clave, nom, u);
+				usu = new  Usuario(nom, apellido, codigo, u, clave);
 			}
 			List<EnumRoles> listaRoles = buscarRoles(usu.getCodigo());
 			

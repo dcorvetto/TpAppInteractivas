@@ -1,7 +1,7 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 public class Reclamo {
@@ -21,7 +21,7 @@ public class Reclamo {
 		this.numero = numero;
 		this.descripcion = descripcion;
 		this.tipoReclamo=tipoReclamo;
-		eventos = Collections.emptyList();
+		eventos = new ArrayList<>();
 	}
 	
 	public Reclamo() {

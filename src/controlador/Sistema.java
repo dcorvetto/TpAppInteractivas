@@ -42,7 +42,7 @@ public class Sistema {
 
 	public Collection<EventoReclamoView> getTratamientoReclamo(int numeroReclamo) {
 		Reclamo reclamo = buscarReclamo(numeroReclamo);
-		Collection<EventoReclamoView> eventosReclamoView = Collections.emptyList();
+		Collection<EventoReclamoView> eventosReclamoView = new ArrayList<>();
 		if (reclamo != null) {
 			for (EventoReclamo eventoReclamo : reclamo.getEventos()) {
 				EventoReclamoView evento = new EventoReclamoView(eventoReclamo.getEstado(), eventoReclamo.getFecha(), eventoReclamo.getDetalle());
@@ -53,7 +53,7 @@ public class Sistema {
 	}
 
 	public Collection<ReclamoView> getReclamosParaUsuario(int numUsuario){
-		Collection<String> tiposDeReclamos = Collections.emptyList();
+		Collection<String> tiposDeReclamos = new ArrayList<>();
 		Collection<EnumRoles> roles = Sistema.getInstancia().rolesUsuario(numUsuario);
 		if(roles.contains(EnumRoles.ADMINISTRACION) || roles.contains(EnumRoles.CALL_CENTER) || roles.contains(EnumRoles.CONSULTA)){
 			tiposDeReclamos.add("producto");
@@ -74,7 +74,7 @@ public class Sistema {
 			tiposDeReclamos.add("facturacion");
 		}
 
-		Collection<ReclamoView> reclamosView = Collections.emptyList();
+		Collection<ReclamoView> reclamosView = new ArrayList<>();
 		for (Reclamo reclamo : AdmPersistenciaReclamo.getInstancia().buscarReclamos()) {
 			if(tiposDeReclamos.contains(reclamo.getTipoReclamo())){
 				ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),

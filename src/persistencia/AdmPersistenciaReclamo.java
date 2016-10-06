@@ -1,5 +1,6 @@
 package persistencia;
 
+import negocio.EventoReclamo;
 import negocio.Reclamo;
 import negocio.reclamos.ItemFacturaReclamo;
 import negocio.reclamos.ItemProductoReclamo;
@@ -66,10 +67,15 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			scomp.setString(1, String.valueOf(r.getNumero())); 
 			scomp.execute();
 					
+			PreparedStatement ser = con.prepareStatement("delete from EventoReclamo where idReclamo=?");			
+			ser.setString(1, String.valueOf(r.getNumero())); 
+			ser.execute();
+			
 			PreparedStatement s = con.prepareStatement("delete from Reclamo where numero = ?");
 			s.setLong(1, r.getNumero());
 			s.execute();
 			PoolConnection.getPoolConnection().realeaseConnection(con);
+			
 		}
 		catch (Exception e)
 		{

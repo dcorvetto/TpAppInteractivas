@@ -3,6 +3,9 @@ package vista;
 import controlador.Sistema;
 
 import javax.swing.*;
+
+import controlador.Sistema;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,9 +62,14 @@ public class VistaLogin {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
+<<<<<<< Updated upstream
 				Integer codigoUsuario = Sistema.getInstancia().login(fieldUsuario.getText(), passFieldContrasenia.getText());
+=======
+Integer codigoUsuario = Sistema.getInstancia().login(fieldUsuario.getText(), passFieldContrasenia.getText());
+				//Integer codigoUsuario = 1;//TODO BORRAR!
+>>>>>>> Stashed changes
 				if(codigoUsuario==null){
-					JOptionPane.showMessageDialog(frmLogin, "Usuario o contraseña incorrectos");
+					JOptionPane.showMessageDialog(frmLogin, "Usuario o contraseï¿½a incorrectos");
 				}else{
 					frmLogin.setVisible(false);
 					VistaMenu m = new VistaMenu(codigoUsuario);

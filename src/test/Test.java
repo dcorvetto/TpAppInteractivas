@@ -1,10 +1,16 @@
 package test;
 
 import persistencia.AdmPersistenciaCliente;
+import persistencia.AdmPersistenciaEventoReclamo;
 import persistencia.AdmPersistenciaProducto;
 import persistencia.AdmPersistenciaReclamo;
 import persistencia.AdmPersistenciaUsuario;
+
+import java.util.Date;
+
 import negocio.Cliente;
+import negocio.EnumEstado;
+import negocio.EventoReclamo;
 import negocio.Producto;
 import negocio.Reclamo;
 import negocio.Usuario;
@@ -61,8 +67,17 @@ public class Test {
 		
 
 		/*Borrar el reclamo insertado*/
-		AdmPersistenciaReclamo.getInstancia().delete(rhijo);
-		AdmPersistenciaReclamo.getInstancia().delete(AdmPersistenciaReclamo.getInstancia().buscarReclamo(idReclamoc));
+	//	AdmPersistenciaReclamo.getInstancia().delete(rhijo);
+	//	AdmPersistenciaReclamo.getInstancia().delete(AdmPersistenciaReclamo.getInstancia().buscarReclamo(idReclamoc));
+	
+		EventoReclamo er = new EventoReclamo();
+		er.setDetalle("DETALLE EVENTO 1");
+		er.setEstado(EnumEstado.INGRESADO);
+		er.setFecha(new Date());
+		er.setIdReclamo(AdmPersistenciaReclamo.getInstancia().buscarReclamo(idReclamo).getNumero());
+		
+		AdmPersistenciaEventoReclamo.getInstancia().insert(er);
+	
 	}
 
 }

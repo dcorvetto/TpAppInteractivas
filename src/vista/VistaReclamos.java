@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -61,7 +60,6 @@ public class VistaReclamos extends JFrame {
         contentPane.add(jScrollPane);
 
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
         btnAceptar.setBounds(10, 216, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -69,5 +67,13 @@ public class VistaReclamos extends JFrame {
             }
         });
         contentPane.add(btnAceptar);
+
+        JButton btnVerEventos = new JButton("Ver eventos");
+        btnVerEventos.setBounds(109, 216, 120, 23);
+        btnVerEventos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        contentPane.add(btnVerEventos);
     }
 }

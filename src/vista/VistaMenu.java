@@ -45,13 +45,14 @@ public class VistaMenu extends JFrame {
         jMenu2.add(jMenu3);
         jMenu3.setText("Reclamos");
         jMenu3.setBounds(39, 0, 57, 23);
+        //Solo pueden crear reclamos los del call center y los admin
         if (roles.contains(EnumRoles.CALL_CENTER) || roles.contains(EnumRoles.ADMINISTRACION)) {
             jMenu4 = new JMenu();
             jMenu3.add(jMenu4);
             jMenu4.setText("Nuevo Reclamo");
             
             // Reclamo de producto: el cliente no recibe cierto producto y desea recibirlo. Se debe almacenar el producto y la cantidad pedida.
-            JMenuItem jMenuReclamoProducto = new JMenuItem(); // ReclamoProducto(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad) { // Map<codigo_producto,cantidad>
+            JMenuItem jMenuReclamoProducto = new JMenuItem();
             jMenuReclamoProducto.setText("Producto");
             jMenuReclamoProducto.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -62,7 +63,7 @@ public class VistaMenu extends JFrame {
             jMenu4.add(jMenuReclamoProducto);
             
             // Reclamo de cantidades: el cliente solicita se le envie mayor cantidad de productos. El sistema debe registrar cada producto y su cantidad pedida.
-            JMenuItem jMenuReclamoCantidades = new JMenuItem(); // ReclamoCantidades(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad) { // Map<codigo_producto,cantidad>
+            JMenuItem jMenuReclamoCantidades = new JMenuItem();
             jMenuReclamoCantidades.setText("Cantidades");
             jMenuReclamoCantidades.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {//igual que el de ReclamoProducto pero llamando al crearReclamoCantidades
@@ -73,7 +74,7 @@ public class VistaMenu extends JFrame {
             jMenu4.add(jMenuReclamoCantidades);
             
             // Reclamo de zona: el cliente ha detectado que un competidor esta entregando productos en su zona. Se debe informar la zona afectada.
-            JMenuItem jMenuReclamoZona = new JMenuItem(); // ReclamoZona(int codigo_cliente, String zona) {
+            JMenuItem jMenuReclamoZona = new JMenuItem();
             jMenuReclamoZona.setText("Zona");
             jMenuReclamoZona.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -83,8 +84,8 @@ public class VistaMenu extends JFrame {
             });
             jMenu4.add(jMenuReclamoZona);
             
-            // Reclamo de facturaci�n: debe informar la fecha de factura en donde detecto inconsistencias y detallar la misma. Se pueden registrar varias facturas.
-            JMenuItem jMenuReclamoFactura = new JMenuItem(); // ReclamoFactura(int codigo_cliente, Date fecha, int cod_factura) {
+            // Reclamo de facturacion: debe informar la fecha de factura en donde detecto inconsistencias y detallar la misma. Se pueden registrar varias facturas.
+            JMenuItem jMenuReclamoFactura = new JMenuItem();
             jMenuReclamoFactura.setText("Factura");
             jMenuReclamoFactura.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -94,8 +95,8 @@ public class VistaMenu extends JFrame {
             });
             jMenu4.add(jMenuReclamoFactura);
             
-            //	Reclamo de faltantes: el cliente recibi� menos cantidad de la solicitada e informada.
-            JMenuItem jMenuReclamoFaltantes = new JMenuItem(); // ReclamoFaltantes(int codigo_cliente, int cod_producto, int cant_socilitada, int cant_recibidad) {
+            //	Reclamo de faltantes: el cliente recibio menos cantidad de la solicitada e informada.
+            JMenuItem jMenuReclamoFaltantes = new JMenuItem();
             jMenuReclamoFaltantes.setText("Faltantes");
             jMenuReclamoFaltantes.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -114,14 +115,6 @@ public class VistaMenu extends JFrame {
                 vistaReclamos.setVisible(true);
             }
         });
-//		jMenuItem2 = new JMenuItem();
-//		jMenu3.add(jMenuItem2);
-//		jMenuItem2.setText("Tratamiento reclamos");
-//		jMenuItem2.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent evt) 
-//			{
-//			}
-//		});
         jMenu1 = new JMenu();
         jMenuBar1.add(jMenu1);
         jMenu1.setText("Salir del Sistema");

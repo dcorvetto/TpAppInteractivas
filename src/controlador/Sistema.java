@@ -3,7 +3,7 @@ package controlador;
 import negocio.*;
 import negocio.views.ClienteView;
 import negocio.views.EventoReclamoView;
-import negocio.views.ReclamoTPromXOperadorVista;
+import negocio.views.ReclamoTPromXOperadorView;
 import negocio.views.ReclamoView;
 import persistencia.AdmPersistenciaCliente;
 import persistencia.AdmPersistenciaProducto;
@@ -58,7 +58,7 @@ public class Sistema {
 		return 0;
 	}
 
-	public Collection<ReclamoTPromXOperadorVista> getTiempoPromedio(int identificadorUsuario) {
+	public Collection<ReclamoTPromXOperadorView> getTiempoPromedio(int identificadorUsuario) {
 		return null;
 	}
 
@@ -74,6 +74,10 @@ public class Sistema {
 		return eventosReclamoView;
 	}
 
+	/**
+	 * Devuelve solo los reclamos que puede ver cada usuario (dependiendo de sus roles)
+	 * Ejemplo: los que posean de rol zona_entrega solo podran ver los reclamos de tipo zona
+	 * */
 	public Collection<ReclamoView> getReclamosParaUsuario(int numUsuario){
 		Collection<String> tiposDeReclamos = new ArrayList<>();
 		Collection<EnumRoles> roles = Sistema.getInstancia().rolesUsuario(numUsuario);

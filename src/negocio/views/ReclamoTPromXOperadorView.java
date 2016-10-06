@@ -1,11 +1,11 @@
 package negocio.views;
 
-public class ReclamoTPromXOperadorVista {
+public class ReclamoTPromXOperadorView {
 
     private String usuarioOperador;
     private String TiempoPromedio;
 
-    public ReclamoTPromXOperadorVista(String usuarioOperador, String tiempoPromedio) {
+    public ReclamoTPromXOperadorView(String usuarioOperador, String tiempoPromedio) {
         this.usuarioOperador = usuarioOperador;
         TiempoPromedio = tiempoPromedio;
     }

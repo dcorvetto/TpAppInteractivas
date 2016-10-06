@@ -1,14 +1,19 @@
 package controlador;
 
 import negocio.*;
+import negocio.views.ClienteView;
 import negocio.views.EventoReclamoView;
+import negocio.views.ReclamoTPromXOperadorVista;
 import negocio.views.ReclamoView;
+import persistencia.AdmPersistenciaCliente;
+import persistencia.AdmPersistenciaProducto;
 import persistencia.AdmPersistenciaReclamo;
 import persistencia.AdmPersistenciaUsuario;
-import vista.VistaCliente;
-import vista.VistaReclamoTPromXOperador;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 public class Sistema {
 
@@ -28,15 +33,32 @@ public class Sistema {
 		return instancia;
 	}
 
-	public Collection<VistaCliente> getClientesMayorCantReclamos() {
+	public Collection<ClienteView> getClientesMayorCantReclamos() {
 		return null;
+	}
+
+	public Collection<ClienteView> getClientes() {
+		Collection<ClienteView> clientesView =  new ArrayList<>();
+		for (Cliente cliente : AdmPersistenciaCliente.getInstancia().selectAll()) {
+			ClienteView cV = new ClienteView(String.valueOf(cliente.getCodigo_cliente()), cliente.getNombre(), String.valueOf(cliente.getCantReclamos()), cliente.getMail());
+			clientesView.add(cV);
+		}
+		return clientesView;
+	}
+
+	public Collection<String> getCodigoProductos() {
+		Collection<String> productos = new ArrayList<>();
+		for (Producto producto : AdmPersistenciaProducto.getInstancia().selectAll()) {
+			productos.add(String.valueOf(producto.getCodigo()));
+		}
+		return productos;
 	}
 
 	public int getCantidadReclamosMes(int mes) {
 		return 0;
 	}
 
-	public Collection<VistaReclamoTPromXOperador> getTiempoPromedio(int identificadorUsuario) {
+	public Collection<ReclamoTPromXOperadorVista> getTiempoPromedio(int identificadorUsuario) {
 		return null;
 	}
 

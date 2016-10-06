@@ -2,17 +2,14 @@ package vista;
 
 import controlador.Sistema;
 import negocio.EnumRoles;
-import vista.reclamos.VistaNuevoReclamoFactura;
-import vista.reclamos.VistaNuevoReclamoFaltantes;
-import vista.reclamos.VistaNuevoReclamoProducto;
-import vista.reclamos.VistaNuevoReclamoZona;
+import vista.reclamos.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 
-public class Menu extends JFrame {
+public class VistaMenu extends JFrame {
 
     private static final long serialVersionUID = -7998003568770812583L;
     private JMenuBar jMenuBar1;
@@ -25,7 +22,7 @@ public class Menu extends JFrame {
 
     private Integer codigoUsuario;
 
-    public Menu(Integer codigoUsuario) {
+    public VistaMenu(Integer codigoUsuario) {
         super();
         this.codigoUsuario = codigoUsuario;
         setResizable(false);
@@ -69,7 +66,8 @@ public class Menu extends JFrame {
             jMenuReclamoCantidades.setText("Cantidades");
             jMenuReclamoCantidades.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {//igual que el de ReclamoProducto pero llamando al crearReclamoCantidades
-
+                    JFrame nuevoReclamoCantidadesVista = new VistaNuevoReclamoCantidades(codigoUsuario);
+                    nuevoReclamoCantidadesVista.setVisible(true);
                 }
             });
             jMenu4.add(jMenuReclamoCantidades);

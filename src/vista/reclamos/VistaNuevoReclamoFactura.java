@@ -1,24 +1,24 @@
 package vista.reclamos;
 
-import java.awt.Font;
+import controlador.Sistema;
+import negocio.views.ClienteView;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JFormattedTextField;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class VistaNuevoReclamoFactura extends JFrame {
 
 	private static final long serialVersionUID = -7732676766832254025L;
 	private JPanel contentPane;
     private Integer codigoUsuario;
-    private JTextField textField;
-    private JTextField textField_1;
+    private JTextField textFieldCodFactura;
+    private JTextField textFieldFecha;
+    private JComboBox<String> comboBoxClientes;
 
 
     public VistaNuevoReclamoFactura(Integer codigoUsuario) {
@@ -27,9 +27,12 @@ public class VistaNuevoReclamoFactura extends JFrame {
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
         
-        JComboBox comboBox = new JComboBox();
-        comboBox.setBounds(76, 13, 90, 20);
-        getContentPane().add(comboBox);
+        comboBoxClientes = new JComboBox<>();
+        comboBoxClientes.setBounds(76, 13, 90, 20);
+        for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
+            comboBoxClientes.addItem(clienteView.getCodigo_cliente());
+        }
+        getContentPane().add(comboBoxClientes);
         
         JLabel lblCliente = new JLabel("Cliente:");
         lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -38,11 +41,31 @@ public class VistaNuevoReclamoFactura extends JFrame {
         
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.setBounds(10, 77, 89, 23);
+        btnAceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date date = formatter.parse(textFieldFecha.getText());
+                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), date, Integer.parseInt(textFieldCodFactura.getText()));
+                    JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
+                    textFieldCodFactura.setText("");
+                    textFieldFecha.setText("");
+                    setVisible(false);
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Formato de fecha incorrecto, debe ser dd/MM/yyyy");
+                }
+            }
+        });
         getContentPane().add(btnAceptar);
         
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
+        	public void actionPerformed(ActionEvent e) {
+                textFieldCodFactura.setText("");
+                textFieldFecha.setText("");
+                setVisible(false);
         	}
         });
         btnCancelar.setBounds(227, 77, 89, 23);
@@ -53,20 +76,21 @@ public class VistaNuevoReclamoFactura extends JFrame {
         lblZona.setBounds(10, 44, 98, 20);
         getContentPane().add(lblZona);
         
-        textField = new JTextField();
-        textField.setBounds(118, 44, 86, 20);
-        getContentPane().add(textField);
-        textField.setColumns(10);
+        textFieldCodFactura = new JTextField();
+        textFieldCodFactura.setBounds(118, 44, 86, 20);
+        getContentPane().add(textFieldCodFactura);
+        textFieldCodFactura.setColumns(10);
         
         JLabel lblFecha = new JLabel("Fecha:");
         lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
         lblFecha.setBounds(176, 11, 41, 20);
         getContentPane().add(lblFecha);
         
-        textField_1 = new JTextField();
-        textField_1.setColumns(10);
-        textField_1.setBounds(226, 13, 88, 20);
-        getContentPane().add(textField_1);
+        textFieldFecha = new JTextField();
+        textFieldFecha.setColumns(10);
+        textFieldFecha.setBounds(226, 13, 88, 20);
+        textFieldFecha.setText("dd/MM/yyyy");
+        getContentPane().add(textFieldFecha);
 
     }
 }

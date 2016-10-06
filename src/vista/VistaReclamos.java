@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 public class VistaReclamos extends JFrame {
@@ -39,22 +40,16 @@ public class VistaReclamos extends JFrame {
         nombresColumnas.add("Descripcion");
 
         //Se pasan valores de la collection de reclamos a vectores porque la tabla solo acepta Vectores de vectores... :@
-        Vector<String> dataNumero = new Vector<>();
-        Vector<String> dataTipoReclamo = new Vector<>();
-        Vector<String> dataEstaSolucionado = new Vector<>();
-        Vector<String> dataDescripcion = new Vector<>();
-        for (ReclamoView reclamoView : Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario)) {
-            dataNumero.add(String.valueOf(reclamoView.getNumero()));
-            dataTipoReclamo.add(String.valueOf(reclamoView.getTipoReclamo()));
-            dataEstaSolucionado.add(String.valueOf(reclamoView.isEstaSolucionado()));
-            dataDescripcion.add(String.valueOf(reclamoView.getDescripcion()));
-        }
-
+        Vector<String> dataReclamo = new Vector<>();
         Vector<Vector<String>> data = new Vector<>();
-        data.add(dataNumero);
-        data.add(dataTipoReclamo);
-        data.add(dataEstaSolucionado);
-        data.add(dataDescripcion);
+        for (ReclamoView reclamoView : Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario)) {
+            dataReclamo.add(String.valueOf(reclamoView.getNumero()));
+            dataReclamo.add(String.valueOf(reclamoView.getTipoReclamo()));
+            dataReclamo.add(String.valueOf(reclamoView.isEstaSolucionado()));
+            dataReclamo.add(String.valueOf(reclamoView.getDescripcion()));
+            data.add(dataReclamo);
+            dataReclamo = new Vector<>();
+        }
 
         TableModel model = new DefaultTableModel(data, nombresColumnas);
 
@@ -68,8 +63,7 @@ public class VistaReclamos extends JFrame {
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
         btnAceptar.setBounds(10, 216, 89, 23);
-        btnAceptar.addActionListener(new AbstractAction() {
-            @Override
+        btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
             }

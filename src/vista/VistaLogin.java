@@ -64,7 +64,7 @@ public class VistaLogin {
 					JOptionPane.showMessageDialog(frmLogin, "Usuario o contraseña incorrectos");
 				}else{
 					frmLogin.setVisible(false);
-					Menu m = new Menu(codigoUsuario);
+					VistaMenu m = new VistaMenu(codigoUsuario);
 					m.setVisible(true);
 				}
 			}

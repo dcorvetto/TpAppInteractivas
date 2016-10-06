@@ -14,8 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class VistaNuevoReclamoProducto extends JFrame {
-
+public class VistaNuevoReclamoCantidades extends JFrame {
     private static final long serialVersionUID = -277076000511824707L;
     private Integer codigoUsuario;
     private JComboBox<String> comboBoxClientes;
@@ -27,12 +26,12 @@ public class VistaNuevoReclamoProducto extends JFrame {
     private Vector<Vector<String>> data =  new Vector<>();
     private Vector<String> dataProducto = new Vector<>();
 
-    public VistaNuevoReclamoProducto(Integer codigoUsuario) {
-    	this.setBounds(0, 0, 381, 256);
-    	setTitle("Reclamo Producto");
+    public VistaNuevoReclamoCantidades(Integer codigoUsuario) {
+        this.setBounds(0, 0, 381, 256);
+        setTitle("Reclamo Producto");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
-        
+
         comboBoxClientes = new JComboBox<>();
         comboBoxClientes.setBounds(76, 13, 90, 20);
         for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
@@ -40,27 +39,27 @@ public class VistaNuevoReclamoProducto extends JFrame {
         }
 
         getContentPane().add(comboBoxClientes);
-        
+
         JLabel lblCliente = new JLabel("Cliente:");
         lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
         lblCliente.setBounds(10, 14, 56, 14);
         getContentPane().add(lblCliente);
-        
+
         JLabel lblProductos = new JLabel("Productos:");
         lblProductos.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblProductos.setBounds(10, 45, 80, 14);
         getContentPane().add(lblProductos);
-        
+
         JLabel lblCodigo = new JLabel("Codigo:");
         lblCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
         lblCodigo.setBounds(10, 70, 56, 14);
         getContentPane().add(lblCodigo);
-        
+
         JLabel lblCantidad = new JLabel("Cantidad:");
         lblCantidad.setFont(new Font("Tahoma", Font.PLAIN, 14));
         lblCantidad.setBounds(178, 72, 64, 14);
         getContentPane().add(lblCantidad);
-        
+
         textFieldCantidad = new JTextField();
         textFieldCantidad.setColumns(10);
         textFieldCantidad.setBounds(252, 70, 50, 20);
@@ -113,20 +112,20 @@ public class VistaNuevoReclamoProducto extends JFrame {
                     //elementAt(0)=codigo del producto, y elementAt(1) = cantidad
                     mapCodigoCantidad.put(Integer.valueOf(data.elementAt(i).elementAt(0)), Integer.valueOf(data.elementAt(i).elementAt(0)));
                 }
-                Sistema.getInstancia().crearReclamoProducto(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), mapCodigoCantidad);
+                Sistema.getInstancia().crearReclamoCantidades(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), mapCodigoCantidad);
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 data.clear();
                 setVisible(false);
             }
         });
         getContentPane().add(btnAceptar);
-        
+
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0) {
                 data.clear();
                 setVisible(false);
-        	}
+            }
         });
         btnCancelar.setBounds(264, 184, 89, 23);
         getContentPane().add(btnCancelar);

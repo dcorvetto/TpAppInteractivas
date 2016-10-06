@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.Vector;
 
 public class VistaReclamos extends JFrame {
@@ -63,9 +65,15 @@ public class VistaReclamos extends JFrame {
         jScrollPane.setBounds(10, 10, table.getWidth(), table.getHeight());
         contentPane.add(jScrollPane);
 
-//        JButton btnAgregar = new JButton("Agregar");
-//        btnAgregar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-//        btnAgregar.setBounds(10, 216, 89, 23);
-//        contentPane.add(btnAgregar);
+        JButton btnAceptar = new JButton("Aceptar");
+        btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        btnAceptar.setBounds(10, 216, 89, 23);
+        btnAceptar.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+            }
+        });
+        contentPane.add(btnAceptar);
     }
 }

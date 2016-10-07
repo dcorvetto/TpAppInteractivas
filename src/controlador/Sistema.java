@@ -67,7 +67,7 @@ public class Sistema {
 		Collection<EventoReclamoView> eventosReclamoView = new ArrayList<>();
 		if (reclamo != null) {
 			for (EventoReclamo eventoReclamo : reclamo.getEventos()) {
-				EventoReclamoView evento = new EventoReclamoView(eventoReclamo.getEstado(), eventoReclamo.getFecha(), eventoReclamo.getDetalle());
+				EventoReclamoView evento = new EventoReclamoView(eventoReclamo.getEstado().getTexto(), eventoReclamo.getFecha(), eventoReclamo.getDetalle());
 				eventosReclamoView.add(evento);
 			}
 		}
@@ -148,6 +148,7 @@ public class Sistema {
 	}
 
 	public void actualizarReclamo(Date fecha, String estado, int codigo_reclamo, String descripcion) {
+		//EnumEstado.valueOf(estado.replace(" ", "_").toUpperCase()
 	}
 
 	/**

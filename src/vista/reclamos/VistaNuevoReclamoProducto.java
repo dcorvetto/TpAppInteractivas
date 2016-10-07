@@ -85,10 +85,10 @@ public class VistaNuevoReclamoProducto extends JFrame {
                 dataProducto.add(String.valueOf(comboBoxProductos.getSelectedItem()));
                 dataProducto.add(textFieldCantidad.getText());
                 data.add(dataProducto);
-                dataProducto = new Vector<>();
                 model = new DefaultTableModel(data, nombresColumnas);
                 TableModelEvent tableModelEvent = new TableModelEvent(model);
                 table.tableChanged(tableModelEvent);
+                dataProducto = new Vector<>();
             }
         });
         btnAgregar.setBounds(312, 68, 41, 23);

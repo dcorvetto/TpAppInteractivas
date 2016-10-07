@@ -21,10 +21,11 @@ public class Reclamo {
 		this.numero = numero;
 		this.descripcion = descripcion;
 		this.tipoReclamo=tipoReclamo;
-		eventos = new ArrayList<>();
+		this.eventos = new ArrayList<>();
 	}
 	
 	public Reclamo() {
+		this.eventos = new ArrayList<>();
 	}
 	
 	/**

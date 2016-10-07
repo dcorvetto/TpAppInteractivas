@@ -139,7 +139,7 @@ public class AdmPersistenciaEventoReclamo extends AdministradorPersistencia
 		
 			s.setInt(1, er.getIdReclamo());
 			s.setString(2,er.getEstado().toString());
-			s.setDate(3, null); //PROBLEMA DATE
+			s.setTimestamp(3, new java.sql.Timestamp(er.getFecha().getTime())); 
 			s.setString(4,er.getDetalle());
 			s.execute();
 			

@@ -22,12 +22,13 @@ public class VistaNuevoReclamoProducto extends JFrame {
     private JComboBox<String> comboBoxProductos;
     private JTable table;
     private TableModel model;
+    private JTextArea textAreaDescripcion;
 
     private Vector<Vector<String>> data =  new Vector<>();
     private Vector<String> dataProducto = new Vector<>();
 
     public VistaNuevoReclamoProducto(Integer codigoUsuario) {
-    	this.setBounds(0, 0, 381, 256);
+    	this.setBounds(0, 0, 381, 313);
     	setTitle("Reclamo Producto");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
@@ -52,7 +53,7 @@ public class VistaNuevoReclamoProducto extends JFrame {
         
         JLabel lblCodigo = new JLabel("Codigo:");
         lblCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblCodigo.setBounds(10, 70, 56, 14);
+        lblCodigo.setBounds(10, 71, 56, 16);
         getContentPane().add(lblCodigo);
         
         JLabel lblCantidad = new JLabel("Cantidad:");
@@ -98,11 +99,11 @@ public class VistaNuevoReclamoProducto extends JFrame {
         table.setFillsViewportHeight(true);
         table.setBounds(0, 20, 343, 78);
         JScrollPane jScrollPane = new JScrollPane(table);
-        jScrollPane.setBounds(10, 100, table.getWidth(), table.getHeight());
+        jScrollPane.setBounds(10, 151, table.getWidth(), table.getHeight());
         getContentPane().add(jScrollPane);
 
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setBounds(10, 184, 89, 23);
+        btnAceptar.setBounds(10, 240, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -112,7 +113,7 @@ public class VistaNuevoReclamoProducto extends JFrame {
                     //elementAt(0)=codigo del producto, y elementAt(1) = cantidad
                     mapCodigoCantidad.put(Integer.valueOf(data.elementAt(i).elementAt(0)), Integer.valueOf(data.elementAt(i).elementAt(0)));
                 }
-                Sistema.getInstancia().crearReclamoProducto(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), mapCodigoCantidad);
+                Sistema.getInstancia().crearReclamoProducto(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), mapCodigoCantidad, textAreaDescripcion.getText());
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 data.clear();
                 setVisible(false);
@@ -127,7 +128,18 @@ public class VistaNuevoReclamoProducto extends JFrame {
                 setVisible(false);
         	}
         });
-        btnCancelar.setBounds(264, 184, 89, 23);
+        btnCancelar.setBounds(264, 240, 89, 23);
         getContentPane().add(btnCancelar);
+        
+        JLabel lblDescripcion = new JLabel("Descripcion:");
+        lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblDescripcion.setBounds(10, 98, 80, 20);
+        getContentPane().add(lblDescripcion);
+        
+        textAreaDescripcion = new JTextArea();
+        textAreaDescripcion.setBounds(0, 0, 253, 39);
+        JScrollPane jScrollPaneDescripcion = new JScrollPane(textAreaDescripcion);
+        jScrollPaneDescripcion.setBounds(100, 101, textAreaDescripcion.getWidth(), textAreaDescripcion.getHeight());
+        getContentPane().add(jScrollPaneDescripcion);
     }
 }

@@ -19,10 +19,11 @@ public class VistaNuevoReclamoFactura extends JFrame {
     private JTextField textFieldCodFactura;
     private JTextField textFieldFecha;
     private JComboBox<String> comboBoxClientes;
+    private JTextArea textAreaDescripcion;
 
 
     public VistaNuevoReclamoFactura(Integer codigoUsuario) {
-    	this.setBounds(0, 0, 341, 152);
+    	this.setBounds(0, 0, 341, 203);
     	setTitle("Reclamo Factura");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
@@ -40,14 +41,14 @@ public class VistaNuevoReclamoFactura extends JFrame {
         getContentPane().add(lblCliente);
         
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setBounds(10, 77, 89, 23);
+        btnAceptar.setBounds(10, 130, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 try {
                     Date date = formatter.parse(textFieldFecha.getText());
-                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), date, Integer.parseInt(textFieldCodFactura.getText()));
+                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), date, Integer.parseInt(textFieldCodFactura.getText()), textAreaDescripcion.getText());
                     JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                     textFieldCodFactura.setText("");
                     textFieldFecha.setText("");
@@ -68,7 +69,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
                 setVisible(false);
         	}
         });
-        btnCancelar.setBounds(227, 77, 89, 23);
+        btnCancelar.setBounds(227, 130, 89, 23);
         getContentPane().add(btnCancelar);
         
         JLabel lblZona = new JLabel("Codigo Factura:");
@@ -91,6 +92,18 @@ public class VistaNuevoReclamoFactura extends JFrame {
         textFieldFecha.setBounds(226, 13, 88, 20);
         textFieldFecha.setText("dd/MM/yyyy");
         getContentPane().add(textFieldFecha);
+        
+        JLabel lblDescripcion = new JLabel("Descripcion:");
+        lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblDescripcion.setBounds(10, 75, 75, 14);
+        getContentPane().add(lblDescripcion);
+        
+        JScrollPane scrollPaneDescripcion = new JScrollPane();
+        scrollPaneDescripcion.setBounds(95, 75, 221, 44);
+        getContentPane().add(scrollPaneDescripcion);
+        
+        textAreaDescripcion = new JTextArea();
+        scrollPaneDescripcion.setViewportView(textAreaDescripcion);
 
     }
 }

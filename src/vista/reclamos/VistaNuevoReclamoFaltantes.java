@@ -17,10 +17,11 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
     private JTextField textFieldCantRecibida;
     private JComboBox<String> comboBoxClientes;
     private JComboBox<String> comboBoxProductos;
+    private JTextArea textAreaDescripcion;
 
 
     public VistaNuevoReclamoFaltantes(Integer codigoUsuario) {
-        this.setBounds(0, 0, 373, 152);
+        this.setBounds(0, 0, 373, 199);
         setTitle("Reclamo Factura");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
@@ -38,12 +39,12 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
         getContentPane().add(lblCliente);
 
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setBounds(10, 75, 89, 23);
+        btnAceptar.setBounds(10, 126, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Sistema.getInstancia().crearReclamoFaltantes(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())),
                         Integer.parseInt(String.valueOf(comboBoxProductos.getSelectedItem())),
-                        Integer.parseInt(textFieldCantSolicitada.getText()), Integer.parseInt(textFieldCantRecibida.getText()));
+                        Integer.parseInt(textFieldCantSolicitada.getText()), Integer.parseInt(textFieldCantRecibida.getText()), textAreaDescripcion.getText());
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 textFieldCantRecibida.setText("");
                 textFieldCantSolicitada.setText("");
@@ -60,7 +61,7 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
                 setVisible(false);
             }
         });
-        btnCancelar.setBounds(255, 75, 89, 23);
+        btnCancelar.setBounds(255, 126, 89, 23);
         getContentPane().add(btnCancelar);
 
         JLabel lblZona = new JLabel("Producto:");
@@ -94,6 +95,18 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
         textFieldCantRecibida.setColumns(10);
         textFieldCantRecibida.setBounds(308, 46, 34, 20);
         getContentPane().add(textFieldCantRecibida);
+        
+        JLabel lblDescripcion = new JLabel("Descripcion:");
+        lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblDescripcion.setBounds(10, 75, 75, 14);
+        getContentPane().add(lblDescripcion);
+        
+        JScrollPane scrollPaneDescripcion = new JScrollPane();
+        scrollPaneDescripcion.setBounds(95, 75, 249, 40);
+        getContentPane().add(scrollPaneDescripcion);
+        
+        textAreaDescripcion = new JTextArea();
+        scrollPaneDescripcion.setViewportView(textAreaDescripcion);
 
     }
 

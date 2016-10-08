@@ -15,10 +15,10 @@ public class VistaNuevoReclamoZona extends JFrame {
     private Integer codigoUsuario;
     private JTextField textField;
     private JComboBox<String> comboBoxClientes;
-
-
+    private JTextArea textAreaDescripcion;
+    
     public VistaNuevoReclamoZona(Integer codigoUsuario) {
-    	this.setBounds(0, 0, 342, 116);
+    	this.setBounds(0, 0, 342, 171);
     	setTitle("Reclamo Zona");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
@@ -36,10 +36,10 @@ public class VistaNuevoReclamoZona extends JFrame {
         getContentPane().add(lblCliente);
         
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setBounds(10, 44, 89, 23);
+        btnAceptar.setBounds(10, 98, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Sistema.getInstancia().crearReclamoZona(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textField.getText());
+                Sistema.getInstancia().crearReclamoZona(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textField.getText(), textAreaDescripcion.getText());
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 textField.setText("");
                 setVisible(false);
@@ -54,7 +54,7 @@ public class VistaNuevoReclamoZona extends JFrame {
                 setVisible(false);
             }
         });
-        btnCancelar.setBounds(227, 44, 89, 23);
+        btnCancelar.setBounds(227, 98, 89, 23);
         getContentPane().add(btnCancelar);
         
         JLabel lblZona = new JLabel("Zona:");
@@ -66,6 +66,18 @@ public class VistaNuevoReclamoZona extends JFrame {
         textField.setBounds(230, 13, 86, 20);
         getContentPane().add(textField);
         textField.setColumns(10);
+        
+        JLabel lblDescripcion = new JLabel("Descripcion:");
+        lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblDescripcion.setBounds(10, 39, 75, 14);
+        getContentPane().add(lblDescripcion);
+        
+        JScrollPane scrollPaneDescripcion = new JScrollPane();
+        scrollPaneDescripcion.setBounds(95, 44, 221, 43);
+        getContentPane().add(scrollPaneDescripcion);
+        
+        textAreaDescripcion = new JTextArea();
+        scrollPaneDescripcion.setViewportView(textAreaDescripcion);
 
     }
 

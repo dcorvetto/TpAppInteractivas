@@ -55,8 +55,6 @@ public class EventoReclamo {
 	}
 
 	public EventoReclamo() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getIdEventoReclamo() {

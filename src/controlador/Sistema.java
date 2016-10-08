@@ -132,7 +132,7 @@ public class Sistema {
 //		reclamos.add(reclamoNuevo);
 //	}
 
-	public void crearReclamoProducto(int codigo_cliente, HashMap<Integer, Integer> mapCodigoCantidad) { 
+	public void crearReclamoProducto(int codigo_cliente, HashMap<Integer, Integer> mapCodigoCantidad, String descripcion) {
 		/*Agrego ejemplo por si sirve*/
 //		Cliente c = AdmPersistenciaCliente.getInstancia().buscarCliente(codigo_cliente);
 //		ReclamoProducto r = new ReclamoProducto();
@@ -171,16 +171,16 @@ public class Sistema {
 //		r.guardarCambios();
 	}
 
-	public void crearReclamoCantidades(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad) { // Map<codigo_producto,cantidad>
+	public void crearReclamoCantidades(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad, String descripcion) { // Map<codigo_producto,cantidad>
 	}
 
-	public void crearReclamoZona(int codigo_cliente, String zona) {
+	public void crearReclamoZona(int codigo_cliente, String zona, String descripcion) {
 	}
 
-	public void crearReclamoFactura(int codigo_cliente, Date fecha, int cod_factura) {
+	public void crearReclamoFactura(int codigo_cliente, Date fecha, int cod_factura, String descripcion) {
 	}
 
-	public void crearReclamoFaltantes(int codigo_cliente, int cod_producto, int cant_socilitada, int cant_recibidad) {
+	public void crearReclamoFaltantes(int codigo_cliente, int cod_producto, int cant_socilitada, int cant_recibidad, String descripcion) {
 	}
 
 	private void agregarItemReclamoProd(int codigo_prod, int cant) {
@@ -195,7 +195,7 @@ public class Sistema {
 	private void agregarItemReclamoFactura(Date fecha, int identificador_factura) {
 	}
 
-	public void actualizarReclamo(Date fecha, String estado, int codigo_reclamo, String descripcion) {
+	public void actualizarReclamo(Date fecha, String estado, int codigo_reclamo, String detalle) {
 		//EnumEstado.valueOf(estado.replace(" ", "_").toUpperCase()
 	}
 
@@ -224,8 +224,7 @@ public class Sistema {
 	}
 
 	private Usuario buscarUsuario(int numUsuario) {
-		Usuario usuario = AdmPersistenciaUsuario.getInstancia().buscarUsuario(numUsuario);
-		return usuario;
+		return AdmPersistenciaUsuario.getInstancia().buscarUsuario(numUsuario);
 	}
 
 	private Cliente buscarCliente(int numCliente) {

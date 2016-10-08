@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import persistencia.AdmPersistenciaReclamo;
+
 public class Reclamo {
 
 	private int numero;
@@ -47,11 +49,15 @@ public class Reclamo {
 	}
 
 	public void generarEvento(Date fecha, EnumEstado estado, String detalle) {
-		//TODO ?
+		EventoReclamo er = new EventoReclamo();
+		er.setDetalle(detalle);
+		er.setEstado(estado);
+		er.setFecha(fecha);
+		AdmPersistenciaReclamo.getInstancia().insertEventoReclamo(this.getNumero(), er);
 	}
 
 	public void guardarCambios() {
-		//TODO llamar al insert del mapper
+		AdmPersistenciaReclamo.getInstancia().insert(this);
 	}
 
 	public void agregarDetalle(Date fecha, String detalle) {

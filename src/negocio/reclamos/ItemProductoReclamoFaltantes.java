@@ -40,4 +40,6 @@ public class ItemProductoReclamoFaltantes {
 		this.cantidadFacturada = cantidadFacturada;
 	}
 	
+	
+	
 }

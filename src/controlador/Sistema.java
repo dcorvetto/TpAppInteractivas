@@ -1,6 +1,8 @@
 package controlador;
 
 import negocio.*;
+import negocio.reclamos.ItemProductoReclamo;
+import negocio.reclamos.ReclamoProducto;
 import negocio.views.ClienteView;
 import negocio.views.EventoReclamoView;
 import negocio.views.ReclamoTPromXOperadorView;
@@ -13,7 +15,11 @@ import persistencia.AdmPersistenciaUsuario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 public class Sistema {
 
@@ -120,7 +126,43 @@ public class Sistema {
 //		reclamos.add(reclamoNuevo);
 //	}
 
-	public void crearReclamoProducto(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad) { // Map<codigo_producto,cantidad>
+	public void crearReclamoProducto(int codigo_cliente, HashMap<Integer, Integer> mapCodigoCantidad) { 
+		/*Agrego ejemplo por si sirve*/
+		Cliente c = AdmPersistenciaCliente.getInstancia().buscarCliente(codigo_cliente);
+		ReclamoProducto r = new ReclamoProducto();
+		r.setCliente(c);
+		//r.setDescripcion(descripcion);
+		r.setEstaSolucionado(false);
+		//r.setOperador(operador);
+		//r.setResponsable(responsable);
+		r.setTiempoRespuesta(-1f);
+		r.setTipoReclamo("producto");
+		
+		List<ItemProductoReclamo> listaItems = new ArrayList<ItemProductoReclamo>();
+		
+		for (Map.Entry<Integer, Integer> item : mapCodigoCantidad.entrySet()) {
+			ItemProductoReclamo ipr = new ItemProductoReclamo();
+			ipr.setProducto(AdmPersistenciaProducto.getInstancia().buscarProducto(item.getKey()));
+			ipr.setCantidad(item.getValue());
+			listaItems.add(ipr);
+		}
+		
+		r.setItems(listaItems);
+		
+		List<EventoReclamo> listaEventos = new ArrayList<EventoReclamo>();
+		EventoReclamo er = new EventoReclamo();
+		er.setDetalle("");
+		er.setEstado(EnumEstado.INGRESADO);
+		er.setFecha(new Date());
+		listaEventos.add(er);
+		
+		r.setEventos(listaEventos);
+		
+		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
+		listaReclamos.add(r);
+		this.setReclamos(listaReclamos);
+	
+		r.guardarCambios();
 	}
 
 	public void crearReclamoCantidades(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad) { // Map<codigo_producto,cantidad>
@@ -187,5 +229,27 @@ public class Sistema {
 	private Producto buscarProducto(int cod_producto) {
 		return null;
 	}
+
+	public Collection<Reclamo> getReclamos() {
+		return reclamos;
+	}
+
+	public void setReclamos(Collection<Reclamo> reclamos) {
+		this.reclamos = reclamos;
+	}
+
+	public Collection<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(Collection<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+
+	public void setClientes(Collection<Cliente> clientes) {
+		this.clientes = clientes;
+	}
+	
+	
 
 }

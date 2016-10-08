@@ -26,4 +26,14 @@ public class ItemProductoReclamo {
 	public int getCantidad() {
 		return cantidad;
 	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+	
+	
 }

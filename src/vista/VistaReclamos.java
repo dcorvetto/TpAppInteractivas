@@ -88,7 +88,7 @@ public class VistaReclamos extends JFrame {
         btnVerEventos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	int numeroReclamoElegido = Integer.parseInt(data.get(table.getSelectedRow()).get(0)); //Obtengo el numero del reclamo seleccionado en la tabla
-            	JFrame vistaEventoReclamo = new VistaEventoReclamo(numeroReclamoElegido);
+            	JFrame vistaEventoReclamo = new VistaEventoReclamo(numeroReclamoElegido, Sistema.getInstancia().puedeCrearEventos(codigoUsuario));
             	vistaEventoReclamo.setVisible(true);
             }
         });

@@ -32,7 +32,7 @@ public class VistaEventoReclamo extends JFrame{
 
     private Collection<EventoReclamoView> eventosNuevos = new ArrayList<>();
 
-    public VistaEventoReclamo(Integer codigoReclamo) {
+    public VistaEventoReclamo(Integer codigoReclamo, boolean puedeAgregarEventos) {
         this.codigoReclamo = codigoReclamo;
 
         this.setBounds(0, 0, 381, 256);
@@ -114,6 +114,11 @@ public class VistaEventoReclamo extends JFrame{
             }
         });
         getContentPane().add(btnAgregar);
+
+        if(!puedeAgregarEventos){ //Deshabilito botones de aceptar y agregar eventos para quienes no posean el rol correspondiente
+            btnAceptar.setEnabled(false);
+            btnAgregar.setEnabled(false);
+        }
         
         JLabel lblEstado = new JLabel("Estado:");
         lblEstado.setFont(new Font("Tahoma", Font.PLAIN, 14));

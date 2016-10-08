@@ -1,8 +1,6 @@
 package controlador;
 
 import negocio.*;
-import negocio.reclamos.ItemProductoReclamo;
-import negocio.reclamos.ReclamoProducto;
 import negocio.views.ClienteView;
 import negocio.views.EventoReclamoView;
 import negocio.views.ReclamoTPromXOperadorView;
@@ -12,14 +10,7 @@ import persistencia.AdmPersistenciaProducto;
 import persistencia.AdmPersistenciaReclamo;
 import persistencia.AdmPersistenciaUsuario;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
+import java.util.*;
 
 public class Sistema {
 
@@ -66,6 +57,21 @@ public class Sistema {
 
 	public Collection<ReclamoTPromXOperadorView> getTiempoPromedio(int identificadorUsuario) {
 		return null;
+	}
+
+	/**
+	 * Solo pueden crear eventos aquelos que posean los roles: Administrador, Facturacion, Distribucion, o Zona de Entrega
+	 * Los de Call Center y  Consulta no pueden
+	 * @return true si puede crear eventos, y false en caso contrario
+	 * */
+	public boolean puedeCrearEventos(int codigoUsuario) {
+		Usuario usuario = buscarUsuario(codigoUsuario);
+		Collection<EnumRoles> roles = usuario.getRoles();
+		boolean puede = false;
+		if(roles.contains(EnumRoles.ADMINISTRACION) || roles.contains(EnumRoles.FACTURACION) || roles.contains(EnumRoles.DISTRIBUCION) || roles.contains(EnumRoles.ZONA_ENTREGA)){
+			puede = true;
+		}
+		return puede;
 	}
 
 	public Collection<EventoReclamoView> getTratamientoReclamo(int numeroReclamo) {
@@ -128,41 +134,41 @@ public class Sistema {
 
 	public void crearReclamoProducto(int codigo_cliente, HashMap<Integer, Integer> mapCodigoCantidad) { 
 		/*Agrego ejemplo por si sirve*/
-		Cliente c = AdmPersistenciaCliente.getInstancia().buscarCliente(codigo_cliente);
-		ReclamoProducto r = new ReclamoProducto();
-		r.setCliente(c);
+//		Cliente c = AdmPersistenciaCliente.getInstancia().buscarCliente(codigo_cliente);
+//		ReclamoProducto r = new ReclamoProducto();
+//		r.setCliente(c);
 		//r.setDescripcion(descripcion);
-		r.setEstaSolucionado(false);
+//		r.setEstaSolucionado(false);
 		//r.setOperador(operador);
 		//r.setResponsable(responsable);
-		r.setTiempoRespuesta(-1f);
-		r.setTipoReclamo("producto");
-		
-		List<ItemProductoReclamo> listaItems = new ArrayList<ItemProductoReclamo>();
-		
-		for (Map.Entry<Integer, Integer> item : mapCodigoCantidad.entrySet()) {
-			ItemProductoReclamo ipr = new ItemProductoReclamo();
-			ipr.setProducto(AdmPersistenciaProducto.getInstancia().buscarProducto(item.getKey()));
-			ipr.setCantidad(item.getValue());
-			listaItems.add(ipr);
-		}
-		
-		r.setItems(listaItems);
-		
-		List<EventoReclamo> listaEventos = new ArrayList<EventoReclamo>();
-		EventoReclamo er = new EventoReclamo();
-		er.setDetalle("");
-		er.setEstado(EnumEstado.INGRESADO);
-		er.setFecha(new Date());
-		listaEventos.add(er);
-		
-		r.setEventos(listaEventos);
-		
-		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
-		listaReclamos.add(r);
-		this.setReclamos(listaReclamos);
-	
-		r.guardarCambios();
+//		r.setTiempoRespuesta(-1f);
+//		r.setTipoReclamo("producto");
+//
+//		List<ItemProductoReclamo> listaItems = new ArrayList<ItemProductoReclamo>();
+//
+//		for (Map.Entry<Integer, Integer> item : mapCodigoCantidad.entrySet()) {
+//			ItemProductoReclamo ipr = new ItemProductoReclamo();
+//			ipr.setProducto(AdmPersistenciaProducto.getInstancia().buscarProducto(item.getKey()));
+//			ipr.setCantidad(item.getValue());
+//			listaItems.add(ipr);
+//		}
+//
+//		r.setItems(listaItems);
+//
+//		List<EventoReclamo> listaEventos = new ArrayList<EventoReclamo>();
+//		EventoReclamo er = new EventoReclamo();
+//		er.setDetalle("");
+//		er.setEstado(EnumEstado.INGRESADO);
+//		er.setFecha(new Date());
+//		listaEventos.add(er);
+//
+//		r.setEventos(listaEventos);
+//
+//		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
+//		listaReclamos.add(r);
+//		this.setReclamos(listaReclamos);
+//
+//		r.guardarCambios();
 	}
 
 	public void crearReclamoCantidades(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad) { // Map<codigo_producto,cantidad>

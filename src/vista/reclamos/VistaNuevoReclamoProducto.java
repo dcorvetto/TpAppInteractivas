@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 public class VistaNuevoReclamoProducto extends JFrame {
@@ -107,7 +106,7 @@ public class VistaNuevoReclamoProducto extends JFrame {
         btnAceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Map<Integer, Integer> mapCodigoCantidad = new HashMap<>();
+                HashMap<Integer, Integer> mapCodigoCantidad = new HashMap<>();
                 //Esta es la unica forma de pasar de el vector de vectores de string (que es lo que pide el JTable) a un map
                 for (int i = 0; i < data.size(); i++) {
                     //elementAt(0)=codigo del producto, y elementAt(1) = cantidad

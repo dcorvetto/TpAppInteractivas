@@ -6,6 +6,13 @@ public class ItemProductoReclamo {
 
 	private Producto producto;
 	private int cantidad;
+	
+	
+
+	public ItemProductoReclamo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public ItemProductoReclamo(Producto producto, int cantidad) {
 		this.producto = producto;

@@ -29,7 +29,7 @@ public class Reclamo {
 	}
 	
 	/**
-	* Cantidad de reclamos en el mes pasado por parametro sobre el año actual
+	* Cantidad de reclamos en el mes pasado por parametro sobre el aï¿½o actual
 	* */
 	public int getCantReclamosMensual(int mes) {
 		Date anioActual = new Date();
@@ -144,4 +144,5 @@ public class Reclamo {
 		this.zona = zona;
 	}
 
+	
 }

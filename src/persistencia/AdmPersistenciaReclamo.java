@@ -1,14 +1,22 @@
 package persistencia;
 
+import negocio.EnumEstado;
 import negocio.EventoReclamo;
 import negocio.Reclamo;
 import negocio.reclamos.ItemFacturaReclamo;
 import negocio.reclamos.ItemProductoReclamo;
 import negocio.reclamos.ItemProductoReclamoFaltantes;
+import negocio.reclamos.ReclamoCantidad;
+import negocio.reclamos.ReclamoCompuesto;
+import negocio.reclamos.ReclamoFacturacion;
+import negocio.reclamos.ReclamoFaltantes;
+import negocio.reclamos.ReclamoProducto;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -86,7 +94,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 	}
 
 	@Override
-	public int insertar(Object o)
+	public void insert(Object o)
 	{
 		try
 		{
@@ -108,20 +116,59 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			rs.next();
 			int idReclamo = rs.getInt(1);
 			
+			/*insertar items*/
+			switch(r.getTipoReclamo()){
+			case "producto":
+				ReclamoProducto rp = (ReclamoProducto) o;
+				for(ItemProductoReclamo item: rp.getItems()){
+					this.insertarItems(idReclamo, item);
+				}
+				break;
+			case "faltante":
+				ReclamoFaltantes rf = (ReclamoFaltantes) o;
+				for(ItemProductoReclamoFaltantes item: rf.getItems()){
+					this.insertarItems(idReclamo, item);
+				}
+				break;
+			case "cant":
+				ReclamoCantidad rc = (ReclamoCantidad) o;
+				for(ItemProductoReclamo item: rc.getItems()){
+					this.insertarItems(idReclamo, item);
+				}
+				break;
+			case "facturacion":
+				ReclamoFacturacion rfact = (ReclamoFacturacion) o;
+				for(ItemFacturaReclamo item: rfact.getItems()){
+					this.insertarItems(idReclamo, item);
+				}
+			case "compuesto":
+				ReclamoCompuesto rcomp = (ReclamoCompuesto) o;
+				for(Reclamo rec: rcomp.getReclamos()){
+					this.insertarReclamoCompuesto(idReclamo, rec);
+				}
+				break;
+			}
+			
+			//Inserto eventos
+			for(EventoReclamo er: r.getEventos()){
+				this.insertEventoReclamo(idReclamo, er);
+			}
+			
 			PoolConnection.getPoolConnection().realeaseConnection(con);
-			return idReclamo;
+			
 		}
 		catch (Exception e)
 		{
 			System.out.println("Error al insertar Reclamo");
 			e.printStackTrace();
 		}
-		return 0;
 	}
 	
 	public void insertarReclamoCompuesto(int idReclamoPadre, Reclamo reclamo){
 		try
 		{
+			System.out.println(reclamo.getNumero());
+			System.out.println(idReclamoPadre);
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = con.prepareStatement("insert into ReclamoCompuesto values (?,?)");
 			//agregar campos
@@ -177,7 +224,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				//agregar campos
 				sf.setInt(1, r.getNumero());
 				sf.setInt(2, ifact.getFactura().getIdFactura());
-				sf.setDate(3, (Date) ifact.getFechaFactura());
+				sf.setTimestamp(3, new java.sql.Timestamp(ifact.getFechaFactura())); 
 				sf.execute();
 				break;
 			}
@@ -314,34 +361,103 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		return null;
 	}
 	
-	@Override
-	public void insert(Object o) {
+	
+	
+	public void updateEventoReclamo(int idReclamo, Object o) 
+	{
 		try
 		{
-			Reclamo r = (Reclamo)o;
+		
+			EventoReclamo er = (EventoReclamo)o;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("insert into Reclamo values (?,?,?,?,?,?,?,?)");
-			//agregar campos
-			s.setString(1, r.getDescripcion());
-			s.setInt(2,r.getCliente().getCodigo_cliente());
-			s.setInt(3, r.getOperador().getCodigo());
-			s.setInt(4,r.getResponsable().getCodigo());
-			s.setBoolean(5, false);
-			s.setFloat(6, (float) r.getTiempoRespuesta());
-			s.setString(7, null);
-			s.setString(8, r.getTipoReclamo());
+			PreparedStatement s = con.prepareStatement("update EventoReclamo " +
+					"set idReclamo = ?," +
+					"set Estado =?," +
+					"set Fecha =?," +
+					"set Detalle =?)");
+	
+			s.setInt(1, idReclamo);
+			s.setString(2,er.getEstado().toString());
+			s.setDate(3, (java.sql.Date)er.getFecha());
+			s.setString(4,er.getDetalle());
+			s.execute();
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Error al actualizar EventoReclamo");
+			e.printStackTrace();
+		}
+	}
+	
+
+	public Collection<EventoReclamo> buscarEventosXReclamo(int idreclamo)
+	{
+		try
+		{
+			Collection<EventoReclamo> eventosreclamo = new ArrayList<>();
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("select idEventoReclamo, estado, fecha, detalle from EventoReclamo where idReclamo = ?");
+			s.setInt(1, idreclamo);
+		
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				int cod = result.getInt(1);
+				String estado = result.getString(2);
+				Date fecha = result.getDate(3);
+				String detalle = result.getString(4);
+
+				EventoReclamo er = new EventoReclamo();
+				er.setDetalle(detalle);
+				
+				switch(estado.toLowerCase()){
+				case "ingresado": er.setEstado(EnumEstado.INGRESADO);
+					break;
+				case "en_tratamiento" : er.setEstado(EnumEstado.EN_TRATAMIENTO);
+					break;
+				case "cerrado" : er.setEstado(EnumEstado.CERRADO);
+					break;
+				case "solucionado" : er.setEstado(EnumEstado.SOLUCIONADO);
+				 	break;
+				
+				}
+				er.setIdEventoReclamo(cod);
+				er.setFecha(fecha);
+				eventosreclamo.add(er);
+			}
+
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+			return eventosreclamo;
+		}
+		catch (Exception e)
+		{
+			System.out.println();
+		}
+		return null;
+	}
+
+	public void insertEventoReclamo(int idReclamo , Object o) {
+		try
+		{
+			EventoReclamo er = (EventoReclamo)o;
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("insert into EventoReclamo values (?,?,?,?)");
+		
+			s.setInt(1, idReclamo);
+			s.setString(2,er.getEstado().toString());
+			s.setTimestamp(3, new java.sql.Timestamp(er.getFecha().getTime())); 
+			s.setString(4,er.getDetalle());
 			s.execute();
 			
 			PoolConnection.getPoolConnection().realeaseConnection(con);
 		}
 		catch (Exception e)
 		{
-			System.out.println("Error al insertar Reclamo");
+			System.out.println("Error al insertar EventoReclamo");
 			e.printStackTrace();
 		}
 		
 	}
-	
-	
 
 }

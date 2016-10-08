@@ -7,7 +7,6 @@ public class EventoReclamo {
 	private Date fecha;
 	private String detalle;
 	private int idEventoReclamo;
-	private int idReclamo;
 	
 	public EventoReclamo(EnumEstado estado, Date fecha, String detalle) {
 		this.estado = estado;
@@ -67,16 +66,5 @@ public class EventoReclamo {
 	public void setIdEventoReclamo(int idEventoReclamo) {
 		this.idEventoReclamo = idEventoReclamo;
 	}
-
-	public int getIdReclamo() {
-		return idReclamo;
-	}
-
-	public void setIdReclamo(int idReclamo) {
-		this.idReclamo = idReclamo;
-	}
-
-	
-	
 	
 }

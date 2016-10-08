@@ -2,8 +2,16 @@ package negocio.reclamos;
 
 import java.util.Collection;
 
-public class ReclamoFacturacion {
+import negocio.Reclamo;
+
+public class ReclamoFacturacion extends Reclamo{
 	private Collection<ItemFacturaReclamo> items;
+
+	
+	public ReclamoFacturacion() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public ReclamoFacturacion(Collection<ItemFacturaReclamo> items) {
 		this.items = items;
@@ -12,4 +20,10 @@ public class ReclamoFacturacion {
 	public Collection<ItemFacturaReclamo> getItems() {
 		return items;
 	}
+
+	public void setItems(Collection<ItemFacturaReclamo> items) {
+		this.items = items;
+	}
+	
+	
 }

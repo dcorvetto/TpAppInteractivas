@@ -113,13 +113,7 @@ public class AdmPersistenciaCliente extends AdministradorPersistencia
 		return null;
 	}
 	
-	
-	
-	@Override
-	public int insertar(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 	
 	
 	

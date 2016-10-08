@@ -177,7 +177,7 @@ public class Sistema {
 	public void crearReclamoZona(int codigo_cliente, String zona, String descripcion) {
 	}
 
-	public void crearReclamoFactura(int codigo_cliente, Date fecha, int cod_factura, String descripcion) {
+	public void crearReclamoFactura(int codigo_cliente, String descripcion, Map<Integer, Date> mapIdFecha) { //Map<id_factura,fecha_factura>
 	}
 
 	public void crearReclamoFaltantes(int codigo_cliente, int cod_producto, int cant_socilitada, int cant_recibidad, String descripcion) {
@@ -192,7 +192,7 @@ public class Sistema {
 	private void agregarItemReclamoZona(String zona) {
 	}
 
-	private void agregarItemReclamoFactura(Date fecha, int identificador_factura) {
+	private void agregarItemReclamoFactura(Date fecha, int identificador_factura, int codigo_cliente) {
 	}
 
 	public void actualizarReclamo(Date fecha, String estado, int codigo_reclamo, String detalle) {

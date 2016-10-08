@@ -1,17 +1,15 @@
 package negocio;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 public class Factura {
 	private int idFactura;
 	private Date fecha;
 	private Cliente cliente;
+	
 	public Factura() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
+	
 	public int getIdFactura() {
 		return idFactura;
 	}

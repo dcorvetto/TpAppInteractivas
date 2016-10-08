@@ -2,15 +2,11 @@ package negocio.reclamos;
 
 import negocio.Factura;
 
-import java.util.Date;
-
 public class ItemFacturaReclamo {
 	private long fechaFactura;
 	private Factura factura;
 
 	public ItemFacturaReclamo() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ItemFacturaReclamo(long fechaFactura, Factura factura) {

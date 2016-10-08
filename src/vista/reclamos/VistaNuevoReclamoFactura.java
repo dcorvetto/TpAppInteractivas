@@ -4,12 +4,18 @@ import controlador.Sistema;
 import negocio.views.ClienteView;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 public class VistaNuevoReclamoFactura extends JFrame {
 
@@ -20,10 +26,15 @@ public class VistaNuevoReclamoFactura extends JFrame {
     private JTextField textFieldFecha;
     private JComboBox<String> comboBoxClientes;
     private JTextArea textAreaDescripcion;
+    private TableModel model;
+    private JTable tableFacturas;
+
+    private Vector<String> dataFacturas = new Vector<>();
+    private Vector<Vector<String>> data =  new Vector<>();
 
 
     public VistaNuevoReclamoFactura(Integer codigoUsuario) {
-    	this.setBounds(0, 0, 341, 203);
+    	this.setBounds(0, 0, 341, 314);
     	setTitle("Reclamo Factura");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
@@ -41,14 +52,20 @@ public class VistaNuevoReclamoFactura extends JFrame {
         getContentPane().add(lblCliente);
         
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setBounds(10, 130, 89, 23);
+        btnAceptar.setBounds(10, 241, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 try {
-                    Date date = formatter.parse(textFieldFecha.getText());
-                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), date, Integer.parseInt(textFieldCodFactura.getText()), textAreaDescripcion.getText());
+                    Map<Integer, Date> mapFechaId = new HashMap<>();
+                    //Esta es la unica forma de pasar de el vector de vectores de string (que es lo que pide el JTable) a un map
+                    for (int i = 0; i < data.size(); i++) {
+                        //elementAt(0)=codigo del factura, y elementAt(1) = fecha
+                        Date date = formatter.parse(data.elementAt(i).elementAt(1));
+                        mapFechaId.put(Integer.valueOf(data.elementAt(i).elementAt(0)), date);
+                    }
+                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textAreaDescripcion.getText(), mapFechaId);
                     JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                     textFieldCodFactura.setText("");
                     textFieldFecha.setText("");
@@ -64,46 +81,80 @@ public class VistaNuevoReclamoFactura extends JFrame {
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+                data.clear();
                 textFieldCodFactura.setText("");
                 textFieldFecha.setText("");
                 setVisible(false);
         	}
         });
-        btnCancelar.setBounds(227, 130, 89, 23);
+        btnCancelar.setBounds(227, 241, 89, 23);
         getContentPane().add(btnCancelar);
         
-        JLabel lblZona = new JLabel("Codigo Factura:");
-        lblZona.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblZona.setBounds(10, 44, 98, 20);
-        getContentPane().add(lblZona);
+        JLabel lblIDFactura = new JLabel("ID Factura:");
+        lblIDFactura.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblIDFactura.setBounds(10, 74, 71, 20);
+        getContentPane().add(lblIDFactura);
         
         textFieldCodFactura = new JTextField();
-        textFieldCodFactura.setBounds(118, 44, 86, 20);
+        textFieldCodFactura.setBounds(91, 76, 46, 20);
         getContentPane().add(textFieldCodFactura);
         textFieldCodFactura.setColumns(10);
         
         JLabel lblFecha = new JLabel("Fecha:");
         lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblFecha.setBounds(176, 11, 41, 20);
+        lblFecha.setBounds(147, 74, 41, 22);
         getContentPane().add(lblFecha);
         
         textFieldFecha = new JTextField();
         textFieldFecha.setColumns(10);
-        textFieldFecha.setBounds(226, 13, 88, 20);
+        textFieldFecha.setBounds(198, 77, 67, 20);
         textFieldFecha.setText("dd/MM/yyyy");
         getContentPane().add(textFieldFecha);
         
         JLabel lblDescripcion = new JLabel("Descripcion:");
         lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblDescripcion.setBounds(10, 75, 75, 14);
+        lblDescripcion.setBounds(10, 186, 75, 14);
         getContentPane().add(lblDescripcion);
         
         JScrollPane scrollPaneDescripcion = new JScrollPane();
-        scrollPaneDescripcion.setBounds(95, 75, 221, 44);
+        scrollPaneDescripcion.setBounds(95, 186, 221, 44);
         getContentPane().add(scrollPaneDescripcion);
         
         textAreaDescripcion = new JTextArea();
         scrollPaneDescripcion.setViewportView(textAreaDescripcion);
+        
+        JLabel lblNewLabel = new JLabel("Facturas:");
+        lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblNewLabel.setBounds(10, 49, 67, 14);
+        getContentPane().add(lblNewLabel);
+
+        //Columnas de la tabla
+        Vector<String> nombresColumnas = new Vector<>();
+        nombresColumnas.add("ID");
+        nombresColumnas.add("Fecha");
+        
+        JButton btnAgregar = new JButton("+");
+        btnAgregar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dataFacturas.add(textFieldCodFactura.getText());
+                dataFacturas.add(textFieldFecha.getText());
+                data.add(dataFacturas);
+                dataFacturas = new Vector<>();
+                model = new DefaultTableModel(data, nombresColumnas);
+                TableModelEvent tableModelEvent = new TableModelEvent(model);
+                tableFacturas.tableChanged(tableModelEvent);
+            }
+        });
+        btnAgregar.setBounds(275, 75, 41, 23);
+        getContentPane().add(btnAgregar);
+        
+        JScrollPane scrollPaneFacturas = new JScrollPane();
+        scrollPaneFacturas.setBounds(10, 105, 306, 70);
+        getContentPane().add(scrollPaneFacturas);
+
+        model = new DefaultTableModel(data, nombresColumnas);
+        tableFacturas = new JTable(model);
+        scrollPaneFacturas.setViewportView(tableFacturas);
 
     }
 }

@@ -9,8 +9,6 @@ public class ReclamoCantidad extends Reclamo{
 	private Collection<ItemProductoReclamo> items;
 	
 	public ReclamoCantidad() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ReclamoCantidad(Collection<ItemProductoReclamo> items) {

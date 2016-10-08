@@ -9,8 +9,6 @@ public class ReclamoFacturacion extends Reclamo{
 
 	
 	public ReclamoFacturacion() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ReclamoFacturacion(Collection<ItemFacturaReclamo> items) {

@@ -1,6 +1,8 @@
 package controlador;
 
 import negocio.*;
+import negocio.reclamos.ItemProductoReclamo;
+import negocio.reclamos.ReclamoProducto;
 import negocio.views.ClienteView;
 import negocio.views.EventoReclamoView;
 import negocio.views.ReclamoTPromXOperadorView;
@@ -17,6 +19,7 @@ public class Sistema {
 	private Collection<Cliente> clientes;
 	private Collection<Reclamo> reclamos;
 	private Collection<Usuario> usuarios;
+	private Usuario user;
 
 	private static Sistema instancia = null;
 
@@ -135,42 +138,43 @@ public class Sistema {
 	}
 
 	public void crearReclamoProducto(int codigo_cliente, HashMap<Integer, Integer> mapCodigoCantidad, String descripcion) {
-		/*Agrego ejemplo por si sirve*/
-//		Cliente c = AdmPersistenciaCliente.getInstancia().buscarCliente(codigo_cliente);
-//		ReclamoProducto r = new ReclamoProducto();
-//		r.setCliente(c);
-		//r.setDescripcion(descripcion);
-//		r.setEstaSolucionado(false);
-		//r.setOperador(operador);
-		//r.setResponsable(responsable);
-//		r.setTiempoRespuesta(-1f);
-//		r.setTipoReclamo("producto");
-//
-//		List<ItemProductoReclamo> listaItems = new ArrayList<ItemProductoReclamo>();
-//
-//		for (Map.Entry<Integer, Integer> item : mapCodigoCantidad.entrySet()) {
-//			ItemProductoReclamo ipr = new ItemProductoReclamo();
-//			ipr.setProducto(AdmPersistenciaProducto.getInstancia().buscarProducto(item.getKey()));
-//			ipr.setCantidad(item.getValue());
-//			listaItems.add(ipr);
-//		}
-//
-//		r.setItems(listaItems);
-//
-//		List<EventoReclamo> listaEventos = new ArrayList<EventoReclamo>();
-//		EventoReclamo er = new EventoReclamo();
-//		er.setDetalle("");
-//		er.setEstado(EnumEstado.INGRESADO);
-//		er.setFecha(new Date());
-//		listaEventos.add(er);
-//
-//		r.setEventos(listaEventos);
-//
-//		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
-//		listaReclamos.add(r);
-//		this.setReclamos(listaReclamos);
-//
-//		r.guardarCambios();
+	//	Agrego ejemplo por si sirve
+		Cliente c = AdmPersistenciaCliente.getInstancia().buscarCliente(codigo_cliente);
+		ReclamoProducto r = new ReclamoProducto();
+		r.setCliente(c);
+		r.setDescripcion(descripcion);
+		r.setEstaSolucionado(false);
+		r.setOperador(user);
+		//TODO: cambiar el parametro de abajo y pasarle un responsable que tendria que recibir por parametro
+		r.setResponsable(user);
+		r.setTiempoRespuesta(-1f);
+		r.setTipoReclamo("producto");
+
+		List<ItemProductoReclamo> listaItems = new ArrayList<ItemProductoReclamo>();
+
+		for (Map.Entry<Integer, Integer> item : mapCodigoCantidad.entrySet()) {
+			ItemProductoReclamo ipr = new ItemProductoReclamo();
+			ipr.setProducto(AdmPersistenciaProducto.getInstancia().buscarProducto(item.getKey()));
+			ipr.setCantidad(item.getValue());
+			listaItems.add(ipr);
+		}
+
+		r.setItems(listaItems);
+
+		List<EventoReclamo> listaEventos = new ArrayList<EventoReclamo>();
+		EventoReclamo er = new EventoReclamo();
+		er.setDetalle("");
+		er.setEstado(EnumEstado.INGRESADO);
+		er.setFecha(new Date());
+		listaEventos.add(er);
+
+		r.setEventos(listaEventos);
+
+		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
+		listaReclamos.add(r);
+		this.setReclamos(listaReclamos);
+
+		r.guardarCambios();
 	}
 
 	public void crearReclamoCantidades(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad, String descripcion) { // Map<codigo_producto,cantidad>
@@ -211,6 +215,7 @@ public class Sistema {
 	 */
 	public Integer login(String usuario, String password) {
 		Usuario user = Usuario.buscarUsuario(usuario, password);
+		this.user=user;
 		if(user==null){
 			return null;
 		}else{

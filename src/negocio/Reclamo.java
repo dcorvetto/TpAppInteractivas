@@ -3,6 +3,7 @@ package negocio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import persistencia.AdmPersistenciaReclamo;
 
@@ -12,7 +13,7 @@ public class Reclamo {
 	private Cliente cliente;
 	private String descripcion;
 	private Usuario operador;
-	private Collection<EventoReclamo> eventos;
+	private List<EventoReclamo> eventos;
 	private Usuario responsable;
 	private boolean estaSolucionado;
 	private double tiempoRespuesta;
@@ -65,7 +66,11 @@ public class Reclamo {
 	}
 
 	public void guardarCambios() {
-		AdmPersistenciaReclamo.getInstancia().insert(this);
+		AdmPersistenciaReclamo reclamoMapper=AdmPersistenciaReclamo.getInstancia();
+		reclamoMapper.insert(this);
+		for (int i=0; i<eventos.size(); i++){
+				reclamoMapper.insertarItems(this.numero, eventos.get(i));			
+		}
 	}
 
 	public void agregarDetalle(Date fecha, String detalle) {
@@ -118,7 +123,7 @@ public class Reclamo {
 		return eventos;
 	}
 
-	public void setEventos(Collection<EventoReclamo> eventos) {
+	public void setEventos(List<EventoReclamo> eventos) {
 		this.eventos = eventos;
 	}
 

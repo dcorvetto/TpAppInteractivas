@@ -124,14 +124,15 @@ public class Sistema {
 		return reclamosView;
 	}
 	
-//	public void iniciarReclamo(String desc, int codigo_cliente, int operador, int cod_responsable, boolean es_compuesto){
-//		Reclamo reclamoNuevo = new Reclamo(reclamos.size()+1, desc);
-//		reclamoNuevo.setOperador(buscarUsuario(operador));
-//		reclamoNuevo.setCliente(buscarCliente(codigo_cliente));
-//		reclamoNuevo.setResponsable(buscarUsuario(cod_responsable));
-//		reclamoNuevo.guardarCambios();
-//		reclamos.add(reclamoNuevo);
-//	}
+	public void iniciarReclamo(String desc, int codigo_cliente, int operador, int cod_responsable, boolean es_compuesto){
+	if (!es_compuesto){
+		Reclamo reclamoNuevo = new Reclamo(reclamos.size()+1, desc);
+		reclamoNuevo.setOperador(buscarUsuario(operador));
+		reclamoNuevo.setCliente(buscarCliente(codigo_cliente));
+		reclamoNuevo.setResponsable(buscarUsuario(cod_responsable));
+		reclamoNuevo.guardarCambios();
+		}
+	}
 
 	public void crearReclamoProducto(int codigo_cliente, HashMap<Integer, Integer> mapCodigoCantidad, String descripcion) {
 		/*Agrego ejemplo por si sirve*/
@@ -209,7 +210,7 @@ public class Sistema {
 	 * @return Devuelve el codigo de usuario si el usuario y password son correctos, y null en caso contrario
 	 */
 	public Integer login(String usuario, String password) {
-		Usuario user = AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario, password);
+		Usuario user = Usuario.buscarUsuario(usuario, password);
 		if(user==null){
 			return null;
 		}else{
@@ -229,7 +230,8 @@ public class Sistema {
 	}
 
 	private Usuario buscarUsuario(int numUsuario) {
-		return AdmPersistenciaUsuario.getInstancia().buscarUsuario(numUsuario);
+		Usuario usuario = new Usuario();
+		return usuario.buscarUsuario(numUsuario);
 	}
 
 	private Cliente buscarCliente(int numCliente) {
@@ -242,7 +244,7 @@ public class Sistema {
 
 	public Collection<ReclamoView> getReclamosSimples() {
 		Collection<ReclamoView> reclamosView = new ArrayList<>();
-		for (Reclamo reclamo : AdmPersistenciaReclamo.getInstancia().buscarReclamos()) {
+		for (Reclamo reclamo : Reclamo.buscarReclamos()) {
 			if(!reclamo.getTipoReclamo().equals("compuesto")){
 				ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
 						reclamo.getTipoReclamo(), reclamo.isEstaSolucionado());

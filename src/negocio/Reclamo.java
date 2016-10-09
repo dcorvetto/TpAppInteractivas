@@ -30,6 +30,11 @@ public class Reclamo {
 		this.eventos = new ArrayList<>();
 	}
 	
+	public Reclamo(int numero, String desc) {
+		this.numero=numero;
+		descripcion=desc;
+	}
+
 	/**
 	* Cantidad de reclamos en el mes pasado por parametro sobre el a�o actual
 	* */
@@ -46,6 +51,9 @@ public class Reclamo {
 
 	public double getTiempoRespuesta() {
 		return tiempoRespuesta;
+	}
+	public static Collection<Reclamo> buscarReclamos(){
+		return AdmPersistenciaReclamo.getInstancia().buscarReclamos();
 	}
 
 	public void generarEvento(Date fecha, EnumEstado estado, String detalle) {

@@ -2,6 +2,8 @@ package negocio;
 
 import java.util.Collection;
 
+import persistencia.AdmPersistenciaUsuario;
+
 public class Usuario {
 	
 	private String nombre;
@@ -19,6 +21,11 @@ public class Usuario {
 		this.clave = clave;
 	}
 	
+
+	public Usuario() {
+		// TODO Auto-generated constructor stub
+	}
+
 
 	public int getCodigo() {
 		return codigo;
@@ -45,7 +52,15 @@ public class Usuario {
 	}
 	public void setRoles(Collection<EnumRoles> roles) {
 		this.roles = roles;
-	}	
+	}
+	public static Usuario buscarUsuario(int numUsuario){
+		return AdmPersistenciaUsuario.getInstancia().buscarUsuario(numUsuario);
+		
+	}
+	public static Usuario buscarUsuario(String user, String pass){
+		return AdmPersistenciaUsuario.getInstancia().buscarUsuario(user, pass);
+		
+	}
 
 
 }

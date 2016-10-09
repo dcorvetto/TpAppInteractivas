@@ -100,7 +100,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		btnAceptar.setBounds(10, 177, 89, 23);
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Collection<Integer> idsReclamos = new ArrayList<>();
+				ArrayList<Integer> idsReclamos = new ArrayList<>();
 				for (int i = 0; i < data.size(); i++) {
 					idsReclamos.add(Integer.valueOf(data.elementAt(i).elementAt(0))); //elementAt(0) = id de reclamo
 				}

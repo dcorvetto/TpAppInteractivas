@@ -2,6 +2,7 @@ package controlador;
 
 import negocio.*;
 import negocio.reclamos.ItemProductoReclamo;
+import negocio.reclamos.ReclamoCompuesto;
 import negocio.reclamos.ReclamoProducto;
 import negocio.views.ClienteView;
 import negocio.views.EventoReclamoView;
@@ -189,8 +190,28 @@ public class Sistema {
 	public void crearReclamoFaltantes(int codigo_cliente, int cod_producto, int cant_socilitada, int cant_recibidad, String descripcion) {
 	}
 
-	public void crearReclamoCompuesto(int codigo_cliente, Collection<Integer> ids_reclamos) {
-
+	public void crearReclamoCompuesto(int codigo_cliente, List<Integer> ids_reclamos) {
+		ReclamoCompuesto rc = new ReclamoCompuesto();
+		Cliente cc = AdmPersistenciaCliente.getInstancia().buscarCliente(1);
+		Usuario operadorc = user;
+		//TODO: cambiar linea de abajo para agregar responsable que vendra por parametro
+		Usuario respc = user;
+		
+		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
+		for(int i=0; i<ids_reclamos.size();i++){
+			listaReclamos.add(AdmPersistenciaReclamo.getInstancia().buscarReclamo(ids_reclamos.get(i)));
+		}	
+		rc.setCliente(cc);
+		rc.setDescripcion("Reclamo compuesto");
+		rc.setEstaSolucionado(false);
+		rc.setOperador(operadorc);
+		rc.setResponsable(respc);
+		rc.setTiempoRespuesta(-1f);
+		rc.setTipoReclamo("compuesto");
+		rc.setZona(null);
+		rc.setReclamos(listaReclamos);
+		
+		AdmPersistenciaReclamo.getInstancia().insert(rc);
 	}
 
 	private void agregarItemReclamoProd(int codigo_prod, int cant) {

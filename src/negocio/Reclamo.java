@@ -67,10 +67,7 @@ public class Reclamo {
 
 	public void guardarCambios() {
 		AdmPersistenciaReclamo reclamoMapper=AdmPersistenciaReclamo.getInstancia();
-		reclamoMapper.insert(this);
-		for (int i=0; i<eventos.size(); i++){
-				reclamoMapper.insertarItems(this.numero, eventos.get(i));			
-		}
+		reclamoMapper.insert(this);		
 	}
 
 	public void agregarDetalle(Date fecha, String detalle) {

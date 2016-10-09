@@ -99,6 +99,7 @@ public class Sistema {
 			tiposDeReclamos.add("cant");
 			tiposDeReclamos.add("facturacion");
 			tiposDeReclamos.add("zona");
+			tiposDeReclamos.add("compuesto");
 		}
 		if(roles.contains(EnumRoles.DISTRIBUCION)){
 			tiposDeReclamos.add("producto");
@@ -183,6 +184,10 @@ public class Sistema {
 	public void crearReclamoFaltantes(int codigo_cliente, int cod_producto, int cant_socilitada, int cant_recibidad, String descripcion) {
 	}
 
+	public void crearReclamoCompuesto(int codigo_cliente, Collection<Integer> ids_reclamos) {
+
+	}
+
 	private void agregarItemReclamoProd(int codigo_prod, int cant) {
 	}
 
@@ -235,8 +240,16 @@ public class Sistema {
 		return null;
 	}
 
-	public Collection<Reclamo> getReclamos() {
-		return reclamos;
+	public Collection<ReclamoView> getReclamosSimples() {
+		Collection<ReclamoView> reclamosView = new ArrayList<>();
+		for (Reclamo reclamo : AdmPersistenciaReclamo.getInstancia().buscarReclamos()) {
+			if(!reclamo.getTipoReclamo().equals("compuesto")){
+				ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
+						reclamo.getTipoReclamo(), reclamo.isEstaSolucionado());
+				reclamosView.add(reclamoV);
+			}
+		}
+		return reclamosView;
 	}
 
 	public void setReclamos(Collection<Reclamo> reclamos) {
@@ -254,7 +267,5 @@ public class Sistema {
 	public void setClientes(Collection<Cliente> clientes) {
 		this.clientes = clientes;
 	}
-	
-	
 
 }

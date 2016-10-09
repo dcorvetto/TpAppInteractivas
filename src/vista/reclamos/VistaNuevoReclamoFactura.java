@@ -20,7 +20,6 @@ import java.util.Vector;
 public class VistaNuevoReclamoFactura extends JFrame {
 
 	private static final long serialVersionUID = -7732676766832254025L;
-	private JPanel contentPane;
     private Integer codigoUsuario;
     private JTextField textFieldCodFactura;
     private JTextField textFieldFecha;

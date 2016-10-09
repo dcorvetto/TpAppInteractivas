@@ -105,6 +105,17 @@ public class VistaMenu extends JFrame {
                 }
             });
             jMenu4.add(jMenuReclamoFaltantes);
+
+            //	Reclamo Compuesto
+            JMenuItem jMenuReclamoCompuseto = new JMenuItem();
+            jMenuReclamoCompuseto.setText("Compuesto");
+            jMenuReclamoCompuseto.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JFrame nuevoReclamoCompuestoVista = new VistaNuevoReclamoCompuesto(codigoUsuario);
+                    nuevoReclamoCompuestoVista.setVisible(true);
+                }
+            });
+            jMenu4.add(jMenuReclamoCompuseto);
         }
         jMenuItem1 = new JMenuItem();
         jMenu3.add(jMenuItem1);

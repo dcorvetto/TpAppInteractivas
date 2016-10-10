@@ -391,11 +391,11 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 	}
 	
 
-	public Collection<EventoReclamo> buscarEventosXReclamo(int idreclamo)
+	public List<EventoReclamo> buscarEventosXReclamo(int idreclamo)
 	{
 		try
 		{
-			Collection<EventoReclamo> eventosreclamo = new ArrayList<>();
+			List<EventoReclamo> eventosreclamo = new ArrayList<>();
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = con.prepareStatement("select idEventoReclamo, estado, fecha, detalle from EventoReclamo where idReclamo = ?");
 			s.setInt(1, idreclamo);

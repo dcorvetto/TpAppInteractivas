@@ -83,11 +83,13 @@ public class Sistema {
 
 	public Collection<EventoReclamoView> getTratamientoReclamo(int numeroReclamo) {
 		Reclamo reclamo = buscarReclamo(numeroReclamo);
+	
 		Collection<EventoReclamoView> eventosReclamoView = new ArrayList<>();
 		if (reclamo != null) {
 			for (EventoReclamo eventoReclamo : reclamo.getEventos()) {
 				EventoReclamoView evento = new EventoReclamoView(eventoReclamo.getEstado().getTexto(), eventoReclamo.getFecha(), eventoReclamo.getDetalle());
 				eventosReclamoView.add(evento);
+				
 			}
 		}
 		return eventosReclamoView;
@@ -294,8 +296,15 @@ public class Sistema {
 	}
 
 	public void actualizarReclamo(Date fecha, String estado, int codigo_reclamo, String detalle, Integer codigoUsuario) {
-		//EnumEstado.valueOf(estado.replace(" ", "_").toUpperCase()
-	}
+		
+		Reclamo reclamo = buscarReclamo(codigo_reclamo);
+		
+		if (reclamo != null) {
+			reclamo.generarEvento(new Date(), EnumEstado.valueOf(estado.replace(" ", "_").toUpperCase()), detalle);		
+			}
+		
+		
+		}
 
 	/**
 	 * Consulta en la base de usuarios si existe el usuario y el password pasados como parametros
@@ -322,7 +331,7 @@ public class Sistema {
 	}
 
 	private Reclamo buscarReclamo(int numeroReclamo) {
-		return null;
+		return Reclamo.buscarReclamo(numeroReclamo);
 	}
 
 	private Usuario buscarUsuario(int numUsuario) {

@@ -120,7 +120,9 @@ public class Reclamo {
 		this.operador = operador;
 	}
 
-	public Collection<EventoReclamo> getEventos() {
+	public List<EventoReclamo> getEventos() {
+		
+		List<EventoReclamo> eventos = AdmPersistenciaReclamo.getInstancia().buscarEventosXReclamo(this.getNumero());
 		return eventos;
 	}
 

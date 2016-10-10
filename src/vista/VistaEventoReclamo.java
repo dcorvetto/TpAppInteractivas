@@ -48,10 +48,10 @@ public class VistaEventoReclamo extends JFrame{
             dataEventos.add(String.valueOf(eventoReclamoView.getFecha()));
             dataEventos.add(String.valueOf(eventoReclamoView.getDetalle()));
             data.add(dataEventos);
-            dataEventos.clear();
+            dataEventos = new Vector<>();
         }
 
-        model = new DefaultTableModel(data, nombresColumnas);
+        TableModel model = new DefaultTableModel(data, nombresColumnas);
         table = new JTable(model);
         table.setFillsViewportHeight(true);
         table.setBounds(0, 20, 343, 166);
@@ -102,7 +102,7 @@ public class VistaEventoReclamo extends JFrame{
                     dataEventos.add(detalle);
 
                     data.add(dataEventos);
-                    model = new DefaultTableModel(data, nombresColumnas);
+                    TableModel model = new DefaultTableModel(data, nombresColumnas);
                     TableModelEvent tableModelEvent = new TableModelEvent(model);
                     table.tableChanged(tableModelEvent);
                     dataEventos = new Vector<>();

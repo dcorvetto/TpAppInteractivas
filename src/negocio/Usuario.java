@@ -53,11 +53,11 @@ public class Usuario {
 	public void setRoles(Collection<EnumRoles> roles) {
 		this.roles = roles;
 	}
-	public static Usuario buscarUsuario(int numUsuario){
+	public static Usuario buscarPorId(int numUsuario){
 		return AdmPersistenciaUsuario.getInstancia().buscarUsuario(numUsuario);
 		
 	}
-	public static Usuario buscarUsuario(String user, String pass){
+	public static Usuario buscarPorIdyPassword(String user, String pass){
 		return AdmPersistenciaUsuario.getInstancia().buscarUsuario(user, pass);
 		
 	}

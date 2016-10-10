@@ -9,6 +9,7 @@ public class ReclamoFacturacion extends Reclamo{
 
 	
 	public ReclamoFacturacion() {
+		super();
 	}
 
 	public ReclamoFacturacion(Collection<ItemFacturaReclamo> items) {

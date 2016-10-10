@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
+import negocio.reclamos.TipoReclamo;
+import persistencia.AdmPersistenciaProducto;
 import persistencia.AdmPersistenciaReclamo;
 
 public class Reclamo {
@@ -17,14 +20,15 @@ public class Reclamo {
 	private Usuario responsable;
 	private boolean estaSolucionado;
 	private double tiempoRespuesta;
-	private String tipoReclamo;
+	private TipoReclamo tipoReclamo;
 	private String zona;
 
-	public Reclamo(int numero, String descripcion, String tipoReclamo) {
+	public Reclamo(int numero, String descripcion, TipoReclamo tipoReclamo) {
 		this.numero = numero;
 		this.descripcion = descripcion;
 		this.tipoReclamo=tipoReclamo;
 		this.eventos = new ArrayList<>();
+		this.estaSolucionado = false;
 	}
 	
 	public Reclamo() {
@@ -144,11 +148,11 @@ public class Reclamo {
 		this.tiempoRespuesta = tiempoRespuesta;
 	}
 	
-	public String getTipoReclamo() {
+	public TipoReclamo getTipoReclamo() {
 		return tipoReclamo;
 	}
 
-	public void setTipoReclamo(String tipoReclamo) {
+	public void setTipoReclamo(TipoReclamo tipoReclamo) {
 		this.tipoReclamo = tipoReclamo;
 	}
 	
@@ -158,6 +162,11 @@ public class Reclamo {
 
 	public void setZona(String zona) {
 		this.zona = zona;
+	}
+	
+	public static Collection<Reclamo> obtenerTodos() {
+		Collection<Reclamo> reclamos = AdmPersistenciaReclamo.getInstancia().buscarReclamos();
+		return reclamos;
 	}
 
 	

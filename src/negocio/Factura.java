@@ -7,7 +7,14 @@ public class Factura {
 	private Date fecha;
 	private Cliente cliente;
 	
+	
 	public Factura() {
+	}
+	
+	public Factura(int idFactura, Date fecha, Cliente cliente) {
+		this.setIdFactura(idFactura);
+		this.setFecha(fecha);
+		this.setCliente(cliente);
 	}
 	
 	public int getIdFactura() {

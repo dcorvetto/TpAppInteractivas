@@ -18,6 +18,7 @@ import negocio.Usuario;
 import negocio.reclamos.ItemProductoReclamoFaltantes;
 import negocio.reclamos.ReclamoCompuesto;
 import negocio.reclamos.ReclamoFaltantes;
+import negocio.reclamos.TipoReclamo;
 
 public class Test {
 
@@ -33,7 +34,7 @@ public class Test {
 		r.setOperador(operador);
 		r.setResponsable(resp);
 		r.setTiempoRespuesta(-1f);
-		r.setTipoReclamo("faltante");
+		r.setTipoReclamo(TipoReclamo.FALTANTES);
 		r.setZona(null);
 		
 		/*Insertar item faltantes asociado al reclamo anterior*/
@@ -74,7 +75,7 @@ public class Test {
 		rc.setOperador(operadorc);
 		rc.setResponsable(respc);
 		rc.setTiempoRespuesta(-1f);
-		rc.setTipoReclamo("compuesto");
+		rc.setTipoReclamo(TipoReclamo.COMPUESTO);
 		rc.setZona(null);
 		rc.setReclamos(listaReclamos);
 		

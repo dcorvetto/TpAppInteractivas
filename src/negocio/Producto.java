@@ -1,5 +1,9 @@
 package negocio;
 
+import java.util.Vector;
+
+import persistencia.AdmPersistenciaProducto;
+
 public class Producto {
 	private int codigo;
 	private String titulo;
@@ -66,4 +70,12 @@ public class Producto {
 		this.creador = creador;
 	}
 	
+	public static Producto buscarPorId(int codigoProducto) {
+		return AdmPersistenciaProducto.getInstancia().buscarProducto(codigoProducto);
+	}
+	
+	public static Vector<Producto> obtenerTodos() {
+		Vector<Producto> productos = AdmPersistenciaProducto.getInstancia().selectAll();
+		return productos;
+	}
 }

@@ -11,6 +11,7 @@ import negocio.reclamos.ReclamoCompuesto;
 import negocio.reclamos.ReclamoFacturacion;
 import negocio.reclamos.ReclamoFaltantes;
 import negocio.reclamos.ReclamoProducto;
+import negocio.reclamos.TipoReclamo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,27 +44,27 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			Reclamo r = (Reclamo)d;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			switch(r.getTipoReclamo()){
-			case "producto":
+			case PRODUCTO:
 				PreparedStatement s = con.prepareStatement("delete from ItemProductoReclamo where idReclamo=?");
 				s.setString(1, String.valueOf(r.getNumero())); 
 				s.execute();
 				break;
-			case "faltante":
+			case FALTANTES:
 				PreparedStatement sfalt = con.prepareStatement("delete from ItemProductoReclamoFaltantes where idReclamo=?");
 				sfalt.setString(1, String.valueOf(r.getNumero())); 
 				sfalt.execute();
 				break;
-			case "cant":
+			case CANTIDAD:
 				PreparedStatement sc = con.prepareStatement("delete from ItemProductoReclamo where idReclamo=?");
 				sc.setString(1, String.valueOf(r.getNumero())); 
 				sc.execute();
 				break;
-			case "facturacion":
+			case FACTURACION:
 				PreparedStatement sfact = con.prepareStatement("delete from ItemFacturaReclamo where idReclamo=?");
 				sfact.setString(1, String.valueOf(r.getNumero())); 
 				sfact.execute();
 				break;
-			case "compuesto":
+			case COMPUESTO:
 				PreparedStatement scomp = con.prepareStatement("delete from ReclamoCompuesto where idReclamoPadre=?");			
 				scomp.setString(1, String.valueOf(r.getNumero())); 
 				scomp.execute();
@@ -109,7 +110,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			s.setBoolean(5, false);
 			s.setFloat(6, (float) r.getTiempoRespuesta());
 			s.setString(7, r.getZona());
-			s.setString(8, r.getTipoReclamo());
+			s.setString(8, r.getTipoReclamo().getDescripcionTipo());
 			s.execute();
 			
 			ResultSet rs = s.getGeneratedKeys();
@@ -118,30 +119,31 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			
 			/*insertar items*/
 			switch(r.getTipoReclamo()){
-			case "producto":
+			case PRODUCTO:
 				ReclamoProducto rp = (ReclamoProducto) o;
 				for(ItemProductoReclamo item: rp.getItems()){
 					this.insertarItems(idReclamo, item);
 				}
 				break;
-			case "faltante":
+			case FALTANTES:
 				ReclamoFaltantes rf = (ReclamoFaltantes) o;
 				for(ItemProductoReclamoFaltantes item: rf.getItems()){
 					this.insertarItems(idReclamo, item);
 				}
 				break;
-			case "cant":
+			case CANTIDAD:
 				ReclamoCantidad rc = (ReclamoCantidad) o;
 				for(ItemProductoReclamo item: rc.getItems()){
 					this.insertarItems(idReclamo, item);
 				}
 				break;
-			case "facturacion":
+			case FACTURACION:
 				ReclamoFacturacion rfact = (ReclamoFacturacion) o;
 				for(ItemFacturaReclamo item: rfact.getItems()){
 					this.insertarItems(idReclamo, item);
 				}
-			case "compuesto":
+				break;
+			case COMPUESTO:
 				ReclamoCompuesto rcomp = (ReclamoCompuesto) o;
 				for(Reclamo rec: rcomp.getReclamos()){
 					this.insertarReclamoCompuesto(idReclamo, rec);
@@ -167,8 +169,6 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 	public void insertarReclamoCompuesto(int idReclamoPadre, Reclamo reclamo){
 		try
 		{
-			System.out.println(reclamo.getNumero());
-			System.out.println(idReclamoPadre);
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = con.prepareStatement("insert into ReclamoCompuesto values (?,?)");
 			//agregar campos
@@ -190,7 +190,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			Reclamo r = buscarReclamo(reclamo);
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			switch(r.getTipoReclamo()){
-			case "producto":
+			case PRODUCTO:
 				ItemProductoReclamo i = (ItemProductoReclamo) o;
 				PreparedStatement s = con.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
 				//agregar campos
@@ -199,7 +199,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				s.setInt(3, i.getProducto().getCodigo()); 
 				s.execute();
 				break;
-			case "faltante":
+			case FALTANTES:
 				ItemProductoReclamoFaltantes ifalt = (ItemProductoReclamoFaltantes) o;
 				PreparedStatement sfalt= con.prepareStatement("insert into ItemProductoReclamoFaltantes values (?,?,?,?)");
 				//agregar campos
@@ -209,7 +209,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				sfalt.setInt(4, ifalt.getCantidadFacturada());
 				sfalt.execute();
 				break;
-			case "cant":
+			case CANTIDAD:
 				ItemProductoReclamo ic = (ItemProductoReclamo) o;
 				PreparedStatement sc = con.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
 				//agregar campos
@@ -218,7 +218,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				sc.setInt(3, ic.getProducto().getCodigo()); 
 				sc.execute();
 				break;
-			case "facturacion":
+			case FACTURACION:
 				ItemFacturaReclamo ifact = (ItemFacturaReclamo) o;
 				PreparedStatement sf = con.prepareStatement("insert into ItemFacturaReclamo values (?,?,?)");
 				//agregar campos
@@ -305,7 +305,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				r.setOperador(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
 				r.setResponsable(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
 				r.setTiempoRespuesta(tiempoRespuesta);
-				r.setTipoReclamo(tipoReclamo);
+				r.setTipoReclamo(TipoReclamo.getEnumValue(tipoReclamo));
 				r.setZona(zona);
 			}
 
@@ -346,7 +346,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				r.setOperador(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
 				r.setResponsable(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
 				r.setTiempoRespuesta(tiempoRespuesta);
-				r.setTipoReclamo(tipoReclamo);
+				r.setTipoReclamo(TipoReclamo.getEnumValue(tipoReclamo));
 				r.setZona(zona);
 				reclamos.add(r);
 			}

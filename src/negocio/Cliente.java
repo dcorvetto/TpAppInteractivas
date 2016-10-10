@@ -2,6 +2,10 @@ package negocio;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Vector;
+
+import persistencia.AdmPersistenciaCliente;
+
 
 public class Cliente {
     private int codigo_cliente;
@@ -98,6 +102,15 @@ public class Cliente {
     public void setUsuarioCreador(Usuario usuarioCreador) {
         this.usuarioCreador = usuarioCreador;
     }
-
+    
+    public static Cliente buscarPorCodigo(int codigoCliente) {
+    	Cliente clienteEncontrado = AdmPersistenciaCliente.getInstancia().buscarCliente(codigoCliente);
+    	return clienteEncontrado;
+    }
+    
+    public static Vector<Cliente> obtenerTodos() {
+    	Vector<Cliente> clientes = AdmPersistenciaCliente.getInstancia().selectAll();
+    	return clientes;
+    }
 
 }

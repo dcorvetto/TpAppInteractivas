@@ -17,6 +17,7 @@ public class PoolConnection
 	protected String password;
 	protected int cantCon;
 	private static PoolConnection pool;
+	private static String DATABASE_NAME = "tp2016";
 	private PoolConnection()
 	{
 		getConfiguration();
@@ -36,7 +37,7 @@ public class PoolConnection
 		{
 			//Setear driver
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String dbConnectString = jdbc + servidor + ";databaseName=TPO_GrupoIV"; 
+            String dbConnectString = jdbc + servidor + ";databaseName="+DATABASE_NAME; 
             Connection con = DriverManager.getConnection (dbConnectString, usuario, password);
             
             return con;

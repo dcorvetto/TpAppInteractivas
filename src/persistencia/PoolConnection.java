@@ -17,7 +17,7 @@ public class PoolConnection
 	protected String password;
 	protected int cantCon;
 	private static PoolConnection pool;
-	private static String DATABASE_NAME = "tp2016";
+	private static String DATABASE_NAME = "TPO_GrupoIV";
 	private PoolConnection()
 	{
 		getConfiguration();

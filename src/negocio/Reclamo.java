@@ -169,5 +169,8 @@ public class Reclamo {
 		return reclamos;
 	}
 
+	public static Reclamo buscarReclamo(long idReclamo){
+		return AdmPersistenciaReclamo.getInstancia().buscarReclamo(idReclamo);
+	}
 	
 }

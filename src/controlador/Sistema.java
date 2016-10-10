@@ -14,9 +14,7 @@ import negocio.views.ClienteView;
 import negocio.views.EventoReclamoView;
 import negocio.views.ReclamoTPromXOperadorView;
 import negocio.views.ReclamoView;
-import persistencia.AdmPersistenciaCliente;
-import persistencia.AdmPersistenciaProducto;
-import persistencia.AdmPersistenciaReclamo;
+
 
 import java.util.*;
 
@@ -103,31 +101,34 @@ public class Sistema {
 		Collection<String> tiposDeReclamos = new ArrayList<>();
 		Collection<EnumRoles> roles = Sistema.getInstancia().rolesUsuario(numUsuario);
 		if(roles.contains(EnumRoles.ADMINISTRACION) || roles.contains(EnumRoles.CALL_CENTER) || roles.contains(EnumRoles.CONSULTA)){
-			tiposDeReclamos.add("producto");
-			tiposDeReclamos.add("faltante");
-			tiposDeReclamos.add("cant");
-			tiposDeReclamos.add("facturacion");
-			tiposDeReclamos.add("zona");
-			tiposDeReclamos.add("compuesto");
+			tiposDeReclamos.add(TipoReclamo.PRODUCTO.toString());
+			tiposDeReclamos.add(TipoReclamo.FALTANTES.toString());
+			tiposDeReclamos.add(TipoReclamo.CANTIDAD.toString());
+			tiposDeReclamos.add(TipoReclamo.FACTURACION.toString());
+			tiposDeReclamos.add(TipoReclamo.ZONA.toString());
+			tiposDeReclamos.add(TipoReclamo.COMPUESTO.toString());
 		}
 		if(roles.contains(EnumRoles.DISTRIBUCION)){
-			tiposDeReclamos.add("producto");
-			tiposDeReclamos.add("faltante");
-			tiposDeReclamos.add("cant");
+			tiposDeReclamos.add(TipoReclamo.PRODUCTO.toString());
+			tiposDeReclamos.add(TipoReclamo.FALTANTES.toString());
+			tiposDeReclamos.add(TipoReclamo.CANTIDAD.toString());
 		}
 		if(roles.contains(EnumRoles.ZONA_ENTREGA)){
-			tiposDeReclamos.add("zona");
+			tiposDeReclamos.add(TipoReclamo.ZONA.toString());
 		}
 		if(roles.contains(EnumRoles.FACTURACION)){
-			tiposDeReclamos.add("facturacion");
+			tiposDeReclamos.add(TipoReclamo.FACTURACION.toString());
 		}
 
 		Collection<ReclamoView> reclamosView = new ArrayList<>();
-		for (Reclamo reclamo : Reclamo.obtenerTodos()) {
-			if(tiposDeReclamos.contains(reclamo.getTipoReclamo())){
-				ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
-						reclamo.getTipoReclamo().getDescripcionTipo(), reclamo.isEstaSolucionado());
-				reclamosView.add(reclamoV);
+		List<Reclamo> reclamos = (List<Reclamo>) Reclamo.obtenerTodos(); 
+		for (Reclamo reclamo : reclamos ) {
+			if(reclamo.getTipoReclamo()!=null){
+				if(tiposDeReclamos.contains(reclamo.getTipoReclamo().toString())){
+					ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
+							reclamo.getTipoReclamo().getDescripcionTipo(), reclamo.isEstaSolucionado());
+					reclamosView.add(reclamoV);
+				}
 			}
 		}
 		return reclamosView;
@@ -160,7 +161,7 @@ public class Sistema {
 
 		for (Map.Entry<Integer, Integer> item : mapCodigoCantidad.entrySet()) {
 			ItemProductoReclamo ipr = new ItemProductoReclamo();
-			ipr.setProducto(AdmPersistenciaProducto.getInstancia().buscarProducto(item.getKey()));
+			ipr.setProducto(Producto.buscarProducto(item.getKey()));
 			ipr.setCantidad(item.getValue());
 			listaItems.add(ipr);
 		}
@@ -258,14 +259,14 @@ public class Sistema {
 
 	public void crearReclamoCompuesto(int codigo_cliente, List<Integer> ids_reclamos) {
 		ReclamoCompuesto rc = new ReclamoCompuesto();
-		Cliente cc = AdmPersistenciaCliente.getInstancia().buscarCliente(1);
+		Cliente cc = Cliente.buscarPorCodigo(codigo_cliente);
 		Usuario operadorc = user;
 		//TODO: cambiar linea de abajo para agregar responsable que vendra por parametro
 		Usuario respc = user;
 		
 		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
 		for(int i=0; i<ids_reclamos.size();i++){
-			listaReclamos.add(AdmPersistenciaReclamo.getInstancia().buscarReclamo(ids_reclamos.get(i)));
+			listaReclamos.add(Reclamo.buscarReclamo(ids_reclamos.get(i)));
 		}	
 		rc.setCliente(cc);
 		rc.setDescripcion("Reclamo compuesto");
@@ -277,7 +278,7 @@ public class Sistema {
 		rc.setZona(null);
 		rc.setReclamos(listaReclamos);
 		
-		AdmPersistenciaReclamo.getInstancia().insert(rc);
+		rc.guardarCambios();
 	}
 
 	private void agregarItemReclamoProd(int codigo_prod, int cant) {

@@ -20,6 +20,16 @@ public class Producto {
 		this.precio = precio;
 	}
 
+	
+	
+
+	public Producto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 
 	public int getCodigo() {
 		return codigo;
@@ -77,5 +87,9 @@ public class Producto {
 	public static Vector<Producto> obtenerTodos() {
 		Vector<Producto> productos = AdmPersistenciaProducto.getInstancia().selectAll();
 		return productos;
+	}
+	
+	public static Producto buscarProducto(int idProducto){
+		return AdmPersistenciaProducto.getInstancia().buscarProducto(idProducto);
 	}
 }

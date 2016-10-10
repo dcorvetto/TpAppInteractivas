@@ -11,7 +11,6 @@ import negocio.views.ReclamoView;
 import persistencia.AdmPersistenciaCliente;
 import persistencia.AdmPersistenciaProducto;
 import persistencia.AdmPersistenciaReclamo;
-import persistencia.AdmPersistenciaUsuario;
 
 import java.util.*;
 
@@ -226,7 +225,7 @@ public class Sistema {
 	private void agregarItemReclamoFactura(Date fecha, int identificador_factura, int codigo_cliente) {
 	}
 
-	public void actualizarReclamo(Date fecha, String estado, int codigo_reclamo, String detalle) {
+	public void actualizarReclamo(Date fecha, String estado, int codigo_reclamo, String detalle, Integer codigoUsuario) {
 		//EnumEstado.valueOf(estado.replace(" ", "_").toUpperCase()
 	}
 

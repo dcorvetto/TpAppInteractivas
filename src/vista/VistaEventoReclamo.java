@@ -20,7 +20,6 @@ import java.util.Vector;
 
 public class VistaEventoReclamo extends JFrame{
 	private static final long serialVersionUID = -3565932713437507455L;
-	private Integer codigoReclamo;
     private JTable table;
     private TableModel model;
     private JComboBox<String> comboBoxEstado;
@@ -32,8 +31,7 @@ public class VistaEventoReclamo extends JFrame{
 
     private Collection<EventoReclamoView> eventosNuevos = new ArrayList<>();
 
-    public VistaEventoReclamo(Integer codigoReclamo, boolean puedeAgregarEventos) {
-        this.codigoReclamo = codigoReclamo;
+    public VistaEventoReclamo(Integer codigoReclamo, boolean puedeAgregarEventos, Integer codigoUsuario) {
 
         this.setBounds(0, 0, 381, 256);
         setTitle("Eventos");
@@ -66,7 +64,7 @@ public class VistaEventoReclamo extends JFrame{
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 for (EventoReclamoView eventosNuevo : eventosNuevos) {
-                    Sistema.getInstancia().actualizarReclamo(eventosNuevo.getFecha(), eventosNuevo.getEstado(), codigoReclamo, eventosNuevo.getDetalle());
+                    Sistema.getInstancia().actualizarReclamo(eventosNuevo.getFecha(), eventosNuevo.getEstado(), codigoReclamo, eventosNuevo.getDetalle(), codigoUsuario);
                 }
                 JOptionPane.showMessageDialog(null, "Eventos agregados correctamente");
                 data.clear();

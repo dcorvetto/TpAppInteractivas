@@ -1,12 +1,10 @@
 package test;
-
+/*Si les falla agregar en Project, Properties, Java Build Path la "Library" JUNIT 4*/
 import static org.junit.Assert.*;
-
+import org.junit.Test;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.Test;
 
 import controlador.Sistema;
 

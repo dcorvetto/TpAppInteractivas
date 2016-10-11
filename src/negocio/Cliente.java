@@ -113,4 +113,9 @@ public class Cliente {
     	return clientes;
     }
 
+	public static Cliente buscarPorDni(int dni) {
+		Cliente clienteEncontrado = AdmPersistenciaCliente.getInstancia().buscarPorDni(dni);
+    	return clienteEncontrado;
+	}
+
 }

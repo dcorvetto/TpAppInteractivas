@@ -3,9 +3,11 @@ package controlador;
 import negocio.*;
 import negocio.reclamos.ItemFacturaReclamo;
 import negocio.reclamos.ItemProductoReclamo;
+import negocio.reclamos.ItemProductoReclamoFaltantes;
 import negocio.reclamos.ReclamoCantidad;
 import negocio.reclamos.ReclamoCompuesto;
 import negocio.reclamos.ReclamoFacturacion;
+import negocio.reclamos.ReclamoFaltantes;
 import negocio.reclamos.ReclamoProducto;
 import negocio.reclamos.ReclamoZona;
 import negocio.reclamos.ReclamosFactory;
@@ -16,7 +18,12 @@ import negocio.views.ReclamoTPromXOperadorView;
 import negocio.views.ReclamoView;
 
 
+
+
+
 import java.util.*;
+
+import persistencia.AdmPersistenciaProducto;
 
 public class Sistema {
 
@@ -44,7 +51,7 @@ public class Sistema {
 	public Collection<ClienteView> getClientes() {
 		Collection<ClienteView> clientesView =  new ArrayList<>();
 		for (Cliente cliente : Cliente.obtenerTodos()) {
-			ClienteView cV = new ClienteView(String.valueOf(cliente.getCodigo_cliente()), cliente.getNombre(), String.valueOf(cliente.getCantReclamos()), cliente.getMail());
+			ClienteView cV = new ClienteView(String.valueOf(cliente.getDni()), cliente.getNombre(), String.valueOf(cliente.getCantReclamos()), cliente.getMail());
 			clientesView.add(cV);
 		}
 		return clientesView;
@@ -53,7 +60,8 @@ public class Sistema {
 	public Collection<String> getCodigoProductos() {
 		Collection<String> productos = new ArrayList<>();
 		for (Producto producto : Producto.obtenerTodos()) {
-			productos.add(String.valueOf(producto.getCodigo()));
+			String codigo = String.valueOf(producto.getCodigo()) + "-" + producto.getTitulo();
+			productos.add(codigo);
 		}
 		return productos;
 	}
@@ -146,9 +154,9 @@ public class Sistema {
 		}
 	}
 
-	public void crearReclamoProducto(int codigo_cliente, HashMap<Integer, Integer> mapCodigoCantidad, String descripcion) {
+	public void crearReclamoProducto(int dni,HashMap<Integer, Integer> mapCodigoCantidad, String descripcion) {
 	//	Agrego ejemplo por si sirve
-		Cliente c = Cliente.buscarPorCodigo(codigo_cliente);
+		Cliente c = Cliente.buscarPorDni(dni);
 		ReclamoProducto r = new ReclamoProducto();
 		r.setCliente(c);
 		r.setDescripcion(descripcion);
@@ -186,8 +194,8 @@ public class Sistema {
 		r.guardarCambios();
 	}
 
-	public void crearReclamoCantidades(int codigo_cliente, Map<Integer, Integer> mapCodigoCantidad, String descripcion) { 
-		Cliente cliente = Cliente.buscarPorCodigo(codigo_cliente);
+	public void crearReclamoCantidades(int dni, Map<Integer, Integer> mapCodigoCantidad, String descripcion) { 
+		Cliente cliente = Cliente.buscarPorDni(dni);
 		//TODO:Cuando se agregue en UI el operador y responsable.
 		//Usuario operador = Usuario.buscarPorId(cod_operador);
 		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
@@ -210,8 +218,8 @@ public class Sistema {
 
 	}
 
-	public void crearReclamoZona(int codigo_cliente, String zona, String descripcion) {
-		Cliente cliente = Cliente.buscarPorCodigo(codigo_cliente);
+	public void crearReclamoZona(int dni, String zona, String descripcion) {
+		Cliente cliente = Cliente.buscarPorDni(dni);
 		//TODO:Cuando se agregue operador y responsable en la UI.
 		//Usuario operador = Usuario.buscarPorId(cod_operador);
 		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
@@ -231,8 +239,8 @@ public class Sistema {
 		
 	}
 
-	public void crearReclamoFactura(int codigo_cliente, String descripcion, Map<Integer, Date> mapIdFecha) { //Map<id_factura,fecha_factura>
-		Cliente cliente = Cliente.buscarPorCodigo(codigo_cliente);
+	public void crearReclamoFactura(int dni, String descripcion, Map<Integer, Date> mapIdFecha) { //Map<id_factura,fecha_factura>
+		Cliente cliente = Cliente.buscarPorDni(dni);
 		//TODO:Cuando se agregue el operador y responsable en UI.
 		//Usuario operador = Usuario.buscarPorId(cod_operador);
 		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
@@ -254,12 +262,40 @@ public class Sistema {
 		
 	}
 
-	public void crearReclamoFaltantes(int codigo_cliente, int cod_producto, int cant_socilitada, int cant_recibidad, String descripcion) {
+	public void crearReclamoFaltantes(int dni, int cod_producto, int cant_socilitada, int cant_recibidad, String descripcion) {
+		Cliente cliente = Cliente.buscarPorDni(dni);
+		//TODO:Cuando se agregue el operador y responsable en UI.
+		//Usuario operador = Usuario.buscarPorId(cod_operador);
+		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
+		
+		ReclamoFaltantes reclamoFaltantes = ReclamosFactory.crearReclamoFaltantes(cliente, descripcion, 
+																			            user, user);
+		
+		
+		ItemProductoReclamoFaltantes ipf = new ItemProductoReclamoFaltantes();
+		ipf.setCantidadFacturada(cant_recibidad);
+		ipf.setCantidadFaltante(cant_socilitada);
+		Producto prod = AdmPersistenciaProducto.getInstancia().buscarProducto(cod_producto);
+		ipf.setProducto(prod);
+		
+		List<ItemProductoReclamoFaltantes> listaItemReclamoFaltantes = new ArrayList<ItemProductoReclamoFaltantes>();
+		listaItemReclamoFaltantes.add(ipf);
+		
+		List<EventoReclamo> listaEventos = ReclamosHelper.crearEventoReclamoInicio();
+				
+		reclamoFaltantes.setItems(listaItemReclamoFaltantes);
+		reclamoFaltantes.setEventos(listaEventos);
+		
+		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
+		listaReclamos.add(reclamoFaltantes);
+		this.setReclamos(listaReclamos);
+		
+		reclamoFaltantes.guardarCambios();
 	}
 
-	public void crearReclamoCompuesto(int codigo_cliente, List<Integer> ids_reclamos) {
+	public void crearReclamoCompuesto(int dni, List<Integer> ids_reclamos) {
 
-		Cliente cliente = Cliente.buscarPorCodigo(codigo_cliente);
+		Cliente cliente = Cliente.buscarPorDni(dni);
 
 		Usuario operador = user;
 		//TODO: cambiar linea de abajo para agregar responsable que vendra por parametro
@@ -340,10 +376,12 @@ public class Sistema {
 	public Collection<ReclamoView> getReclamosSimples() {
 		Collection<ReclamoView> reclamosView = new ArrayList<>();
 		for (Reclamo reclamo : Reclamo.buscarReclamos()) {
-			if(!reclamo.getTipoReclamo().equals("compuesto")){
-				ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
-						reclamo.getTipoReclamo().getDescripcionTipo(), reclamo.isEstaSolucionado());
-				reclamosView.add(reclamoV);
+			if(reclamo.getTipoReclamo()!=null){
+				if(!reclamo.getTipoReclamo().equals("compuesto")){
+					ReclamoView reclamoV = new ReclamoView(reclamo.getNumero(), reclamo.getDescripcion(),
+							reclamo.getTipoReclamo().getDescripcionTipo(), reclamo.isEstaSolucionado());
+					reclamosView.add(reclamoV);
+				}
 			}
 		}
 		return reclamosView;

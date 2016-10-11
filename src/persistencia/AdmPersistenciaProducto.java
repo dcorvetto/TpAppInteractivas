@@ -74,7 +74,7 @@ public class AdmPersistenciaProducto extends AdministradorPersistencia
 		}
 		catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -102,7 +102,7 @@ public class AdmPersistenciaProducto extends AdministradorPersistencia
 		}
 		catch (Exception e)
 		{
-			System.out.println();
+			e.printStackTrace();
 		}
 		return null;
 	}

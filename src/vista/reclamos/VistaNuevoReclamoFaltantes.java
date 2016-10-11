@@ -4,6 +4,7 @@ import controlador.Sistema;
 import negocio.views.ClienteView;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,7 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
         comboBoxClientes = new JComboBox<>();
         comboBoxClientes.setBounds(76, 13, 90, 20);
         for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
-            comboBoxClientes.addItem(clienteView.getCodigo_cliente());
+            comboBoxClientes.addItem(clienteView.getDni());
         }
         getContentPane().add(comboBoxClientes);
 
@@ -42,8 +43,10 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
         btnAceptar.setBounds(10, 126, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	String[] parts = String.valueOf(comboBoxProductos.getSelectedItem()).split("-");
+                String codigo = parts[0];
                 Sistema.getInstancia().crearReclamoFaltantes(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())),
-                        Integer.parseInt(String.valueOf(comboBoxProductos.getSelectedItem())),
+                        Integer.parseInt(codigo),
                         Integer.parseInt(textFieldCantSolicitada.getText()), Integer.parseInt(textFieldCantRecibida.getText()), textAreaDescripcion.getText());
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 textFieldCantRecibida.setText("");

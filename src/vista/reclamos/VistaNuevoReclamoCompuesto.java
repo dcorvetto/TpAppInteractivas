@@ -42,7 +42,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		comboBoxClientes = new JComboBox<>();
 		comboBoxClientes.setBounds(66, 10, 87, 20);
 		for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
-			comboBoxClientes.addItem(clienteView.getCodigo_cliente());
+			comboBoxClientes.addItem(clienteView.getDni());
 		}
 		getContentPane().add(comboBoxClientes);
 		

@@ -77,7 +77,7 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 		}
 		catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -101,16 +101,18 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 				String clave = result.getString(5);
 				usu = new  Usuario(nom, apellido, codigo, u, clave);
 			}
-			List<EnumRoles> listaRoles = buscarRoles(usu.getCodigo());
-			
-			usu.setRoles(listaRoles);
+			if(usu!=null){
+				List<EnumRoles> listaRoles = buscarRoles(usu.getCodigo());
+				
+				usu.setRoles(listaRoles);
+			}
 			
 			PoolConnection.getPoolConnection().realeaseConnection(con);
 			return usu;
 		}
 		catch (Exception e)
 		{
-			System.out.println();
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -142,7 +144,7 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 		}
 		catch (Exception e)
 		{
-			System.out.println();
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -183,7 +185,7 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 		}
 		catch (Exception e)
 		{
-			System.out.println();
+			e.printStackTrace();
 		}
 		return null;
 	}

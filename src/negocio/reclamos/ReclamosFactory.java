@@ -42,6 +42,22 @@ public class ReclamosFactory {
 		
 	}
 	
+	public static ReclamoFaltantes crearReclamoFaltantes(Cliente cliente, String descripcion,
+	        Usuario operador, Usuario responsable) {
+
+		ReclamoFaltantes reclamoFaltantes = new ReclamoFaltantes();
+		reclamoFaltantes.setCliente(cliente);
+		reclamoFaltantes.setDescripcion(descripcion);
+		reclamoFaltantes.setOperador(operador);
+		reclamoFaltantes.setResponsable(responsable);
+		reclamoFaltantes.setTiempoRespuesta(-1f);
+		reclamoFaltantes.setTipoReclamo(TipoReclamo.FALTANTES);
+		
+		return reclamoFaltantes;
+		
+		}
+	
+	
 	public static ReclamoCantidad crearReclamoCantidad(Cliente cliente, String descripcion,
 													   Usuario operador, Usuario responsable) {
 		

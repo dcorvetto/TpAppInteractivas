@@ -39,69 +39,74 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 	@Override
 	public void delete(Object d) 
 	{
+		Connection connection=null;
 		try
 		{
 			Reclamo r = (Reclamo)d;
-			Connection con = PoolConnection.getPoolConnection().getConnection();
+			connection = PoolConnection.getPoolConnection().getConnection();
 			switch(r.getTipoReclamo()){
 			case PRODUCTO:
-				PreparedStatement s = con.prepareStatement("delete from ItemProductoReclamo where idReclamo=?");
+				PreparedStatement s = connection.prepareStatement("delete from ItemProductoReclamo where idReclamo=?");
 				s.setString(1, String.valueOf(r.getNumero())); 
 				s.execute();
 				break;
 			case FALTANTES:
-				PreparedStatement sfalt = con.prepareStatement("delete from ItemProductoReclamoFaltantes where idReclamo=?");
+				PreparedStatement sfalt = connection.prepareStatement("delete from ItemProductoReclamoFaltantes where idReclamo=?");
 				sfalt.setString(1, String.valueOf(r.getNumero())); 
 				sfalt.execute();
 				break;
 			case CANTIDAD:
-				PreparedStatement sc = con.prepareStatement("delete from ItemProductoReclamo where idReclamo=?");
+				PreparedStatement sc = connection.prepareStatement("delete from ItemProductoReclamo where idReclamo=?");
 				sc.setString(1, String.valueOf(r.getNumero())); 
 				sc.execute();
 				break;
 			case FACTURACION:
-				PreparedStatement sfact = con.prepareStatement("delete from ItemFacturaReclamo where idReclamo=?");
+				PreparedStatement sfact = connection.prepareStatement("delete from ItemFacturaReclamo where idReclamo=?");
 				sfact.setString(1, String.valueOf(r.getNumero())); 
 				sfact.execute();
 				break;
 			case COMPUESTO:
-				PreparedStatement scomp = con.prepareStatement("delete from ReclamoCompuesto where idReclamoPadre=?");			
+				PreparedStatement scomp = connection.prepareStatement("delete from ReclamoCompuesto where idReclamoPadre=?");
 				scomp.setString(1, String.valueOf(r.getNumero())); 
 				scomp.execute();
 				break;
 			}
 			
 			/*Por las dudas borro posibles reclamos compuestos asociados*/
-			PreparedStatement scomp = con.prepareStatement("delete from ReclamoCompuesto where idReclamoHijo=?");			
+			PreparedStatement scomp = connection.prepareStatement("delete from ReclamoCompuesto where idReclamoHijo=?");
 			scomp.setString(1, String.valueOf(r.getNumero())); 
 			scomp.execute();
 					
-			PreparedStatement ser = con.prepareStatement("delete from EventoReclamo where idReclamo=?");			
+			PreparedStatement ser = connection.prepareStatement("delete from EventoReclamo where idReclamo=?");
 			ser.setString(1, String.valueOf(r.getNumero())); 
 			ser.execute();
 			
-			PreparedStatement s = con.prepareStatement("delete from Reclamo where numero = ?");
+			PreparedStatement s = connection.prepareStatement("delete from Reclamo where numero = ?");
 			s.setLong(1, r.getNumero());
 			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 			
 		}
 		catch (Exception e)
 		{
 			System.out.println("Error al borrar Reclamo");
 			e.printStackTrace();
-		}	
+		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
 
 	}
 
 	@Override
 	public void insert(Object o)
 	{
+		Connection connection=null;
 		try
 		{
 			Reclamo r = (Reclamo)o;
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("insert into Reclamo values (?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("insert into Reclamo values (?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
 			//agregar campos
 			s.setString(1, r.getDescripcion());
 			s.setInt(2,r.getCliente().getCodigo_cliente());
@@ -155,44 +160,50 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			for(EventoReclamo er: r.getEventos()){
 				this.insertEventoReclamo(idReclamo, er);
 			}
-			
-			PoolConnection.getPoolConnection().realeaseConnection(con);
-			
+
 		}
 		catch (Exception e)
 		{
 			System.out.println("Error al insertar Reclamo");
 			e.printStackTrace();
 		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
 	}
 	
 	public void insertarReclamoCompuesto(int idReclamoPadre, Reclamo reclamo){
+		Connection connection=null;
 		try
 		{
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("insert into ReclamoCompuesto values (?,?)");
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("insert into ReclamoCompuesto values (?,?)");
 			//agregar campos
 			s.setInt(1,idReclamoPadre);
 			s.setInt(2,reclamo.getNumero());
 			
 			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 		}
 		catch(Exception e){
 			System.out.println("Error al insertar Reclamo Compuesto");
 			e.printStackTrace();
 		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
 	}
 	
 	public void insertarItems(int reclamo, Object o){
+		Connection connection=null;
 		try
 		{
 			Reclamo r = buscarReclamo(reclamo);
-			Connection con = PoolConnection.getPoolConnection().getConnection();
+			connection = PoolConnection.getPoolConnection().getConnection();
 			switch(r.getTipoReclamo()){
 			case PRODUCTO:
 				ItemProductoReclamo i = (ItemProductoReclamo) o;
-				PreparedStatement s = con.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
+				PreparedStatement s = connection.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
 				//agregar campos
 				s.setInt(1, r.getNumero());
 				s.setInt(2, i.getCantidad());
@@ -201,7 +212,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				break;
 			case FALTANTES:
 				ItemProductoReclamoFaltantes ifalt = (ItemProductoReclamoFaltantes) o;
-				PreparedStatement sfalt= con.prepareStatement("insert into ItemProductoReclamoFaltantes values (?,?,?,?)");
+				PreparedStatement sfalt= connection.prepareStatement("insert into ItemProductoReclamoFaltantes values (?,?,?,?)");
 				//agregar campos
 				sfalt.setInt(1, r.getNumero());
 				sfalt.setInt(2, ifalt.getProducto().getCodigo());
@@ -211,7 +222,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				break;
 			case CANTIDAD:
 				ItemProductoReclamo ic = (ItemProductoReclamo) o;
-				PreparedStatement sc = con.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
+				PreparedStatement sc = connection.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
 				//agregar campos
 				sc.setInt(1, r.getNumero());
 				sc.setInt(2, ic.getCantidad());
@@ -220,7 +231,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				break;
 			case FACTURACION:
 				ItemFacturaReclamo ifact = (ItemFacturaReclamo) o;
-				PreparedStatement sf = con.prepareStatement("insert into ItemFacturaReclamo values (?,?,?)");
+				PreparedStatement sf = connection.prepareStatement("insert into ItemFacturaReclamo values (?,?,?)");
 				//agregar campos
 				sf.setInt(1, r.getNumero());
 				sf.setInt(2, ifact.getFactura().getIdFactura());
@@ -228,12 +239,15 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				sf.execute();
 				break;
 			}
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 		}
 		catch(Exception e)
 		{
 			System.out.println("Error al insertar Item Reclamos");
 			e.printStackTrace();
+		}
+		finally{
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
 		}
 	}
 	
@@ -248,12 +262,13 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 	@Override
 	public void update(Object o) 
 	{
+		Connection connection=null;
 		try
 		{
 		
 			Reclamo r = (Reclamo)o;
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("update Reclamo " +
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("update Reclamo " +
 					"set descripcion = ?," +
 					"set cliente =?," +
 					"set usuario =?," +
@@ -268,22 +283,26 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			s.setBoolean(5, r.isEstaSolucionado());
 			s.setFloat(6, (float) r.getTiempoRespuesta());
 			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 		}
 		catch (Exception e)
 		{
 			System.out.println("Error al actualizar Reclamo");
 			e.printStackTrace();
 		}
+		finally{
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
 	}
 	
 	public Reclamo buscarReclamo(long numero)
 	{
+		Connection connection=null;
 		try
 		{
 			Reclamo r = null;
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("select * from Reclamo where numero = ?");
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("select * from Reclamo where numero = ?");
 			s.setLong(1,numero);
 			ResultSet result = s.executeQuery();
 			while (result.next())
@@ -309,23 +328,27 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				r.setZona(zona);
 			}
 
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 			return r;
 		}
 		catch (Exception e)
 		{
 			System.out.println();
 		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
 		return null;
 	}
 
 	public Collection<Reclamo> buscarReclamos()
 	{
+		Connection connection=null;
 		try
 		{
 			Collection<Reclamo> reclamos = new ArrayList<>();
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("select * from Reclamo");			//agregar campos
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("select * from Reclamo");//agregar campos
 			ResultSet result = s.executeQuery();
 			while (result.next())
 			{
@@ -351,12 +374,15 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				reclamos.add(r);
 			}
 
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 			return reclamos;
 		}
 		catch (Exception e)
 		{
 			System.out.println();
+		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
 		}
 		return null;
 	}
@@ -365,12 +391,13 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 	
 	public void updateEventoReclamo(int idReclamo, Object o) 
 	{
+		Connection connection=null;
 		try
 		{
 		
 			EventoReclamo er = (EventoReclamo)o;
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("update EventoReclamo " +
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("update EventoReclamo " +
 					"set idReclamo = ?," +
 					"set Estado =?," +
 					"set Fecha =?," +
@@ -381,23 +408,27 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			s.setDate(3, (java.sql.Date)er.getFecha());
 			s.setString(4,er.getDetalle());
 			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 		}
 		catch (Exception e)
 		{
 			System.out.println("Error al actualizar EventoReclamo");
 			e.printStackTrace();
 		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
 	}
 	
 
 	public List<EventoReclamo> buscarEventosXReclamo(int idreclamo)
 	{
+		Connection connection=null;
 		try
 		{
 			List<EventoReclamo> eventosreclamo = new ArrayList<>();
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("select idEventoReclamo, estado, fecha, detalle from EventoReclamo where idReclamo = ?");
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("select idEventoReclamo, estado, fecha, detalle from EventoReclamo where idReclamo = ?");
 			s.setInt(1, idreclamo);
 		
 			ResultSet result = s.executeQuery();
@@ -427,22 +458,26 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				eventosreclamo.add(er);
 			}
 
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 			return eventosreclamo;
 		}
 		catch (Exception e)
 		{
 			System.out.println();
 		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
 		return null;
 	}
 
 	public void insertEventoReclamo(int idReclamo , Object o) {
+		Connection connection=null;
 		try
 		{
 			EventoReclamo er = (EventoReclamo)o;
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("insert into EventoReclamo values (?,?,?,?)");
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("insert into EventoReclamo values (?,?,?,?)");
 		
 			s.setInt(1, idReclamo);
 			s.setString(2,er.getEstado().toString());
@@ -450,12 +485,15 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			s.setString(4,er.getDetalle());
 			s.execute();
 			
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+
 		}
 		catch (Exception e)
 		{
 			System.out.println("Error al insertar EventoReclamo");
 			e.printStackTrace();
+		}
+		finally{
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
 		}
 		
 	}

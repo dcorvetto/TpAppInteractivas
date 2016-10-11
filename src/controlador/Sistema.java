@@ -193,8 +193,7 @@ public class Sistema {
 		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
 		
 		ReclamoCantidad reclamoCantidad = ReclamosFactory.crearReclamoCantidad(cliente, descripcion, 
-																				user, user, 
-																				user);
+																				user,user);
 		
 		List<ItemProductoReclamo> listaItemProductoReclamo = ReclamosHelper.convertirMapaEnListaItemProductoReclamo(mapCodigoCantidad);
 		List<EventoReclamo> listaEventos = ReclamosHelper.crearEventoReclamoInicio();
@@ -218,8 +217,7 @@ public class Sistema {
 		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
 		
 		ReclamoZona reclamoPorZona = ReclamosFactory.crearReclamoZona(cliente, descripcion, 
-																	  user, user, 
-																	  user, zona);
+																	  user,user, zona);
 		
 		List<EventoReclamo> listaEventos = ReclamosHelper.crearEventoReclamoInicio();
 		
@@ -240,7 +238,7 @@ public class Sistema {
 		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
 		
 		ReclamoFacturacion reclamoFacturacion = ReclamosFactory.crearReclamoFacturacion(cliente, descripcion, 
-																			 user, user, user);
+																			            user, user);
 		
 		List<ItemFacturaReclamo> listaItemReclamoFacturas = ReclamosHelper.convertirMapaEnListaItemFacturaReclamos(mapIdFecha);
 		List<EventoReclamo> listaEventos = ReclamosHelper.crearEventoReclamoInicio();
@@ -260,27 +258,20 @@ public class Sistema {
 	}
 
 	public void crearReclamoCompuesto(int codigo_cliente, List<Integer> ids_reclamos) {
-		ReclamoCompuesto rc = new ReclamoCompuesto();
-		Cliente cc = Cliente.buscarPorCodigo(codigo_cliente);
-		Usuario operadorc = user;
+
+		Cliente cliente = Cliente.buscarPorCodigo(codigo_cliente);
+
+		Usuario operador = user;
 		//TODO: cambiar linea de abajo para agregar responsable que vendra por parametro
-		Usuario respc = user;
+		Usuario responsable = user;
+
+		ReclamoCompuesto reclamoCompuesto = ReclamosFactory.crearReclamoCompuesto(cliente, operador, responsable);
+
+		List<Reclamo> listaReclamos = ReclamosHelper.convertirIdReclamosEnListaReclamos(ids_reclamos);
+
+		reclamoCompuesto.setReclamos(listaReclamos);
 		
-		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
-		for(int i=0; i<ids_reclamos.size();i++){
-			listaReclamos.add(Reclamo.buscarReclamo(ids_reclamos.get(i)));
-		}	
-		rc.setCliente(cc);
-		rc.setDescripcion("Reclamo compuesto");
-		rc.setEstaSolucionado(false);
-		rc.setOperador(operadorc);
-		rc.setResponsable(respc);
-		rc.setTiempoRespuesta(-1f);
-		rc.setTipoReclamo(TipoReclamo.COMPUESTO);
-		rc.setZona(null);
-		rc.setReclamos(listaReclamos);
-		
-		rc.guardarCambios();
+		reclamoCompuesto.guardarCambios();
 	}
 
 	private void agregarItemReclamoProd(int codigo_prod, int cant) {

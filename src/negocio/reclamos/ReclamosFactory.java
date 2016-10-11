@@ -12,8 +12,8 @@ import negocio.Usuario;
 public class ReclamosFactory {
 	
 	public static ReclamoZona crearReclamoZona(Cliente cliente, String descripcion, 
-											   Usuario user, Usuario operador, 
-											   Usuario responsable,String zona) {
+											   Usuario operador, Usuario responsable,
+											   String zona) {
 		
 		ReclamoZona reclamoPorZona = new ReclamoZona();
 		reclamoPorZona.setCliente(cliente);
@@ -28,8 +28,7 @@ public class ReclamosFactory {
 	}
 	
 	public static ReclamoFacturacion crearReclamoFacturacion(Cliente cliente, String descripcion,
-													 Usuario user, Usuario operador, 
-													 Usuario responsable) {
+													        Usuario operador, Usuario responsable) {
 		
 		ReclamoFacturacion reclamoFacturacion = new ReclamoFacturacion();
 		reclamoFacturacion.setCliente(cliente);
@@ -44,8 +43,7 @@ public class ReclamosFactory {
 	}
 	
 	public static ReclamoCantidad crearReclamoCantidad(Cliente cliente, String descripcion,
-													   Usuario user, Usuario operador, 
-													   Usuario responsable) {
+													   Usuario operador, Usuario responsable) {
 		
 		ReclamoCantidad reclamoCantidad = new ReclamoCantidad();
 		reclamoCantidad.setCliente(cliente);
@@ -58,6 +56,21 @@ public class ReclamosFactory {
 		return reclamoCantidad;
 	
 	}
-	
+
+	public static ReclamoCompuesto crearReclamoCompuesto(Cliente cliente,Usuario operador,
+														 Usuario responsable) {
+
+		ReclamoCompuesto reclamoCompuesto = new ReclamoCompuesto();
+		reclamoCompuesto.setCliente(cliente);
+		reclamoCompuesto.setDescripcion("Reclamo compuesto");
+		reclamoCompuesto.setEstaSolucionado(false);
+		reclamoCompuesto.setOperador(operador);
+		reclamoCompuesto.setResponsable(responsable);
+		reclamoCompuesto.setTiempoRespuesta(-1f);
+		reclamoCompuesto.setTipoReclamo(TipoReclamo.COMPUESTO);
+		reclamoCompuesto.setZona(null);
+
+		return reclamoCompuesto;
+	}
 	
 }

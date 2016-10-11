@@ -59,4 +59,13 @@ public class ReclamosHelper {
 
 		return listaItemsProductoReclamos;
 	}
+
+	public static List<Reclamo> convertirIdReclamosEnListaReclamos(List<Integer> ids_reclamos) {
+
+		List<Reclamo> listaReclamos = new ArrayList<Reclamo>();
+		for(int i=0; i<ids_reclamos.size();i++){
+			listaReclamos.add(Reclamo.buscarReclamo(ids_reclamos.get(i)));
+		}
+		return listaReclamos;
+	}
 }

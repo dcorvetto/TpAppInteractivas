@@ -2,9 +2,8 @@ package test;
 /*Si les falla agregar en Project, Properties, Java Build Path la "Library" JUNIT 4*/
 import static org.junit.Assert.*;
 import org.junit.Test;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 import controlador.Sistema;
 
@@ -38,7 +37,6 @@ public class SistemaIT {
 		
 		String descripcion = "prueba reclamo zona papa";
 		
-		
 		sistema.crearReclamoZona(codigoCliente, "PALERMO", descripcion);
 		
 		assertTrue(true);
@@ -49,9 +47,7 @@ public class SistemaIT {
 	@Test
 	public void testCrearReclamoFacturacion() {
 		int codigoCliente = 3;
-		Sistema sistema = Sistema.getInstancia();
-		sistema.login("etesla", "admin");
-		
+
 		String descripcion = "prueba reclamo facturacion yeah";
 		Map<Integer,Date> mapIdFecha = new HashMap<Integer,Date>();
 		mapIdFecha.put(1, new Date());
@@ -61,5 +57,22 @@ public class SistemaIT {
 		assertTrue(true);
 				
 		
+	}
+
+	@Test
+	public void testCrearReclamoCompuesto() {
+		int codigoCliente = 2;
+
+		String descripcion = "prueba reclamo compuesto";
+		List<Integer> listaReclamosIds = new ArrayList<Integer>();
+		listaReclamosIds.add(4);
+		listaReclamosIds.add(5);
+
+
+		sistema.crearReclamoCompuesto(codigoCliente, listaReclamosIds);
+
+		assertTrue(true);
+
+
 	}
 }

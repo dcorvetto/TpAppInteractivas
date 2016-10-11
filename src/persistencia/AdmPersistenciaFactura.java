@@ -70,6 +70,7 @@ public class AdmPersistenciaFactura extends AdministradorPersistencia {
 			
 		} catch (Exception e) {
 			System.out.println("No se encontro factura");
+			e.printStackTrace();
 		} finally {
 			PoolConnection.getPoolConnection().realeaseConnection(connection);
 		}

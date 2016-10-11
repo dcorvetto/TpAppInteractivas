@@ -2,27 +2,29 @@ package negocio.views;
 
 public class ClienteView {
 
-    private String codigo_cliente;
+    private String dni;
     private String nombre;
     private String cantidad_reclamos;
     private String mail;
 
-    public ClienteView(String codigo_cliente, String nombre, String cantidad_reclamos, String mail) {
-        this.codigo_cliente = codigo_cliente;
+    public ClienteView(String dni, String nombre, String cantidad_reclamos, String mail) {
+        this.dni = dni;
         this.nombre = nombre;
         this.cantidad_reclamos = cantidad_reclamos;
         this.mail = mail;
     }
 
-    public String getCodigo_cliente() {
-        return codigo_cliente;
-    }
+     public String getDni() {
+		return dni;
+	}
 
-    public void setCodigo_cliente(String codigo_cliente) {
-        this.codigo_cliente = codigo_cliente;
-    }
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
 
-    public String getNombre() {
+
+
+	public String getNombre() {
         return nombre;
     }
 

@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +37,7 @@ public class VistaNuevoReclamoProducto extends JFrame {
         comboBoxClientes = new JComboBox<>();
         comboBoxClientes.setBounds(76, 13, 90, 20);
         for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
-            comboBoxClientes.addItem(clienteView.getCodigo_cliente());
+            comboBoxClientes.addItem(clienteView.getDni());
         }
 
         getContentPane().add(comboBoxClientes);
@@ -111,7 +112,9 @@ public class VistaNuevoReclamoProducto extends JFrame {
                 //Esta es la unica forma de pasar de el vector de vectores de string (que es lo que pide el JTable) a un map
                 for (int i = 0; i < data.size(); i++) {
                     //elementAt(0)=codigo del producto, y elementAt(1) = cantidad
-                    mapCodigoCantidad.put(Integer.valueOf(data.elementAt(i).elementAt(0)), Integer.valueOf(data.elementAt(i).elementAt(0)));
+                	String[] parts = String.valueOf(data.elementAt(i).elementAt(0)).split("-");
+                    String codigo = parts[0];
+                    mapCodigoCantidad.put(Integer.valueOf(codigo), Integer.valueOf(data.elementAt(i).elementAt(1)));
                 }
                 Sistema.getInstancia().crearReclamoProducto(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), mapCodigoCantidad, textAreaDescripcion.getText());
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");

@@ -78,7 +78,7 @@ public class AdmPersistenciaCliente extends AdministradorPersistencia
 		}
 		catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -108,7 +108,35 @@ public class AdmPersistenciaCliente extends AdministradorPersistencia
 		}
 		catch (Exception e)
 		{
-			System.out.println();
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public Cliente buscarPorDni(int dni) {
+		try
+		{
+			Cliente cli = null;
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("select c.* from Cliente c where dni=?");
+			s.setString(1, String.valueOf(dni));
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				int codigo = result.getInt(1);
+				String nom = result.getString(2);
+				int dnif = result.getInt(3);
+				String domicilio = result.getString(4);
+				String mail = result.getString(5);
+				String telefono = result.getString(6);
+				cli = new  Cliente(codigo,nom,dnif, domicilio,telefono,mail);
+			}
+			
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+			return cli;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 		return null;
 	}

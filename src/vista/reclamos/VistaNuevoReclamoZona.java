@@ -26,7 +26,7 @@ public class VistaNuevoReclamoZona extends JFrame {
         comboBoxClientes = new JComboBox<>();
         comboBoxClientes.setBounds(76, 13, 90, 20);
         for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
-            comboBoxClientes.addItem(clienteView.getCodigo_cliente());
+            comboBoxClientes.addItem(clienteView.getDni());
         }
         getContentPane().add(comboBoxClientes);
         

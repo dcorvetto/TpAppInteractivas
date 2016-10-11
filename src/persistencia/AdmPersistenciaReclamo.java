@@ -206,8 +206,8 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				PreparedStatement s = connection.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
 				//agregar campos
 				s.setInt(1, r.getNumero());
-				s.setInt(2, i.getCantidad());
-				s.setInt(3, i.getProducto().getCodigo()); 
+				s.setInt(2, i.getProducto().getCodigo());
+				s.setInt(3, i.getCantidad());
 				s.execute();
 				break;
 			case FALTANTES:
@@ -225,8 +225,8 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				PreparedStatement sc = connection.prepareStatement("insert into ItemProductoReclamo values (?,?,?)");
 				//agregar campos
 				sc.setInt(1, r.getNumero());
-				sc.setInt(2, ic.getCantidad());
-				sc.setInt(3, ic.getProducto().getCodigo()); 
+				sc.setInt(2, ic.getProducto().getCodigo()); 
+				sc.setInt(3, ic.getCantidad());
 				sc.execute();
 				break;
 			case FACTURACION:
@@ -348,7 +348,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		{
 			Collection<Reclamo> reclamos = new ArrayList<>();
 			connection = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = connection.prepareStatement("select * from Reclamo");//agregar campos
+			PreparedStatement s = connection.prepareStatement("select * from Reclamo");
 			ResultSet result = s.executeQuery();
 			while (result.next())
 			{

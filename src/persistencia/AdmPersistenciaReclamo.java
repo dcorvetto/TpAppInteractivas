@@ -485,6 +485,13 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			s.setString(4,er.getDetalle());
 			s.execute();
 			
+			if(er.getEstado().equals(EnumEstado.SOLUCIONADO)){
+				PreparedStatement sr = connection.prepareStatement("update Reclamo set solucionado=1 "
+						+ "where numero=? ");
+				sr.setInt(1, idReclamo);
+				sr.execute();
+			}
+			
 
 		}
 		catch (Exception e)

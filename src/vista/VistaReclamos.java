@@ -50,7 +50,15 @@ public class VistaReclamos extends JFrame {
 		for (ReclamoView reclamoView : reclamosParaUsuario) {
             dataReclamo.add(String.valueOf(reclamoView.getNumero()));
             dataReclamo.add(String.valueOf(reclamoView.getTipoReclamo()));
-            dataReclamo.add(String.valueOf(reclamoView.isEstaSolucionado()));
+            String resp = "";
+            if(reclamoView.isEstaSolucionado()){
+            	resp = "Si";
+            }
+            else{
+            	resp="No";
+            }
+            	
+            dataReclamo.add(resp);
             dataReclamo.add(String.valueOf(reclamoView.getDescripcion()));
             data.add(dataReclamo);
             dataReclamo = new Vector<>();

@@ -91,21 +91,31 @@ public class VistaEventoReclamo extends JFrame{
                     String estado = String.valueOf(comboBoxEstado.getSelectedItem());
                     String fecha = textFieldFecha.getText();
                     String detalle = textAreaDetalle.getText();
-
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date = formatter.parse(textFieldFecha.getText());
-                    EventoReclamoView reclamoView = new EventoReclamoView(estado, date, detalle);
-                    eventosNuevos.add(reclamoView);
-
-                    dataEventos.add(estado);
-                    dataEventos.add(fecha);
-                    dataEventos.add(detalle);
-
-                    data.add(dataEventos);
-                    TableModel model = new DefaultTableModel(data, nombresColumnas);
-                    TableModelEvent tableModelEvent = new TableModelEvent(model);
-                    table.tableChanged(tableModelEvent);
-                    dataEventos = new Vector<>();
+                    
+                    boolean error = false;
+                    
+                    for(int i=0;i<table.getModel().getRowCount();i++){
+                      if(table.getModel().getValueAt(i, 0) == estado){
+                    	  JOptionPane.showMessageDialog(null, "Ya existe un evento con ese estado");
+                    	  error = true;
+                      }
+                    }
+                    if(!error){
+	                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	                    Date date = formatter.parse(textFieldFecha.getText());
+	                    EventoReclamoView reclamoView = new EventoReclamoView(estado, date, detalle);
+	                    eventosNuevos.add(reclamoView);
+	
+	                    dataEventos.add(estado);
+	                    dataEventos.add(fecha);
+	                    dataEventos.add(detalle);
+	
+	                    data.add(dataEventos);
+	                    TableModel model = new DefaultTableModel(data, nombresColumnas);
+	                    TableModelEvent tableModelEvent = new TableModelEvent(model);
+	                    table.tableChanged(tableModelEvent);
+	                    dataEventos = new Vector<>();
+                    }
                 } catch (ParseException e1) {
                     JOptionPane.showMessageDialog(null, "Formato de fecha incorrecto, debe ser dd/MM/yyyy");
                 }
@@ -138,7 +148,10 @@ public class VistaEventoReclamo extends JFrame{
         
         textFieldFecha = new JTextField();
         textFieldFecha.setBounds(264, 10, 89, 20);
-        textFieldFecha.setText("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        
+        textFieldFecha.setText(formatter.format(date));
         textFieldFecha.setColumns(10);
         getContentPane().add(textFieldFecha);
 

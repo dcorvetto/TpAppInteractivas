@@ -103,7 +103,7 @@ public class Sistema {
 	
 		Collection<EventoReclamoView> eventosReclamoView = new ArrayList<>();
 		if (reclamo != null) {
-			for (EventoReclamo eventoReclamo : reclamo.getEventos()) {
+			for (EventoReclamo eventoReclamo : reclamo.getAllEventos()) {
 				EventoReclamoView evento = new EventoReclamoView(eventoReclamo.getEstado().getTexto(), eventoReclamo.getFecha(), eventoReclamo.getDetalle());
 				eventosReclamoView.add(evento);
 				

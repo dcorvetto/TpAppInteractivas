@@ -35,7 +35,7 @@ public class VistaNuevoReclamoCantidades extends JFrame {
 
     public VistaNuevoReclamoCantidades(Integer codigoUsuario) {
         this.setBounds(0, 0, 381, 316);
-        setTitle("Reclamo Producto");
+        setTitle("Reclamo Producto Cantidad");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
 

@@ -155,13 +155,30 @@ public class VistaNuevoReclamoFactura extends JFrame {
         JButton btnAgregar = new JButton("+");
         btnAgregar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dataFacturas.add(String.valueOf(comboBoxFacturas.getSelectedItem()));
-                dataFacturas.add(textFieldFecha.getText());
-                data.add(dataFacturas);
-                dataFacturas = new Vector<>();
-                model = new DefaultTableModel(data, nombresColumnas);
-                TableModelEvent tableModelEvent = new TableModelEvent(model);
-                tableFacturas.tableChanged(tableModelEvent);
+            	try{
+	            	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	            	Date date = formatter.parse(textFieldFecha.getText());
+	                
+	            	boolean error = false;
+	                for(int i=0;i<tableFacturas.getModel().getRowCount();i++){
+	                    if(tableFacturas.getModel().getValueAt(i, 0) == String.valueOf(comboBoxFacturas.getSelectedItem())){
+	                  	  JOptionPane.showMessageDialog(null, "Ya existe un item con esa factura");
+	                  	  error = true;
+	                    }
+	                  }
+	                if(!error){
+		            	dataFacturas.add(String.valueOf(comboBoxFacturas.getSelectedItem()));
+		                dataFacturas.add(textFieldFecha.getText());
+		                data.add(dataFacturas);
+		                dataFacturas = new Vector<>();
+		                model = new DefaultTableModel(data, nombresColumnas);
+		                TableModelEvent tableModelEvent = new TableModelEvent(model);
+		                tableFacturas.tableChanged(tableModelEvent);
+	                }
+            	 } catch (ParseException e1) {
+                     e1.printStackTrace();
+                     JOptionPane.showMessageDialog(null, "Formato de fecha incorrecto, debe ser dd/MM/yyyy");
+                 }
             }
         });
         btnAgregar.setBounds(275, 75, 41, 23);

@@ -121,6 +121,10 @@ public class Reclamo {
 	}
 
 	public List<EventoReclamo> getEventos() {
+		return eventos;
+	}
+
+	public List<EventoReclamo> getAllEventos() {
 		
 		List<EventoReclamo> eventos = AdmPersistenciaReclamo.getInstancia().buscarEventosXReclamo(this.getNumero());
 		return eventos;

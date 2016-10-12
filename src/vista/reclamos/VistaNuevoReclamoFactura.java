@@ -5,6 +5,8 @@ import negocio.Cliente;
 import negocio.views.ClienteView;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -30,6 +32,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
     private JTextArea textAreaDescripcion;
     private TableModel model;
     private JTable tableFacturas;
+    private JButton btnEliminar;
 
     private Vector<String> dataFacturas = new Vector<>();
     private Vector<Vector<String>> data =  new Vector<>();
@@ -187,15 +190,35 @@ public class VistaNuevoReclamoFactura extends JFrame {
         JScrollPane scrollPaneFacturas = new JScrollPane();
         scrollPaneFacturas.setBounds(10, 105, 306, 70);
         getContentPane().add(scrollPaneFacturas);
+        
+        btnEliminar = new JButton("Eliminar");
+        btnEliminar.setBounds(120, 241, 89, 23);
+        btnEliminar.setEnabled(false);
+        btnEliminar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	DefaultTableModel modelo = (DefaultTableModel)tableFacturas.getModel(); 
+            	modelo.removeRow(tableFacturas.getSelectedRow()); 
+            }
+        });
+        getContentPane().add(btnEliminar);
+        
 
         model = new DefaultTableModel(data, nombresColumnas);
         tableFacturas = new JTable(model);
+        tableFacturas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         for (int c = 0; c < tableFacturas.getColumnCount(); c++)
         {
             Class<?> col_class = tableFacturas.getColumnClass(c);
             tableFacturas.setDefaultEditor(col_class, null);        // remove editor
         }
         scrollPaneFacturas.setViewportView(tableFacturas);
+        ListSelectionModel listSelectionModel = tableFacturas.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+                btnEliminar.setEnabled(!lsm.isSelectionEmpty());
+            }
+        });
 
     }
 }

@@ -23,7 +23,7 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
 
     public VistaNuevoReclamoFaltantes(Integer codigoUsuario) {
         this.setBounds(0, 0, 373, 199);
-        setTitle("Reclamo Factura");
+        setTitle("Reclamo Faltantes");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
 

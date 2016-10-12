@@ -65,6 +65,15 @@ public class Sistema {
 		}
 		return productos;
 	}
+	
+	public Collection<String> getCodigoFactura() {
+		Collection<String> facturas = new ArrayList<>();
+		for (Factura factura : Factura.obtenerAll()) {
+			String codigo = String.valueOf(factura.getIdFactura());
+			facturas.add(codigo);
+		}
+		return facturas;
+	}
 
 	public int getCantidadReclamosMes(int mes) {
 		return 0;
@@ -401,6 +410,14 @@ public class Sistema {
 
 	public void setClientes(Collection<Cliente> clientes) {
 		this.clientes = clientes;
+	}
+	
+	public int getClienteDeFactura(int idFactura){
+		return Factura.obtenerCliente(idFactura);
+	}
+	
+	public int buscarClientePorDni(int dni){
+		return Cliente.buscarPorDni(dni).getCodigo_cliente();
 	}
 
 }

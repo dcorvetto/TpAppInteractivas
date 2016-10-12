@@ -1,6 +1,10 @@
 package negocio;
 
 import java.util.Date;
+import java.util.Vector;
+
+import persistencia.AdmPersistenciaFactura;
+import persistencia.AdmPersistenciaProducto;
 
 public class Factura {
 	private int idFactura;
@@ -35,5 +39,13 @@ public class Factura {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+
+	public static Vector<Factura> obtenerAll() {
+		Vector<Factura> facturas = AdmPersistenciaFactura.getInstancia().selectAll();
+		return facturas;
+	}
 	
+	public static int obtenerCliente(int idFactura){
+		return AdmPersistenciaFactura.getInstancia().obtenerCliente(idFactura);
+	}
 }

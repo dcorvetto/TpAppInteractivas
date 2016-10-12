@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -69,21 +70,32 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		btnAgregar.setBounds(226, 40, 89, 23);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Integer selectedItem = (Integer) comboBoxReclamos.getSelectedItem();
-				dataReclamos.add(String.valueOf(selectedItem));
-				ReclamoView reclamoView = new ReclamoView();
-				for (ReclamoView reclamoSimple : reclamosSimples) {
-					if(reclamoSimple.getNumero()==selectedItem){
-						reclamoView = reclamoSimple;
+				boolean error = false;
+                for(int i=0;i<tableReclamos.getModel().getRowCount();i++){
+                	String item1 = tableReclamos.getModel().getValueAt(i, 0).toString();
+                	String item2 =String.valueOf(comboBoxReclamos.getSelectedItem());
+                    if(item1.contains(item2)){
+                  	  JOptionPane.showMessageDialog(null, "Ya existe un item con ese reclamo");
+                  	  error = true;
+                    }
+                  }
+				if(!error){
+					Integer selectedItem = (Integer) comboBoxReclamos.getSelectedItem();
+					dataReclamos.add(String.valueOf(selectedItem));
+					ReclamoView reclamoView = new ReclamoView();
+					for (ReclamoView reclamoSimple : reclamosSimples) {
+						if(reclamoSimple.getNumero()==selectedItem){
+							reclamoView = reclamoSimple;
+						}
 					}
+					dataReclamos.add(reclamoView.getTipoReclamo());
+					dataReclamos.add(reclamoView.getDescripcion());
+					data.add(dataReclamos);
+					dataReclamos = new Vector<>();
+					model = new DefaultTableModel(data, nombresColumnas);
+					TableModelEvent tableModelEvent = new TableModelEvent(model);
+					tableReclamos.tableChanged(tableModelEvent);
 				}
-				dataReclamos.add(reclamoView.getTipoReclamo());
-				dataReclamos.add(reclamoView.getDescripcion());
-				data.add(dataReclamos);
-				dataReclamos = new Vector<>();
-				model = new DefaultTableModel(data, nombresColumnas);
-				TableModelEvent tableModelEvent = new TableModelEvent(model);
-				tableReclamos.tableChanged(tableModelEvent);
 			}
 		});
 		getContentPane().add(btnAgregar);
@@ -94,6 +106,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 
 		model = new DefaultTableModel(data, nombresColumnas);
 		tableReclamos = new JTable(model);
+		tableReclamos.setEnabled(false);
 		scrollPaneReclamos.setViewportView(tableReclamos);
 		
 		JButton btnAceptar = new JButton("Aceptar");
@@ -104,14 +117,16 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 				for (int i = 0; i < data.size(); i++) {
 					idsReclamos.add(Integer.valueOf(data.elementAt(i).elementAt(0))); //elementAt(0) = id de reclamo
 				}
-				if(idsReclamos.size()>1){
+				
+				
+				if(idsReclamos.size()>=1){
 					Sistema.getInstancia().crearReclamoCompuesto(Integer.parseInt((String) comboBoxClientes.getSelectedItem()), idsReclamos);
 					JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
 					dataReclamos.clear();
 					data.clear();
 					setVisible(false);
 				}else{
-					JOptionPane.showMessageDialog(null, "Error: Debe agregar por lo menos 2 reclamos");
+					JOptionPane.showMessageDialog(null, "Error: Debe agregar por lo menos 1 reclamo");
 				}
 			}
 		});

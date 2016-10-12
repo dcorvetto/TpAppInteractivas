@@ -1,12 +1,14 @@
 package vista.reclamos;
 
 import controlador.Sistema;
+import negocio.Cliente;
 import negocio.views.ClienteView;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +26,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
     private JTextField textFieldCodFactura;
     private JTextField textFieldFecha;
     private JComboBox<String> comboBoxClientes;
+    private JComboBox<String> comboBoxFacturas;
     private JTextArea textAreaDescripcion;
     private TableModel model;
     private JTable tableFacturas;
@@ -44,6 +47,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
             comboBoxClientes.addItem(clienteView.getDni());
         }
         getContentPane().add(comboBoxClientes);
+     
         
         JLabel lblCliente = new JLabel("Cliente:");
         lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -64,11 +68,20 @@ public class VistaNuevoReclamoFactura extends JFrame {
                         Date date = formatter.parse(data.elementAt(i).elementAt(1));
                         mapFechaId.put(Integer.valueOf(data.elementAt(i).elementAt(0)), date);
                     }
-                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textAreaDescripcion.getText(), mapFechaId);
-                    JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
-                    textFieldCodFactura.setText("");
-                    textFieldFecha.setText("");
-                    setVisible(false);
+                    
+                    int idFactura = Integer.parseInt(String.valueOf(comboBoxFacturas.getSelectedItem()));
+                    int dniCliente = Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem()));
+                    int idCliente = Sistema.getInstancia().buscarClientePorDni(dniCliente);
+                    if(Sistema.getInstancia().getClienteDeFactura(idFactura) != idCliente){
+                    	JOptionPane.showMessageDialog(null, "La Factura elegida no corresponde al Cliente seleccionado");
+                    }
+                    else{
+	                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textAreaDescripcion.getText(), mapFechaId);
+	                    JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
+	                    //textFieldCodFactura.setText("");
+	                    textFieldFecha.setText("");
+	                    setVisible(false);
+                    }
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Formato de fecha incorrecto, debe ser dd/MM/yyyy");
@@ -81,7 +94,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
         btnCancelar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
                 data.clear();
-                textFieldCodFactura.setText("");
+               // textFieldCodFactura.setText("");
                 textFieldFecha.setText("");
                 setVisible(false);
         	}
@@ -94,10 +107,17 @@ public class VistaNuevoReclamoFactura extends JFrame {
         lblIDFactura.setBounds(10, 74, 71, 20);
         getContentPane().add(lblIDFactura);
         
-        textFieldCodFactura = new JTextField();
+        comboBoxFacturas = new JComboBox<>();
+        comboBoxFacturas.setBounds(91, 76, 46, 20);
+        int idCliente = Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem()));
+        for (String codigoFactura : Sistema.getInstancia().getCodigoFactura()) {
+            comboBoxFacturas.addItem(codigoFactura);
+        }
+        getContentPane().add(comboBoxFacturas);
+        /*textFieldCodFactura = new JTextField();
         textFieldCodFactura.setBounds(91, 76, 46, 20);
         getContentPane().add(textFieldCodFactura);
-        textFieldCodFactura.setColumns(10);
+        textFieldCodFactura.setColumns(10);*/
         
         JLabel lblFecha = new JLabel("Fecha:");
         lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -135,7 +155,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
         JButton btnAgregar = new JButton("+");
         btnAgregar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dataFacturas.add(textFieldCodFactura.getText());
+                dataFacturas.add(String.valueOf(comboBoxFacturas.getSelectedItem()));
                 dataFacturas.add(textFieldFecha.getText());
                 data.add(dataFacturas);
                 dataFacturas = new Vector<>();
@@ -153,6 +173,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
 
         model = new DefaultTableModel(data, nombresColumnas);
         tableFacturas = new JTable(model);
+        tableFacturas.setEnabled(false);
         scrollPaneFacturas.setViewportView(tableFacturas);
 
     }

@@ -27,7 +27,11 @@ public class Cliente {
         reclamos = new ArrayList<>();
     }
 
-    public int getCantReclamos() {
+    public Cliente() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getCantReclamos() {
         return reclamos.size();
     }
 

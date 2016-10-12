@@ -83,13 +83,22 @@ public class VistaNuevoReclamoCantidades extends JFrame {
         JButton btnAgregar = new JButton("+");
         btnAgregar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dataProducto.add(String.valueOf(comboBoxProductos.getSelectedItem()));
-                dataProducto.add(textFieldCantidad.getText());
-                data.add(dataProducto);
-                dataProducto = new Vector<>();
-                model = new DefaultTableModel(data, nombresColumnas);
-                TableModelEvent tableModelEvent = new TableModelEvent(model);
-                table.tableChanged(tableModelEvent);
+            	 boolean error = false;
+                 for(int i=0;i<table.getModel().getRowCount();i++){
+                     if(table.getModel().getValueAt(i, 0) == String.valueOf(comboBoxProductos.getSelectedItem())){
+                   	  JOptionPane.showMessageDialog(null, "Ya existe un item con ese producto");
+                   	  error = true;
+                     }
+                   }
+            	if(!error){
+	                dataProducto.add(String.valueOf(comboBoxProductos.getSelectedItem()));
+	                dataProducto.add(textFieldCantidad.getText());
+	                data.add(dataProducto);
+	                dataProducto = new Vector<>();
+	                model = new DefaultTableModel(data, nombresColumnas);
+	                TableModelEvent tableModelEvent = new TableModelEvent(model);
+	                table.tableChanged(tableModelEvent);
+            	}
             }
         });
         btnAgregar.setBounds(312, 68, 41, 23);
@@ -99,6 +108,7 @@ public class VistaNuevoReclamoCantidades extends JFrame {
         table = new JTable(model);
         table.setFillsViewportHeight(true);
         table.setBounds(0, 20, 343, 78);
+        table.setEnabled(false);
         JScrollPane jScrollPane = new JScrollPane(table);
         jScrollPane.setBounds(10, 154, table.getWidth(), table.getHeight());
         getContentPane().add(jScrollPane);

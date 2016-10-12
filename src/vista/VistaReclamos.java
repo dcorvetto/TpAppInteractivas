@@ -70,6 +70,11 @@ public class VistaReclamos extends JFrame {
         table.setBounds(0, 20, 389, 185);
         table.setFillsViewportHeight(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        for (int c = 0; c < table.getColumnCount(); c++)
+        {
+            Class<?> col_class = table.getColumnClass(c);
+            table.setDefaultEditor(col_class, null);        // remove editor
+        }
         
         ListSelectionModel listSelectionModel = table.getSelectionModel();
         listSelectionModel.addListSelectionListener(new ListSelectionListener() {

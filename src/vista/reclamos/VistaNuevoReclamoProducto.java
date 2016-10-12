@@ -108,7 +108,11 @@ public class VistaNuevoReclamoProducto extends JFrame {
         table = new JTable(model);
         table.setFillsViewportHeight(true);
         table.setBounds(0, 20, 343, 78);
-        table.setEnabled(false);
+        for (int c = 0; c < table.getColumnCount(); c++)
+        {
+            Class<?> col_class = table.getColumnClass(c);
+            table.setDefaultEditor(col_class, null);        // remove editor
+        }
         JScrollPane jScrollPane = new JScrollPane(table);
         jScrollPane.setBounds(10, 151, table.getWidth(), table.getHeight());
         getContentPane().add(jScrollPane);

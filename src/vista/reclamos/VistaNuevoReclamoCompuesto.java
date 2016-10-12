@@ -106,7 +106,11 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 
 		model = new DefaultTableModel(data, nombresColumnas);
 		tableReclamos = new JTable(model);
-		tableReclamos.setEnabled(false);
+		for (int c = 0; c < tableReclamos.getColumnCount(); c++)
+        {
+            Class<?> col_class = tableReclamos.getColumnClass(c);
+            tableReclamos.setDefaultEditor(col_class, null);        // remove editor
+        }
 		scrollPaneReclamos.setViewportView(tableReclamos);
 		
 		JButton btnAceptar = new JButton("Aceptar");

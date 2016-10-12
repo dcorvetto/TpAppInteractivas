@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,6 +56,11 @@ public class VistaEventoReclamo extends JFrame{
         table = new JTable(model);
         table.setFillsViewportHeight(true);
         table.setBounds(0, 20, 343, 166);
+        for (int c = 0; c < table.getColumnCount(); c++)
+        {
+            Class<?> col_class = table.getColumnClass(c);
+            table.setDefaultEditor(col_class, null);        // remove editor
+        }
         JScrollPane jScrollPane = new JScrollPane(table);
         jScrollPane.setBounds(10, 91, 343, 86);
         getContentPane().add(jScrollPane);

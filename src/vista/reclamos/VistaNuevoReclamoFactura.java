@@ -190,7 +190,11 @@ public class VistaNuevoReclamoFactura extends JFrame {
 
         model = new DefaultTableModel(data, nombresColumnas);
         tableFacturas = new JTable(model);
-        tableFacturas.setEnabled(false);
+        for (int c = 0; c < tableFacturas.getColumnCount(); c++)
+        {
+            Class<?> col_class = tableFacturas.getColumnClass(c);
+            tableFacturas.setDefaultEditor(col_class, null);        // remove editor
+        }
         scrollPaneFacturas.setViewportView(tableFacturas);
 
     }

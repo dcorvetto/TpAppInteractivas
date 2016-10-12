@@ -75,6 +75,8 @@ public class VistaEventoReclamo extends JFrame{
                 JOptionPane.showMessageDialog(null, "Eventos agregados correctamente");
                 data.clear();
                 setVisible(false);
+                JFrame vistaReclamos = new VistaReclamos(codigoUsuario);
+                vistaReclamos.setVisible(true);
             }
         });
         getContentPane().add(btnAceptar);
@@ -84,6 +86,8 @@ public class VistaEventoReclamo extends JFrame{
             public void actionPerformed(ActionEvent arg0) {
                 data.clear();
                 setVisible(false);
+                JFrame vistaReclamos = new VistaReclamos(codigoUsuario);
+                vistaReclamos.setVisible(true);
             }
         });
         btnCancelar.setBounds(264, 184, 89, 23);

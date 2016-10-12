@@ -4,9 +4,13 @@ import controlador.Sistema;
 import negocio.views.ClienteView;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import vista.VistaEventoReclamo;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,6 +28,7 @@ public class VistaNuevoReclamoCantidades extends JFrame {
     private JTable table;
     private TableModel model;
     private JTextArea textAreaDescripcion;
+    private JButton btnEliminar;
 
     private Vector<Vector<String>> data =  new Vector<>();
     private Vector<String> dataProducto = new Vector<>();
@@ -108,6 +113,7 @@ public class VistaNuevoReclamoCantidades extends JFrame {
         table = new JTable(model);
         table.setFillsViewportHeight(true);
         table.setBounds(0, 20, 343, 78);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         for (int c = 0; c < table.getColumnCount(); c++)
         {
             Class<?> col_class = table.getColumnClass(c);
@@ -116,6 +122,15 @@ public class VistaNuevoReclamoCantidades extends JFrame {
         JScrollPane jScrollPane = new JScrollPane(table);
         jScrollPane.setBounds(10, 154, table.getWidth(), table.getHeight());
         getContentPane().add(jScrollPane);
+        
+        ListSelectionModel listSelectionModel = table.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+                btnEliminar.setEnabled(!lsm.isSelectionEmpty());
+            }
+        });
+        
 
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.setBounds(10, 243, 89, 23);
@@ -138,6 +153,18 @@ public class VistaNuevoReclamoCantidades extends JFrame {
         });
         getContentPane().add(btnAceptar);
 
+        
+        btnEliminar = new JButton("Eliminar");
+        btnEliminar.setBounds(120,243,120,23);
+        btnEliminar.setEnabled(false);
+        btnEliminar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	DefaultTableModel modelo = (DefaultTableModel)table.getModel(); 
+            	modelo.removeRow(table.getSelectedRow()); 
+            }
+        });
+        getContentPane().add(btnEliminar);
+        
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {

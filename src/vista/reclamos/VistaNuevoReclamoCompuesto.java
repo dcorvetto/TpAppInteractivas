@@ -5,6 +5,8 @@ import negocio.views.ClienteView;
 import negocio.views.ReclamoView;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -21,6 +23,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 	private JComboBox<Integer> comboBoxReclamos;
 	private JTable tableReclamos;
 	private TableModel model;
+    private JButton btnEliminar;
 
 	private Integer codigoUsuario;
 
@@ -106,12 +109,21 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 
 		model = new DefaultTableModel(data, nombresColumnas);
 		tableReclamos = new JTable(model);
+		tableReclamos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		for (int c = 0; c < tableReclamos.getColumnCount(); c++)
         {
             Class<?> col_class = tableReclamos.getColumnClass(c);
             tableReclamos.setDefaultEditor(col_class, null);        // remove editor
         }
 		scrollPaneReclamos.setViewportView(tableReclamos);
+		ListSelectionModel listSelectionModel = tableReclamos.getSelectionModel();
+	        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+	            public void valueChanged(ListSelectionEvent e) {
+	                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+	                btnEliminar.setEnabled(!lsm.isSelectionEmpty());
+	            }
+	       });
+		
 		
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.setBounds(10, 177, 89, 23);
@@ -135,6 +147,17 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 			}
 		});
 		getContentPane().add(btnAceptar);
+		
+		 btnEliminar = new JButton("Eliminar");
+		    btnEliminar.setBounds(100,177,120,23);
+		    btnEliminar.setEnabled(false);
+		    btnEliminar.addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent e) {
+		        	DefaultTableModel modelo = (DefaultTableModel)tableReclamos.getModel(); 
+		        	modelo.removeRow(tableReclamos.getSelectedRow()); 
+		        }
+		    });
+		    getContentPane().add(btnEliminar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(226, 177, 89, 23);

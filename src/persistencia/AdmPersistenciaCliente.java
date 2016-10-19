@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -141,7 +142,43 @@ public class AdmPersistenciaCliente extends AdministradorPersistencia
 		return null;
 	}
 	
-
+	
+	public List<Vector> getClientesOrdenadosPorCantidadReclamoDesc()
+	{
+		try
+		{
+			List <Vector>rta = new ArrayList<Vector>();
+			Connection c = PoolConnection.getPoolConnection().getConnection();
+			Statement s = c.createStatement();
+			String senten = "select  dni, c.nombre, count(r.numero) as cantidad, c.mail "
+					+ " from cliente c "
+					+ "	left join reclamo r"
+					+ " on c.codigo_cliente=r.cliente"
+					+ " group by c.dni, c.nombre, c.mail"
+					+ " order by count(r.numero) DESC, dni ASC, nombre ASC";
+			ResultSet result = s.executeQuery(senten);
+			while (result.next())
+			{
+				int codigo = result.getInt(1);
+				String dni = result.getString(2);
+				long cantidad = result.getLong(3);
+				String mail = result.getString(4);
+				Vector obj = new Vector(4);
+				obj.add(codigo);
+				obj.add(dni);
+				obj.add(cantidad);
+				obj.add(mail);
+				rta.add(obj);
+			}
+			PoolConnection.getPoolConnection().realeaseConnection(c);
+			return rta;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	

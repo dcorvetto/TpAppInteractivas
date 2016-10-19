@@ -485,10 +485,28 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			s.setString(4,er.getDetalle());
 			s.execute();
 			
+			long tiempoRespuesta = -1;
+			
 			if(er.getEstado().equals(EnumEstado.SOLUCIONADO)){
-				PreparedStatement sr = connection.prepareStatement("update Reclamo set solucionado=1 "
+				PreparedStatement st = connection.prepareStatement("select DATEDIFF(mi,r2.fecha,r.fecha)"
+						+ "	from eventoReclamo r"
+						+ "	left join EventoReclamo r2"
+						+ "	on r2.idReclamo=r.idReclamo"
+						+ "	AND r2.estado='INGRESADO'"
+						+ "	where r.estado='SOLUCIONADO'"
+						+ "	AND r.idReclamo=?");
+				st.setInt(1, idReclamo);
+				
+				ResultSet resultt = st.executeQuery();
+				while(resultt.next()){
+					tiempoRespuesta = resultt.getLong(1);
+				}
+				
+				PreparedStatement sr = connection.prepareStatement("update Reclamo set solucionado=1,"
+						+ " tiempoRespuesta=? "
 						+ "where numero=? ");
-				sr.setInt(1, idReclamo);
+				sr.setLong(1, tiempoRespuesta);
+				sr.setInt(2, idReclamo);
 				sr.execute();
 			}
 			
@@ -504,5 +522,100 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		}
 		
 	}
+	
+	public int getCantReclamosPorMes(int mes){
+		Connection connection=null;
+		try
+		{
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("select count(r.numero) from Reclamo r"
+					+ " join eventoReclamo er"
+					+ " on er.idReclamo=r.numero"
+					+ " where MONTH(er.fecha) =?");
+			s.setInt(1, mes);
+	
+			ResultSet result = s.executeQuery();
+			int cant = 0;
+			while (result.next())
+			{
+				cant = result.getInt(1);
+			}
+			return cant;
+		}
+		catch (Exception e)
+		{
+			System.out.println();
+		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
+		return 0;
+	}
 
+	@SuppressWarnings("rawtypes")
+	public List<Vector> getRankingTratamientoReclamos(){
+		Connection connection=null;
+		try
+		{
+			List<Vector> lista = new ArrayList<Vector>();
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("select estado, count(*) as cantidad"
+					+ "	from EventoReclamo er"
+					+ "	group by estado"
+					+ "	order by  count(*) DESC");
+
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				Vector<Object> v = new Vector<Object>();
+				v.add(result.getString(1));
+				v.add(result.getLong(2));
+				lista.add(v);
+			}
+			return lista;
+		}
+		catch (Exception e)
+		{
+			System.out.println();
+		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
+		return null;
+		
+	}
+	
+	/*tiempo promedio de respuesta de los reclamos por responsable*/
+	public List<Vector> getTiempoPromedioRespuestaPorResp() {
+		Connection connection=null;
+		try
+		{
+			List<Vector> lista = new ArrayList<Vector>();
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("select SUM(tiempoRespuesta)/COUNT(responsable), "
+					+ "	responsable from Reclamo"
+					+ " where tiempoRespuesta!=-1"
+					+ " group by responsable");
+
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				Vector<Object> v = new Vector<Object>();
+				v.add(result.getLong(1));
+				v.add(result.getInt(2));
+				lista.add(v);
+			}
+			return lista;
+		}
+		catch (Exception e)
+		{
+			System.out.println();
+		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
+		return null;
+	}
+	
+	
 }

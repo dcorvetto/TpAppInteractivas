@@ -8,11 +8,15 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 public class VistaReclamos extends JFrame {
@@ -24,7 +28,8 @@ public class VistaReclamos extends JFrame {
     private JTable table;
     private JScrollPane jScrollPane;
     private JButton btnVerEventos;
-
+    Collection<ReclamoView> reclamosParaUsuario;
+   
     public VistaReclamos(Integer codigoUsuario) {
         this.codigoUsuario = codigoUsuario;
 
@@ -64,7 +69,7 @@ public class VistaReclamos extends JFrame {
             dataReclamo = new Vector<>();
         }
 
-        TableModel model = new DefaultTableModel(data, nombresColumnas);
+		TableModel model = new DefaultTableModel(data, nombresColumnas);
 
         table = new JTable(model);
         table.setBounds(0, 20, 389, 185);

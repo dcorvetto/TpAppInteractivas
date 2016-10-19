@@ -2,8 +2,10 @@ package negocio;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
+import negocio.views.ClienteView;
 import persistencia.AdmPersistenciaCliente;
 
 
@@ -120,6 +122,22 @@ public class Cliente {
 	public static Cliente buscarPorDni(int dni) {
 		Cliente clienteEncontrado = AdmPersistenciaCliente.getInstancia().buscarPorDni(dni);
     	return clienteEncontrado;
+	}
+	
+	/*ranking de clientes con mayor reclamos*/
+	public static List<ClienteView> getRankingClientesPorCantidadReclamos(){
+		
+		List<Vector> lista = AdmPersistenciaCliente.getInstancia().getClientesOrdenadosPorCantidadReclamoDesc();
+		List<ClienteView> listaView = new ArrayList<ClienteView>();
+		for(Vector obj : lista){
+			String dni = String.valueOf(obj.get(0));
+			String nombre = (String) obj.get(1);
+			int cant = Integer.valueOf(String.valueOf(obj.get(2)));
+			String mail = (String) obj.get(3);
+			ClienteView view = new ClienteView(dni, nombre, String.valueOf(cant), mail);
+			listaView.add(view);
+		}
+		return listaView;
 	}
 
 }

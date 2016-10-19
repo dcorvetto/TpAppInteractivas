@@ -48,4 +48,11 @@ public class ClienteView {
         this.mail = mail;
     }
 
+	@Override
+	public String toString() {
+		return "ClienteView [dni=" + dni + ", nombre=" + nombre
+				+ ", cantidad_reclamos=" + cantidad_reclamos + ", mail=" + mail
+				+ "]";
+	}
+
 }

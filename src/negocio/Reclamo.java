@@ -7,8 +7,13 @@ import java.util.List;
 import java.util.Vector;
 
 import negocio.reclamos.TipoReclamo;
+import negocio.views.ClienteView;
+import negocio.views.ReclamoTPromXOperadorView;
+import negocio.views.ReclamoView;
+import persistencia.AdmPersistenciaCliente;
 import persistencia.AdmPersistenciaProducto;
 import persistencia.AdmPersistenciaReclamo;
+import persistencia.AdmPersistenciaUsuario;
 
 public class Reclamo {
 
@@ -71,7 +76,7 @@ public class Reclamo {
 
 	public void guardarCambios() {
 		AdmPersistenciaReclamo reclamoMapper=AdmPersistenciaReclamo.getInstancia();
-		reclamoMapper.insert(this);		
+		reclamoMapper.insert(this);			
 	}
 
 	public void agregarDetalle(Date fecha, String detalle) {
@@ -178,5 +183,29 @@ public class Reclamo {
 	public static Reclamo buscarReclamo(long idReclamo){
 		return AdmPersistenciaReclamo.getInstancia().buscarReclamo(idReclamo);
 	}
+	
+	/*cantidad de reclamos tratados por mes*/
+	public  static int getCantidadReclamosPorMes(int mes){
+		return AdmPersistenciaReclamo.getInstancia().getCantReclamosPorMes(mes);
+	}
+	
+	/*ranking tratamiento de reclamos*/
+	public static List<Vector> getRankingTratamientoReclamos(){
+		return AdmPersistenciaReclamo.getInstancia().getRankingTratamientoReclamos();
+	}
+	
+	/*tiempo promedio de respuesta de los reclamos por responsable*/
+	public static List<ReclamoTPromXOperadorView> getTiempoPromedioRespuestaPorResp(){
+		List<Vector> lista = AdmPersistenciaReclamo.getInstancia().getTiempoPromedioRespuestaPorResp();
+		List<ReclamoTPromXOperadorView> listaView = new ArrayList<ReclamoTPromXOperadorView>();
+		for(Vector obj : lista){
+			String usuarioOperador = (String) AdmPersistenciaUsuario.getInstancia().obtenerNombreCompleto(Integer.valueOf(String.valueOf(obj.get(1))));
+			String tiempoPromedio = String.valueOf(obj.get(0));
+			ReclamoTPromXOperadorView view = new ReclamoTPromXOperadorView(usuarioOperador,tiempoPromedio);
+			listaView.add(view);
+		}
+		return listaView;
+	}
+	
 	
 }

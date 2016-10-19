@@ -17,4 +17,14 @@ public class ReclamoTPromXOperadorView {
     public String getTiempoPromedio() {
         return TiempoPromedio;
     }
+
+	@Override
+	public String toString() {
+		return "ReclamoTPromXOperadorView [usuarioOperador=" + usuarioOperador
+				+ ", TiempoPromedio=" + TiempoPromedio + "]";
+	}
+
+    
 }
+
+

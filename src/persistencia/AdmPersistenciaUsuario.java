@@ -189,6 +189,35 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 		}
 		return null;
 	}
+	public String obtenerNombreCompleto(Integer idUsuario) {
+		String nombre = "";
+		try
+		{
+			Usuario usu = null;
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("select u.* from usuario u where codigo=?");
+			s.setString(1, String.valueOf(idUsuario));
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				int codigo = result.getInt(1);
+				String nom = result.getString(2);
+				String apellido = result.getString(3);
+				String u = result.getString(4);
+				String clave = result.getString(5);
+				usu = new  Usuario(nom, apellido, codigo, u, clave);
+				nombre = usu.getNombre() +" "+usu.getApellido();
+			}
+			
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+			return nombre;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return nombre;
+	}
 	
 	
 }

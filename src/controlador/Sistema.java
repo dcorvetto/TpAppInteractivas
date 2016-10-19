@@ -21,6 +21,8 @@ import negocio.views.ReclamoView;
 
 
 
+
+
 import java.util.*;
 
 import persistencia.AdmPersistenciaProducto;
@@ -44,9 +46,6 @@ public class Sistema {
 		return instancia;
 	}
 
-	public Collection<ClienteView> getClientesMayorCantReclamos() {
-		return null;
-	}
 
 	public Collection<ClienteView> getClientes() {
 		Collection<ClienteView> clientesView =  new ArrayList<>();
@@ -75,13 +74,6 @@ public class Sistema {
 		return facturas;
 	}
 
-	public int getCantidadReclamosMes(int mes) {
-		return 0;
-	}
-
-	public Collection<ReclamoTPromXOperadorView> getTiempoPromedio(int identificadorUsuario) {
-		return null;
-	}
 
 	/**
 	 * Solo pueden crear eventos aquelos que posean los roles: Administrador, Facturacion, Distribucion, o Zona de Entrega
@@ -319,18 +311,6 @@ public class Sistema {
 		reclamoCompuesto.guardarCambios();
 	}
 
-	private void agregarItemReclamoProd(int codigo_prod, int cant) {
-	}
-
-	private void agregarItemReclamoProdFaltante(int codigo_prod, int cant_facturada, int cant_entregada) {
-	}
-
-	private void agregarItemReclamoZona(String zona) {
-	}
-
-	private void agregarItemReclamoFactura(Date fecha, int identificador_factura, int codigo_cliente) {
-	}
-
 	public void actualizarReclamo(Date fecha, String estado, int codigo_reclamo, String detalle, Integer codigoUsuario) {
 		
 		Reclamo reclamo = buscarReclamo(codigo_reclamo);
@@ -420,4 +400,20 @@ public class Sistema {
 		return Cliente.buscarPorDni(dni).getCodigo_cliente();
 	}
 
+	public List<ClienteView> getClientesMayorCantReclamos(){
+		return Cliente.getRankingClientesPorCantidadReclamos();
+	}
+	
+	public List<ReclamoTPromXOperadorView> getTiemposPromedioXResponsable(){
+		return Reclamo.getTiempoPromedioRespuestaPorResp();
+	}
+	
+	public int getCantidadReclamosMes(int mes) {
+		return Reclamo.getCantidadReclamosPorMes(mes);
+	}
+	
+	public List<Vector> getRankingTratamientoReclamos(){
+		return Reclamo.getRankingTratamientoReclamos();
+	}
+	
 }

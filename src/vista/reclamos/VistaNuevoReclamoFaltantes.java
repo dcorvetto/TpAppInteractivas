@@ -1,13 +1,16 @@
 package vista.reclamos;
 
 import controlador.Sistema;
+import negocio.reclamos.TipoReclamo;
 import negocio.views.ClienteView;
+import negocio.views.UsuarioView;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class VistaNuevoReclamoFaltantes extends JFrame {
 
@@ -18,11 +21,12 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
     private JTextField textFieldCantRecibida;
     private JComboBox<String> comboBoxClientes;
     private JComboBox<String> comboBoxProductos;
+    private JComboBox<String> comboBoxResp;
     private JTextArea textAreaDescripcion;
 
 
     public VistaNuevoReclamoFaltantes(Integer codigoUsuario) {
-        this.setBounds(0, 0, 373, 199);
+        this.setBounds(0, 0, 373, 230);
         setTitle("Reclamo Faltantes");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
@@ -38,16 +42,33 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
         lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
         lblCliente.setBounds(10, 14, 56, 14);
         getContentPane().add(lblCliente);
+        
+        /*Combo responsables */
+        JLabel lblResponsable = new JLabel("Responsable:");
+        lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblResponsable.setBounds(10, 45, 81, 14);
+        getContentPane().add(lblResponsable);   
+        
+        comboBoxResp = new JComboBox<>();
+        comboBoxResp.setBounds(101, 44, 90, 20);
+        
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.FALTANTES.toString());
+        for (UsuarioView usuarioView : lista) {
+        	comboBoxResp.addItem(usuarioView.getUsuario());
+        }
+        getContentPane().add(comboBoxResp);
+        
+        /*Fin combo responsables*/
 
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setBounds(10, 126, 89, 23);
+        btnAceptar.setBounds(12, 157, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	String[] parts = String.valueOf(comboBoxProductos.getSelectedItem()).split("-");
                 String codigo = parts[0];
                 Sistema.getInstancia().crearReclamoFaltantes(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())),
                         Integer.parseInt(codigo),
-                        Integer.parseInt(textFieldCantSolicitada.getText()), Integer.parseInt(textFieldCantRecibida.getText()), textAreaDescripcion.getText());
+                        Integer.parseInt(textFieldCantSolicitada.getText()), Integer.parseInt(textFieldCantRecibida.getText()), textAreaDescripcion.getText(), String.valueOf(comboBoxResp.getSelectedItem()));
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 textFieldCantRecibida.setText("");
                 textFieldCantSolicitada.setText("");
@@ -64,7 +85,7 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
                 setVisible(false);
             }
         });
-        btnCancelar.setBounds(255, 126, 89, 23);
+        btnCancelar.setBounds(257, 157, 89, 23);
         getContentPane().add(btnCancelar);
 
         JLabel lblZona = new JLabel("Producto:");
@@ -74,12 +95,12 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
 
         JLabel lblFecha = new JLabel("Cantidad solicitada:");
         lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblFecha.setBounds(8, 44, 122, 20);
+        lblFecha.setBounds(10, 75, 122, 20);
         getContentPane().add(lblFecha);
 
         textFieldCantSolicitada = new JTextField();
         textFieldCantSolicitada.setColumns(10);
-        textFieldCantSolicitada.setBounds(140, 46, 34, 20);
+        textFieldCantSolicitada.setBounds(142, 77, 34, 20);
         getContentPane().add(textFieldCantSolicitada);
 
         comboBoxProductos = new JComboBox<>();
@@ -91,21 +112,21 @@ public class VistaNuevoReclamoFaltantes extends JFrame {
 
         JLabel lblCantidadRecibida = new JLabel("Cantidad recibida:");
         lblCantidadRecibida.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblCantidadRecibida.setBounds(184, 44, 114, 20);
+        lblCantidadRecibida.setBounds(186, 75, 114, 20);
         getContentPane().add(lblCantidadRecibida);
 
         textFieldCantRecibida = new JTextField();
         textFieldCantRecibida.setColumns(10);
-        textFieldCantRecibida.setBounds(308, 46, 34, 20);
+        textFieldCantRecibida.setBounds(310, 77, 34, 20);
         getContentPane().add(textFieldCantRecibida);
         
         JLabel lblDescripcion = new JLabel("Descripcion:");
         lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblDescripcion.setBounds(10, 75, 75, 14);
+        lblDescripcion.setBounds(12, 106, 75, 14);
         getContentPane().add(lblDescripcion);
         
         JScrollPane scrollPaneDescripcion = new JScrollPane();
-        scrollPaneDescripcion.setBounds(95, 75, 249, 40);
+        scrollPaneDescripcion.setBounds(97, 106, 249, 40);
         getContentPane().add(scrollPaneDescripcion);
         
         textAreaDescripcion = new JTextArea();

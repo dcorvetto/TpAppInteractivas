@@ -37,7 +37,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 	private Vector<Vector<String>> data =  new Vector<>();
 
 	public VistaNuevoReclamoCompuesto(Integer codigoUsuario) {
-		this.setBounds(0, 0, 341, 250);
+		this.setBounds(0, 0, 353, 250);
 		setTitle("Reclamo Compuesto");
 		this.codigoUsuario = codigoUsuario;
 		getContentPane().setLayout(null);
@@ -48,7 +48,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		getContentPane().add(lblCliente);
 		
 		comboBoxClientes = new JComboBox<>();
-		comboBoxClientes.setBounds(66, 10, 87, 20);
+		comboBoxClientes.setBounds(66, 10, 81, 20);
 		for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
 			comboBoxClientes.addItem(clienteView.getDni());
 		}
@@ -57,13 +57,13 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		 /*Combo responsables */
         JLabel lblResponsable = new JLabel("Responsable:");
         lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblResponsable.setBounds(178, 11, 56, 14);
+        lblResponsable.setBounds(157, 11, 81, 14);
         getContentPane().add(lblResponsable);   
         
         comboBoxResp = new JComboBox<>();
-        comboBoxResp.setBounds(248, 10, 90, 20);
+        comboBoxResp.setBounds(245, 10, 80, 20);
         
-        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.CANTIDAD.toString());
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.COMPUESTO.toString());
         for (UsuarioView usuarioView : lista) {
         	comboBoxResp.addItem(usuarioView.getUsuario());
         }
@@ -76,7 +76,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		getContentPane().add(lblReclamos);
 		
 		comboBoxReclamos = new JComboBox<>();
-		comboBoxReclamos.setBounds(95, 41, 87, 20);
+		comboBoxReclamos.setBounds(95, 41, 89, 20);
 		reclamosSimples = Sistema.getInstancia().getReclamosSimples();
 		for (ReclamoView reclamoView : reclamosSimples) {
 			comboBoxReclamos.addItem(reclamoView.getNumero());
@@ -90,7 +90,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		nombresColumnas.add("Descripcion");
 		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(226, 40, 89, 23);
+		btnAgregar.setBounds(236, 40, 89, 23);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean error = false;
@@ -124,7 +124,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		getContentPane().add(btnAgregar);
 		
 		JScrollPane scrollPaneReclamos = new JScrollPane();
-		scrollPaneReclamos.setBounds(10, 72, 305, 95);
+		scrollPaneReclamos.setBounds(10, 72, 315, 95);
 		getContentPane().add(scrollPaneReclamos);
 
 		model = new DefaultTableModel(data, nombresColumnas);
@@ -157,7 +157,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 				
 				if(idsReclamos.size()>=1){
 					Sistema.getInstancia().crearReclamoCompuesto(Integer.parseInt((String) comboBoxClientes.getSelectedItem()), idsReclamos,
-							(String) comboBoxResp.getSelectedItem());
+							String.valueOf(comboBoxResp.getSelectedItem()));
 					JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
 					dataReclamos.clear();
 					data.clear();
@@ -170,7 +170,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		getContentPane().add(btnAceptar);
 		
 		 btnEliminar = new JButton("Eliminar");
-		    btnEliminar.setBounds(100,177,120,23);
+		    btnEliminar.setBounds(109,177,120,23);
 		    btnEliminar.setEnabled(false);
 		    btnEliminar.addActionListener(new ActionListener() {
 		        public void actionPerformed(ActionEvent e) {
@@ -181,7 +181,7 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 		    getContentPane().add(btnEliminar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(226, 177, 89, 23);
+		btnCancelar.setBounds(236, 177, 89, 23);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dataReclamos.clear();

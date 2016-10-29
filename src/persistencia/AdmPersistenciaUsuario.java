@@ -245,23 +245,29 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 			case "FACTURACION":
 				rol = "Facturacion";
 				break;
-			case "COMPUESTO":
-				rol = "Distribucion";
-				break;
 			case "ZONA":
 				rol = "ZonaEntrega";
+				break;
+			case "COMPUESTO":
 				break;
 			}
 
 			List <Usuario>rta = new ArrayList<Usuario>();
 			Connection c = PoolConnection.getPoolConnection().getConnection();
-			
-			PreparedStatement s = c.prepareStatement("Select u.* from Usuario u join UsuarioRol ur "
+			PreparedStatement s;
+			if(rol.equals("")){ //Si es compuesto traer todos
+				s = c.prepareStatement("Select u.* from Usuario u join UsuarioRol ur "
+						+ " on ur.idUsuario = u.codigo "
+						+ " join Rol r"
+						+ " on r.idRol=ur.idRol");
+			}else{
+				s = c.prepareStatement("Select u.* from Usuario u join UsuarioRol ur "
 					+ " on ur.idUsuario = u.codigo "
 					+ " join Rol r"
 					+ " on r.idRol=ur.idRol"
 					+ " where r.descripcion=?");
-			s.setString(1,rol);
+				s.setString(1,rol);
+			}
 			ResultSet result = s.executeQuery();
 			while (result.next())
 			{

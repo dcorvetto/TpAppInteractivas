@@ -24,7 +24,7 @@ public class VistaNuevoReclamoZona extends JFrame {
     private JTextArea textAreaDescripcion;
     
     public VistaNuevoReclamoZona(Integer codigoUsuario) {
-    	this.setBounds(0, 0, 342, 171);
+    	this.setBounds(0, 0, 342, 195);
     	setTitle("Reclamo Zona");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
@@ -41,28 +41,29 @@ public class VistaNuevoReclamoZona extends JFrame {
         lblCliente.setBounds(10, 14, 56, 14);
         getContentPane().add(lblCliente);
         
-        /*Combo responsables
+        /*Combo responsables */
         JLabel lblResponsable = new JLabel("Responsable:");
         lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblResponsable.setBounds(178, 14, 56, 14);
+        lblResponsable.setBounds(10, 40, 81, 14);
         getContentPane().add(lblResponsable);   
         
         comboBoxResp = new JComboBox<>();
-        comboBoxResp.setBounds(250, 14, 90, 20);
+        comboBoxResp.setBounds(101, 39, 90, 20);
         
-        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.CANTIDAD.toString());
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.ZONA.toString());
         for (UsuarioView usuarioView : lista) {
         	comboBoxResp.addItem(usuarioView.getUsuario());
         }
         getContentPane().add(comboBoxResp);
         
-        Fin combo responsables*/
+        /*Fin combo responsables*/
         
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setBounds(10, 98, 89, 23);
+        btnAceptar.setBounds(10, 122, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Sistema.getInstancia().crearReclamoZona(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textField.getText(), textAreaDescripcion.getText() ,String.valueOf(comboBoxResp.getSelectedItem()));
+                Sistema.getInstancia().crearReclamoZona(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), 
+                		textField.getText(), textAreaDescripcion.getText(), String.valueOf(comboBoxResp.getSelectedItem()));
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 textField.setText("");
                 setVisible(false);
@@ -77,7 +78,7 @@ public class VistaNuevoReclamoZona extends JFrame {
                 setVisible(false);
             }
         });
-        btnCancelar.setBounds(227, 98, 89, 23);
+        btnCancelar.setBounds(227, 122, 89, 23);
         getContentPane().add(btnCancelar);
         
         JLabel lblZona = new JLabel("Zona:");
@@ -92,11 +93,11 @@ public class VistaNuevoReclamoZona extends JFrame {
         
         JLabel lblDescripcion = new JLabel("Descripcion:");
         lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblDescripcion.setBounds(10, 39, 75, 14);
+        lblDescripcion.setBounds(10, 63, 75, 14);
         getContentPane().add(lblDescripcion);
         
         JScrollPane scrollPaneDescripcion = new JScrollPane();
-        scrollPaneDescripcion.setBounds(95, 44, 221, 43);
+        scrollPaneDescripcion.setBounds(95, 68, 221, 43);
         getContentPane().add(scrollPaneDescripcion);
         
         textAreaDescripcion = new JTextArea();

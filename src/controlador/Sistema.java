@@ -1,33 +1,11 @@
 package controlador;
 
 import negocio.*;
-import negocio.reclamos.ItemFacturaReclamo;
-import negocio.reclamos.ItemProductoReclamo;
-import negocio.reclamos.ItemProductoReclamoFaltantes;
-import negocio.reclamos.ReclamoCantidad;
-import negocio.reclamos.ReclamoCompuesto;
-import negocio.reclamos.ReclamoFacturacion;
-import negocio.reclamos.ReclamoFaltantes;
-import negocio.reclamos.ReclamoProducto;
-import negocio.reclamos.ReclamoZona;
-import negocio.reclamos.ReclamosFactory;
-import negocio.reclamos.TipoReclamo;
-import negocio.views.ClienteView;
-import negocio.views.EventoReclamoView;
-import negocio.views.ReclamoTPromXOperadorView;
-import negocio.views.ReclamoView;
-
-
-
-
-
-
-
-import negocio.views.UsuarioView;
+import negocio.reclamos.*;
+import negocio.views.*;
+import persistencia.AdmPersistenciaProducto;
 
 import java.util.*;
-
-import persistencia.AdmPersistenciaProducto;
 
 public class Sistema {
 
@@ -264,14 +242,13 @@ public class Sistema {
 		
 	}
 
-	public void crearReclamoFaltantes(int dni, int cod_producto, int cant_socilitada, int cant_recibidad, String descripcion) {
+	public void crearReclamoFaltantes(int dni, int cod_producto, int cant_socilitada, int cant_recibidad, String descripcion, String responsable) {
 		Cliente cliente = Cliente.buscarPorDni(dni);
-		//TODO:Cuando se agregue el operador y responsable en UI.
+		Usuario resp = Usuario.buscarPorUsuario(responsable);
 		//Usuario operador = Usuario.buscarPorId(cod_operador);
-		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
 		
 		ReclamoFaltantes reclamoFaltantes = ReclamosFactory.crearReclamoFaltantes(cliente, descripcion, 
-																			            user, user);
+																			            user, resp);
 		
 		
 		ItemProductoReclamoFaltantes ipf = new ItemProductoReclamoFaltantes();

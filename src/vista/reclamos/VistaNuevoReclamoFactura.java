@@ -43,13 +43,13 @@ public class VistaNuevoReclamoFactura extends JFrame {
 
 
     public VistaNuevoReclamoFactura(Integer codigoUsuario) {
-    	this.setBounds(0, 0, 341, 314);
+    	this.setBounds(0, 0, 362, 314);
     	setTitle("Reclamo Factura");
         this.codigoUsuario = codigoUsuario;
         getContentPane().setLayout(null);
         
         comboBoxClientes = new JComboBox<>();
-        comboBoxClientes.setBounds(76, 13, 90, 20);
+        comboBoxClientes.setBounds(64, 13, 81, 20);
         for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
             comboBoxClientes.addItem(clienteView.getDni());
         }
@@ -64,13 +64,13 @@ public class VistaNuevoReclamoFactura extends JFrame {
         /*Combo responsables */
         JLabel lblResponsable = new JLabel("Responsable:");
         lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblResponsable.setBounds(178, 14, 56, 14);
+        lblResponsable.setBounds(155, 14, 81, 14);
         getContentPane().add(lblResponsable);   
         
         comboBoxResp = new JComboBox<>();
-        comboBoxResp.setBounds(250, 14, 90, 20);
+        comboBoxResp.setBounds(246, 13, 90, 20);
         
-        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.CANTIDAD.toString());
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.FACTURACION.toString());
         for (UsuarioView usuarioView : lista) {
         	comboBoxResp.addItem(usuarioView.getUsuario());
         }
@@ -124,7 +124,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
                 setVisible(false);
         	}
         });
-        btnCancelar.setBounds(227, 241, 89, 23);
+        btnCancelar.setBounds(247, 241, 89, 23);
         getContentPane().add(btnCancelar);
         
         JLabel lblIDFactura = new JLabel("ID Factura:");
@@ -133,7 +133,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
         getContentPane().add(lblIDFactura);
         
         comboBoxFacturas = new JComboBox<>();
-        comboBoxFacturas.setBounds(91, 76, 46, 20);
+        comboBoxFacturas.setBounds(91, 76, 54, 20);
         int idCliente = Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem()));
         for (String codigoFactura : Sistema.getInstancia().getCodigoFactura()) {
             comboBoxFacturas.addItem(codigoFactura);
@@ -146,12 +146,12 @@ public class VistaNuevoReclamoFactura extends JFrame {
         
         JLabel lblFecha = new JLabel("Fecha:");
         lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblFecha.setBounds(147, 74, 41, 22);
+        lblFecha.setBounds(167, 74, 41, 22);
         getContentPane().add(lblFecha);
         
         textFieldFecha = new JTextField();
         textFieldFecha.setColumns(10);
-        textFieldFecha.setBounds(198, 77, 67, 20);
+        textFieldFecha.setBounds(218, 77, 67, 20);
         textFieldFecha.setText("dd/MM/yyyy");
         getContentPane().add(textFieldFecha);
         
@@ -161,7 +161,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
         getContentPane().add(lblDescripcion);
         
         JScrollPane scrollPaneDescripcion = new JScrollPane();
-        scrollPaneDescripcion.setBounds(95, 186, 221, 44);
+        scrollPaneDescripcion.setBounds(95, 186, 241, 44);
         getContentPane().add(scrollPaneDescripcion);
         
         textAreaDescripcion = new JTextArea();
@@ -206,15 +206,15 @@ public class VistaNuevoReclamoFactura extends JFrame {
                  }
             }
         });
-        btnAgregar.setBounds(275, 75, 41, 23);
+        btnAgregar.setBounds(295, 75, 41, 23);
         getContentPane().add(btnAgregar);
         
         JScrollPane scrollPaneFacturas = new JScrollPane();
-        scrollPaneFacturas.setBounds(10, 105, 306, 70);
+        scrollPaneFacturas.setBounds(10, 105, 326, 70);
         getContentPane().add(scrollPaneFacturas);
         
         btnEliminar = new JButton("Eliminar");
-        btnEliminar.setBounds(120, 241, 89, 23);
+        btnEliminar.setBounds(134, 241, 89, 23);
         btnEliminar.setEnabled(false);
         btnEliminar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

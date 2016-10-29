@@ -42,7 +42,7 @@ public class VistaNuevoReclamoProducto extends JFrame {
         getContentPane().setLayout(null);
         
         comboBoxClientes = new JComboBox<>();
-        comboBoxClientes.setBounds(76, 13, 90, 20);
+        comboBoxClientes.setBounds(76, 13, 82, 20);
         for (ClienteView clienteView : Sistema.getInstancia().getClientes()) {
             comboBoxClientes.addItem(clienteView.getDni());
         }
@@ -63,13 +63,13 @@ public class VistaNuevoReclamoProducto extends JFrame {
         /*Combo responsables */
         JLabel lblResponsable = new JLabel("Responsable:");
         lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblResponsable.setBounds(178, 14, 56, 14);
+        lblResponsable.setBounds(168, 14, 85, 14);
         getContentPane().add(lblResponsable);   
         
         comboBoxResp = new JComboBox<>();
-        comboBoxResp.setBounds(250, 14, 90, 20);
+        comboBoxResp.setBounds(263, 13, 90, 20);
         
-        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.CANTIDAD.toString());
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.PRODUCTO.toString());
         for (UsuarioView usuarioView : lista) {
         	comboBoxResp.addItem(usuarioView.getUsuario());
         }

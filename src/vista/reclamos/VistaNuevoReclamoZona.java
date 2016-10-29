@@ -1,12 +1,16 @@
 package vista.reclamos;
 
 import controlador.Sistema;
+import negocio.reclamos.TipoReclamo;
 import negocio.views.ClienteView;
+import negocio.views.UsuarioView;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class VistaNuevoReclamoZona extends JFrame {
 
@@ -14,6 +18,8 @@ public class VistaNuevoReclamoZona extends JFrame {
 	private JPanel contentPane;
     private Integer codigoUsuario;
     private JTextField textField;
+
+    private JComboBox<String> comboBoxResp;
     private JComboBox<String> comboBoxClientes;
     private JTextArea textAreaDescripcion;
     
@@ -35,11 +41,28 @@ public class VistaNuevoReclamoZona extends JFrame {
         lblCliente.setBounds(10, 14, 56, 14);
         getContentPane().add(lblCliente);
         
+        /*Combo responsables
+        JLabel lblResponsable = new JLabel("Responsable:");
+        lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblResponsable.setBounds(178, 14, 56, 14);
+        getContentPane().add(lblResponsable);   
+        
+        comboBoxResp = new JComboBox<>();
+        comboBoxResp.setBounds(250, 14, 90, 20);
+        
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.CANTIDAD.toString());
+        for (UsuarioView usuarioView : lista) {
+        	comboBoxResp.addItem(usuarioView.getUsuario());
+        }
+        getContentPane().add(comboBoxResp);
+        
+        Fin combo responsables*/
+        
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.setBounds(10, 98, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Sistema.getInstancia().crearReclamoZona(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textField.getText(), textAreaDescripcion.getText());
+                Sistema.getInstancia().crearReclamoZona(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textField.getText(), textAreaDescripcion.getText() ,String.valueOf(comboBoxResp.getSelectedItem()));
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 textField.setText("");
                 setVisible(false);

@@ -1,6 +1,7 @@
 package negocio;
 
 import java.util.Collection;
+import java.util.List;
 
 import persistencia.AdmPersistenciaUsuario;
 
@@ -61,6 +62,28 @@ public class Usuario {
 		return AdmPersistenciaUsuario.getInstancia().buscarUsuario(user, pass);
 		
 	}
+
+
+	public static List<Usuario> obtenerResponsables(String tipo) {
+		return AdmPersistenciaUsuario.getInstancia().obtenerResponsables(tipo);
+	}
+
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+
+	public static Usuario buscarPorUsuario(String responsable) {
+		return AdmPersistenciaUsuario.getInstancia().obtenerUsuarioPorUsuario(responsable);
+	}
+
+
 
 
 }

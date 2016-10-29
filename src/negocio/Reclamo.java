@@ -186,7 +186,7 @@ public class Reclamo {
 	
 	/*cantidad de reclamos tratados por mes*/
 	public  static int getCantidadReclamosPorMes(int mes){
-		return AdmPersistenciaReclamo.getInstancia().getCantReclamosPorMes(mes);
+		return AdmPersistenciaReclamo.getInstancia().getCantReclamosPorMes(mes).size();
 	}
 	
 	/*ranking tratamiento de reclamos*/

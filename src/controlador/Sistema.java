@@ -23,6 +23,8 @@ import negocio.views.ReclamoView;
 
 
 
+import negocio.views.UsuarioView;
+
 import java.util.*;
 
 import persistencia.AdmPersistenciaProducto;
@@ -55,6 +57,16 @@ public class Sistema {
 		}
 		return clientesView;
 	}
+	
+	public List<UsuarioView> getUsuariosResponsables(String tipo) {
+		List<UsuarioView> usuariosView =  new ArrayList<>();
+		for (Usuario usu : Usuario.obtenerResponsables(tipo)) {
+			UsuarioView cV = new UsuarioView(usu.getNombre(),usu.getApellido(),usu.getCodigo(),usu.getUsuario());
+			usuariosView.add(cV);
+		}
+		return usuariosView;
+	}
+
 
 	public Collection<String> getCodigoProductos() {
 		Collection<String> productos = new ArrayList<>();
@@ -155,16 +167,15 @@ public class Sistema {
 		}
 	}
 
-	public void crearReclamoProducto(int dni,HashMap<Integer, Integer> mapCodigoCantidad, String descripcion) {
-	//	Agrego ejemplo por si sirve
+	public void crearReclamoProducto(int dni,HashMap<Integer, Integer> mapCodigoCantidad, String descripcion, String responsable) {
 		Cliente c = Cliente.buscarPorDni(dni);
+		Usuario resp = Usuario.buscarPorUsuario(responsable);
 		ReclamoProducto r = new ReclamoProducto();
 		r.setCliente(c);
 		r.setDescripcion(descripcion);
 		r.setEstaSolucionado(false);
 		r.setOperador(user);
-		//TODO: cambiar el parametro de abajo y pasarle un responsable que tendria que recibir por parametro
-		r.setResponsable(user);
+		r.setResponsable(resp);
 		r.setTiempoRespuesta(-1f);
 		r.setTipoReclamo(TipoReclamo.PRODUCTO);
 
@@ -195,14 +206,10 @@ public class Sistema {
 		r.guardarCambios();
 	}
 
-	public void crearReclamoCantidades(int dni, Map<Integer, Integer> mapCodigoCantidad, String descripcion) { 
+	public void crearReclamoCantidades(int dni, Map<Integer, Integer> mapCodigoCantidad, String descripcion, String responsable) { 
 		Cliente cliente = Cliente.buscarPorDni(dni);
-		//TODO:Cuando se agregue en UI el operador y responsable.
-		//Usuario operador = Usuario.buscarPorId(cod_operador);
-		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
-		
-		ReclamoCantidad reclamoCantidad = ReclamosFactory.crearReclamoCantidad(cliente, descripcion, 
-																				user,user);
+		Usuario resp = Usuario.buscarPorUsuario(responsable);
+		ReclamoCantidad reclamoCantidad = ReclamosFactory.crearReclamoCantidad(cliente, descripcion,user,resp);
 		
 		List<ItemProductoReclamo> listaItemProductoReclamo = ReclamosHelper.convertirMapaEnListaItemProductoReclamo(mapCodigoCantidad);
 		List<EventoReclamo> listaEventos = ReclamosHelper.crearEventoReclamoInicio();
@@ -219,14 +226,11 @@ public class Sistema {
 
 	}
 
-	public void crearReclamoZona(int dni, String zona, String descripcion) {
+	public void crearReclamoZona(int dni, String zona, String descripcion, String responsable) {
 		Cliente cliente = Cliente.buscarPorDni(dni);
-		//TODO:Cuando se agregue operador y responsable en la UI.
-		//Usuario operador = Usuario.buscarPorId(cod_operador);
-		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
-		
+		Usuario resp = Usuario.buscarPorUsuario(responsable);		
 		ReclamoZona reclamoPorZona = ReclamosFactory.crearReclamoZona(cliente, descripcion, 
-																	  user,user, zona);
+																	  user,resp, zona);
 		
 		List<EventoReclamo> listaEventos = ReclamosHelper.crearEventoReclamoInicio();
 		
@@ -240,14 +244,11 @@ public class Sistema {
 		
 	}
 
-	public void crearReclamoFactura(int dni, String descripcion, Map<Integer, Date> mapIdFecha) { //Map<id_factura,fecha_factura>
+	public void crearReclamoFactura(int dni, String descripcion, Map<Integer, Date> mapIdFecha, String responsable) {
 		Cliente cliente = Cliente.buscarPorDni(dni);
-		//TODO:Cuando se agregue el operador y responsable en UI.
-		//Usuario operador = Usuario.buscarPorId(cod_operador);
-		//Usuario responsable = Usuario.buscarPorId(cod_responsable);
-		
+		Usuario resp = Usuario.buscarPorUsuario(responsable);
 		ReclamoFacturacion reclamoFacturacion = ReclamosFactory.crearReclamoFacturacion(cliente, descripcion, 
-																			            user, user);
+																			            user, resp);
 		
 		List<ItemFacturaReclamo> listaItemReclamoFacturas = ReclamosHelper.convertirMapaEnListaItemFacturaReclamos(mapIdFecha);
 		List<EventoReclamo> listaEventos = ReclamosHelper.crearEventoReclamoInicio();
@@ -294,15 +295,12 @@ public class Sistema {
 		reclamoFaltantes.guardarCambios();
 	}
 
-	public void crearReclamoCompuesto(int dni, List<Integer> ids_reclamos) {
-
+	public void crearReclamoCompuesto(int dni, List<Integer> ids_reclamos, String responsable) {
 		Cliente cliente = Cliente.buscarPorDni(dni);
-
 		Usuario operador = user;
-		//TODO: cambiar linea de abajo para agregar responsable que vendra por parametro
-		Usuario responsable = user;
+		Usuario resp = Usuario.buscarPorUsuario(responsable);
 
-		ReclamoCompuesto reclamoCompuesto = ReclamosFactory.crearReclamoCompuesto(cliente, operador, responsable);
+		ReclamoCompuesto reclamoCompuesto = ReclamosFactory.crearReclamoCompuesto(cliente, operador, resp);
 
 		List<Reclamo> listaReclamos = ReclamosHelper.convertirIdReclamosEnListaReclamos(ids_reclamos);
 
@@ -380,9 +378,7 @@ public class Sistema {
 		this.reclamos = reclamos;
 	}
 
-	public Collection<Usuario> getUsuarios() {
-		return usuarios;
-	}
+	
 
 	public void setUsuarios(Collection<Usuario> usuarios) {
 		this.usuarios = usuarios;

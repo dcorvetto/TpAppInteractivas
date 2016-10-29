@@ -523,24 +523,27 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		
 	}
 	
-	public int getCantReclamosPorMes(int mes){
+	public List<Reclamo> getCantReclamosPorMes(int mes){
 		Connection connection=null;
 		try
 		{
 			connection = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = connection.prepareStatement("select count(r.numero) from Reclamo r"
+			PreparedStatement s = connection.prepareStatement("select "
+					+ " numero from Reclamo r"
 					+ " join eventoReclamo er"
 					+ " on er.idReclamo=r.numero"
 					+ " where MONTH(er.fecha) =?");
 			s.setInt(1, mes);
 	
 			ResultSet result = s.executeQuery();
-			int cant = 0;
+			List<Reclamo> lista = new ArrayList<Reclamo>();
 			while (result.next())
 			{
-				cant = result.getInt(1);
+				Reclamo r = new Reclamo();
+				r.setNumero(result.getInt(1));;
+				lista.add(r);
 			}
-			return cant;
+			return lista;
 		}
 		catch (Exception e)
 		{
@@ -549,7 +552,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		finally {
 			PoolConnection.getPoolConnection().realeaseConnection(connection);
 		}
-		return 0;
+		return null;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -559,7 +562,8 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		{
 			List<Vector> lista = new ArrayList<Vector>();
 			connection = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = connection.prepareStatement("select estado, count(*) as cantidad"
+			PreparedStatement s = connection.prepareStatement("select "
+					+ " estado, count(*) as cantidad"
 					+ "	from EventoReclamo er"
 					+ "	group by estado"
 					+ "	order by  count(*) DESC");
@@ -592,7 +596,8 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 		{
 			List<Vector> lista = new ArrayList<Vector>();
 			connection = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = connection.prepareStatement("select SUM(tiempoRespuesta)/COUNT(responsable), "
+			PreparedStatement s = connection.prepareStatement("select "
+					+ " SUM(tiempoRespuesta)/COUNT(responsable), "
 					+ "	responsable from Reclamo"
 					+ " where tiempoRespuesta!=-1"
 					+ " group by responsable");

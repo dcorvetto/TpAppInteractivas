@@ -2,7 +2,9 @@ package vista.reclamos;
 
 import controlador.Sistema;
 import negocio.Cliente;
+import negocio.reclamos.TipoReclamo;
 import negocio.views.ClienteView;
+import negocio.views.UsuarioView;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -18,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -26,6 +29,7 @@ public class VistaNuevoReclamoFactura extends JFrame {
 	private static final long serialVersionUID = -7732676766832254025L;
     private Integer codigoUsuario;
     private JTextField textFieldCodFactura;
+    private JComboBox<String> comboBoxResp;
     private JTextField textFieldFecha;
     private JComboBox<String> comboBoxClientes;
     private JComboBox<String> comboBoxFacturas;
@@ -57,6 +61,23 @@ public class VistaNuevoReclamoFactura extends JFrame {
         lblCliente.setBounds(10, 14, 56, 14);
         getContentPane().add(lblCliente);
         
+        /*Combo responsables */
+        JLabel lblResponsable = new JLabel("Responsable:");
+        lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblResponsable.setBounds(178, 14, 56, 14);
+        getContentPane().add(lblResponsable);   
+        
+        comboBoxResp = new JComboBox<>();
+        comboBoxResp.setBounds(250, 14, 90, 20);
+        
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.CANTIDAD.toString());
+        for (UsuarioView usuarioView : lista) {
+        	comboBoxResp.addItem(usuarioView.getUsuario());
+        }
+        getContentPane().add(comboBoxResp);
+        
+        /*Fin combo responsables*/
+        
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.setBounds(10, 241, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
@@ -79,7 +100,8 @@ public class VistaNuevoReclamoFactura extends JFrame {
                     	JOptionPane.showMessageDialog(null, "La Factura elegida no corresponde al Cliente seleccionado");
                     }
                     else{
-	                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textAreaDescripcion.getText(), mapFechaId);
+	                    Sistema.getInstancia().crearReclamoFactura(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), textAreaDescripcion.getText(), mapFechaId
+	                    		,String.valueOf(comboBoxResp.getSelectedItem()));
 	                    JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
 	                    //textFieldCodFactura.setText("");
 	                    textFieldFecha.setText("");

@@ -1,7 +1,9 @@
 package vista.reclamos;
 
 import controlador.Sistema;
+import negocio.reclamos.TipoReclamo;
 import negocio.views.ClienteView;
+import negocio.views.UsuarioView;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -19,11 +21,13 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.List;
 
 public class VistaNuevoReclamoCantidades extends JFrame {
     private static final long serialVersionUID = -277076000511824707L;
     private Integer codigoUsuario;
     private JComboBox<String> comboBoxClientes;
+    private JComboBox<String> comboBoxResp;
     private JTextField textFieldCantidad;
     private JComboBox<String> comboBoxProductos;
     private JTable table;
@@ -52,7 +56,25 @@ public class VistaNuevoReclamoCantidades extends JFrame {
         lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
         lblCliente.setBounds(10, 14, 56, 14);
         getContentPane().add(lblCliente);
-
+        
+        
+        /*Combo responsables */
+        JLabel lblResponsable = new JLabel("Responsable:");
+        lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblResponsable.setBounds(178, 14, 56, 14);
+        getContentPane().add(lblResponsable);   
+        
+        comboBoxResp = new JComboBox<>();
+        comboBoxResp.setBounds(250, 14, 90, 20);
+        
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.CANTIDAD.toString());
+        for (UsuarioView usuarioView : lista) {
+        	comboBoxResp.addItem(usuarioView.getUsuario());
+        }
+        getContentPane().add(comboBoxResp);
+        
+        /*Fin combo responsables*/
+        
         JLabel lblProductos = new JLabel("Productos:");
         lblProductos.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblProductos.setBounds(10, 45, 80, 14);
@@ -146,7 +168,7 @@ public class VistaNuevoReclamoCantidades extends JFrame {
                     String codigo = parts[0];
                     mapCodigoCantidad.put(Integer.valueOf(codigo), Integer.valueOf(data.elementAt(i).elementAt(1)));
                 }
-                Sistema.getInstancia().crearReclamoCantidades(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), mapCodigoCantidad, textAreaDescripcion.getText());
+                Sistema.getInstancia().crearReclamoCantidades(Integer.parseInt(String.valueOf(comboBoxClientes.getSelectedItem())), mapCodigoCantidad, textAreaDescripcion.getText(),String.valueOf(comboBoxResp.getSelectedItem()));
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 data.clear();
                 setVisible(false);

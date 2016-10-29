@@ -1,7 +1,16 @@
 package persistencia;
 
 import negocio.EnumRoles;
+import negocio.Reclamo;
 import negocio.Usuario;
+import negocio.reclamos.ItemFacturaReclamo;
+import negocio.reclamos.ItemProductoReclamo;
+import negocio.reclamos.ItemProductoReclamoFaltantes;
+import negocio.reclamos.ReclamoCantidad;
+import negocio.reclamos.ReclamoCompuesto;
+import negocio.reclamos.ReclamoFacturacion;
+import negocio.reclamos.ReclamoFaltantes;
+import negocio.reclamos.ReclamoProducto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -219,5 +228,90 @@ public class AdmPersistenciaUsuario extends AdministradorPersistencia
 		return nombre;
 	}
 	
+	public List<Usuario> obtenerResponsables(String tipo) {
+		try
+		{
+			String rol = "";
+			switch(tipo.toUpperCase()){
+			case "PRODUCTO":
+				rol = "Distribucion";
+				break;
+			case "FALTANTES":
+				rol = "Distribucion";
+				break;
+			case "CANTIDAD":
+				rol = "Distribucion";
+				break;
+			case "FACTURACION":
+				rol = "Facturacion";
+				break;
+			case "COMPUESTO":
+				rol = "Distribucion";
+				break;
+			case "ZONA":
+				rol = "ZonaEntrega";
+				break;
+			}
+
+			List <Usuario>rta = new ArrayList<Usuario>();
+			Connection c = PoolConnection.getPoolConnection().getConnection();
+			
+			PreparedStatement s = c.prepareStatement("Select u.* from Usuario u join UsuarioRol ur "
+					+ " on ur.idUsuario = u.codigo "
+					+ " join Rol r"
+					+ " on r.idRol=ur.idRol"
+					+ " where r.descripcion=?");
+			s.setString(1,rol);
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				int codigo = result.getInt(1);
+				String nom = result.getString(2);
+				String apellido = result.getString(3);
+				String usuario = result.getString(4);
+				String clave = result.getString(5);
+				Usuario usu = new  Usuario(nom, apellido, codigo, usuario, clave);
+				rta.add(usu);
+				
+			}
+			PoolConnection.getPoolConnection().realeaseConnection(c);
+			return rta;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public Usuario obtenerUsuarioPorUsuario(String responsable) {
+		try
+		{
+			Usuario usu = null;
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("select u.* from usuario u where usuario=?");
+			s.setString(1,responsable);
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				int codigo = result.getInt(1);
+				String nom = result.getString(2);
+				String apellido = result.getString(3);
+				String u = result.getString(4);
+				String clave = result.getString(5);
+				usu = new  Usuario(nom, apellido, codigo, u, clave);
+			}
+			List<EnumRoles> listaRoles = buscarRoles(usu.getCodigo());
+			
+			usu.setRoles(listaRoles);
+			
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+			return usu;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }

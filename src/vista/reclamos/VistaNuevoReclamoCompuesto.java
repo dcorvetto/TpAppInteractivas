@@ -1,8 +1,10 @@
 package vista.reclamos;
 
 import controlador.Sistema;
+import negocio.reclamos.TipoReclamo;
 import negocio.views.ClienteView;
 import negocio.views.ReclamoView;
+import negocio.views.UsuarioView;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -16,11 +18,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 public class VistaNuevoReclamoCompuesto extends JFrame {
 	private JComboBox<String> comboBoxClientes;
 	private JComboBox<Integer> comboBoxReclamos;
+    private JComboBox<String> comboBoxResp;
 	private JTable tableReclamos;
 	private TableModel model;
     private JButton btnEliminar;
@@ -49,6 +53,22 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 			comboBoxClientes.addItem(clienteView.getDni());
 		}
 		getContentPane().add(comboBoxClientes);
+		
+		 /*Combo responsables */
+        JLabel lblResponsable = new JLabel("Responsable:");
+        lblResponsable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblResponsable.setBounds(178, 11, 56, 14);
+        getContentPane().add(lblResponsable);   
+        
+        comboBoxResp = new JComboBox<>();
+        comboBoxResp.setBounds(248, 10, 90, 20);
+        
+        List<UsuarioView> lista = Sistema.getInstancia().getUsuariosResponsables(TipoReclamo.CANTIDAD.toString());
+        for (UsuarioView usuarioView : lista) {
+        	comboBoxResp.addItem(usuarioView.getUsuario());
+        }
+        getContentPane().add(comboBoxResp);
+        /*Fin combo responsables*/
 		
 		JLabel lblReclamos = new JLabel("Reclamo ID:");
 		lblReclamos.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -136,7 +156,8 @@ public class VistaNuevoReclamoCompuesto extends JFrame {
 				
 				
 				if(idsReclamos.size()>=1){
-					Sistema.getInstancia().crearReclamoCompuesto(Integer.parseInt((String) comboBoxClientes.getSelectedItem()), idsReclamos);
+					Sistema.getInstancia().crearReclamoCompuesto(Integer.parseInt((String) comboBoxClientes.getSelectedItem()), idsReclamos,
+							(String) comboBoxResp.getSelectedItem());
 					JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
 					dataReclamos.clear();
 					data.clear();

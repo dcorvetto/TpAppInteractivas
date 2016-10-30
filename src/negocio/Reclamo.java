@@ -189,9 +189,9 @@ public class Reclamo {
 	/*tiempo promedio de respuesta de los reclamos por responsable*/
 	public static List<ReclamoTPromXOperadorView> getTiempoPromedioRespuestaPorResp(){
 		List<Vector> lista = AdmPersistenciaReclamo.getInstancia().getTiempoPromedioRespuestaPorResp();
-		List<ReclamoTPromXOperadorView> listaView = new ArrayList<ReclamoTPromXOperadorView>();
+		List<ReclamoTPromXOperadorView> listaView = new ArrayList<>();
 		for(Vector obj : lista){
-			String usuarioOperador = (String) AdmPersistenciaUsuario.getInstancia().obtenerNombreCompleto(Integer.valueOf(String.valueOf(obj.get(1))));
+			String usuarioOperador = AdmPersistenciaUsuario.getInstancia().obtenerNombreCompleto(Integer.valueOf(String.valueOf(obj.get(1))));
 			String tiempoPromedio = String.valueOf(obj.get(0));
 			ReclamoTPromXOperadorView view = new ReclamoTPromXOperadorView(usuarioOperador,tiempoPromedio);
 			listaView.add(view);

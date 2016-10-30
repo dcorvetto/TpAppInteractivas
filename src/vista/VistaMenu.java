@@ -6,6 +6,7 @@ import vista.reclamos.*;
 import vista.reportes.VistaRankingClientesReclamos;
 import vista.reportes.VistaRankingTratamientoReclamos;
 import vista.reportes.VistaReclamosPorMes;
+import vista.reportes.VistaTiempoRespuesta;
 
 import javax.swing.*;
 
@@ -157,6 +158,16 @@ public class VistaMenu extends JFrame {
                 }
             });
             jMenuReportes.add(jMenuRankingTratamiento);
+
+            JMenuItem jMenuTiempoPorResponsable = new JMenuItem();
+            jMenuTiempoPorResponsable.setText("Tiempo de respuesta por responsable");
+            jMenuTiempoPorResponsable.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JFrame tiempoPorResponsable = new VistaTiempoRespuesta();
+                    tiempoPorResponsable.setVisible(true);
+                }
+            });
+            jMenuReportes.add(jMenuTiempoPorResponsable);
         }
 
         jMenuItem1 = new JMenuItem();

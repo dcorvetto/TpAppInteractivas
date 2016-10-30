@@ -3,6 +3,7 @@ package vista;
 import controlador.Sistema;
 import negocio.EnumRoles;
 import vista.reclamos.*;
+import vista.reportes.VistaRankingClientesReclamos;
 
 import javax.swing.*;
 
@@ -20,6 +21,7 @@ public class VistaMenu extends JFrame {
     private JMenuItem jMenuItem1;
     private JMenu jMenu3;
     private JMenu jMenu2;
+    private JMenu jMenuReportes;
 
     private Integer codigoUsuario;
 
@@ -118,6 +120,23 @@ public class VistaMenu extends JFrame {
             });
             jMenu4.add(jMenuReclamoCompuseto);
         }
+
+        if(roles.contains(EnumRoles.ADMINISTRACION) || roles.contains(EnumRoles.CONSULTA)){
+            jMenuReportes = new JMenu();
+            jMenu2.add(jMenuReportes);
+            jMenuReportes.setText("Reportes");
+
+            JMenuItem jMenuRankingClientes = new JMenuItem();
+            jMenuRankingClientes.setText("Ranking Clientes por relcamos");
+            jMenuRankingClientes.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JFrame rankingClientesReclamos = new VistaRankingClientesReclamos();
+                    rankingClientesReclamos.setVisible(true);
+                }
+            });
+            jMenuReportes.add(jMenuRankingClientes);
+        }
+
         jMenuItem1 = new JMenuItem();
         jMenu3.add(jMenuItem1);
         jMenuItem1.setText("Ver Reclamos");

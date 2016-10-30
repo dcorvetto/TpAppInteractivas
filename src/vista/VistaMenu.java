@@ -4,6 +4,7 @@ import controlador.Sistema;
 import negocio.EnumRoles;
 import vista.reclamos.*;
 import vista.reportes.VistaRankingClientesReclamos;
+import vista.reportes.VistaReclamosPorMes;
 
 import javax.swing.*;
 
@@ -135,6 +136,16 @@ public class VistaMenu extends JFrame {
                 }
             });
             jMenuReportes.add(jMenuRankingClientes);
+
+            JMenuItem jMenuCantidadReclamosPorMes = new JMenuItem();
+            jMenuCantidadReclamosPorMes.setText("Cantidad de reclamos por mes");
+            jMenuCantidadReclamosPorMes.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    JFrame cantidadReclamosPorMes = new VistaReclamosPorMes();
+                    cantidadReclamosPorMes.setVisible(true);
+                }
+            });
+            jMenuReportes.add(jMenuCantidadReclamosPorMes);
         }
 
         jMenuItem1 = new JMenuItem();

@@ -1,19 +1,11 @@
 package negocio;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
-
 import negocio.reclamos.TipoReclamo;
-import negocio.views.ClienteView;
 import negocio.views.ReclamoTPromXOperadorView;
-import negocio.views.ReclamoView;
-import persistencia.AdmPersistenciaCliente;
-import persistencia.AdmPersistenciaProducto;
 import persistencia.AdmPersistenciaReclamo;
 import persistencia.AdmPersistenciaUsuario;
+
+import java.util.*;
 
 public class Reclamo {
 
@@ -190,7 +182,7 @@ public class Reclamo {
 	}
 	
 	/*ranking tratamiento de reclamos*/
-	public static List<Vector> getRankingTratamientoReclamos(){
+	public static Map<String, Long> getRankingTratamientoReclamos(){
 		return AdmPersistenciaReclamo.getInstancia().getRankingTratamientoReclamos();
 	}
 	

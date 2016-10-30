@@ -385,7 +385,7 @@ public class Sistema {
 		return Reclamo.getCantidadReclamosPorMes(mes);
 	}
 	
-	public List<Vector> getRankingTratamientoReclamos(){
+	public Map<String, Long> getRankingTratamientoReclamos(){
 		return Reclamo.getRankingTratamientoReclamos();
 	}
 	

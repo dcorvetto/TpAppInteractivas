@@ -1,27 +1,12 @@
 package test;
 
-import persistencia.AdmPersistenciaCliente;
-import persistencia.AdmPersistenciaProducto;
-import persistencia.AdmPersistenciaReclamo;
-import persistencia.AdmPersistenciaUsuario;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
-
 import negocio.Cliente;
-import negocio.EnumEstado;
-import negocio.EventoReclamo;
-import negocio.Producto;
 import negocio.Reclamo;
-import negocio.Usuario;
-import negocio.reclamos.ItemProductoReclamoFaltantes;
-import negocio.reclamos.ReclamoCompuesto;
-import negocio.reclamos.ReclamoFaltantes;
-import negocio.reclamos.TipoReclamo;
 import negocio.views.ClienteView;
 import negocio.views.ReclamoTPromXOperadorView;
+
+import java.util.List;
+import java.util.Map;
 
 public class Test {
 
@@ -45,9 +30,9 @@ public class Test {
 		
 		/*ranking tratamiento de reclamos*/
 		System.out.println("Ranking tratamiento de reclamos");
-		List<Vector> lista = Reclamo.getRankingTratamientoReclamos();
-		for(Vector obj : lista){
-			System.out.println("Estado " + obj.get(0) + ":  " + obj.get(1));
+		Map<String, Long> map = Reclamo.getRankingTratamientoReclamos();
+		for (Map.Entry<String, Long> entry : map.entrySet()) {
+			System.out.println("Estado " + entry.getKey() + ":  " + entry.getValue());
 		}
 		System.out.println();
 		

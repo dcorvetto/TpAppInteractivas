@@ -3,22 +3,13 @@ package persistencia;
 import negocio.EnumEstado;
 import negocio.EventoReclamo;
 import negocio.Reclamo;
-import negocio.reclamos.ItemFacturaReclamo;
-import negocio.reclamos.ItemProductoReclamo;
-import negocio.reclamos.ItemProductoReclamoFaltantes;
-import negocio.reclamos.ReclamoCantidad;
-import negocio.reclamos.ReclamoCompuesto;
-import negocio.reclamos.ReclamoFacturacion;
-import negocio.reclamos.ReclamoFaltantes;
-import negocio.reclamos.ReclamoProducto;
-import negocio.reclamos.TipoReclamo;
+import negocio.reclamos.*;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.*;
 
 
 public class AdmPersistenciaReclamo extends AdministradorPersistencia 
@@ -556,11 +547,11 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 	}
 
 	@SuppressWarnings("rawtypes")
-	public List<Vector> getRankingTratamientoReclamos(){
+	public Map<String, Long> getRankingTratamientoReclamos(){
 		Connection connection=null;
 		try
 		{
-			List<Vector> lista = new ArrayList<Vector>();
+			Map<String, Long> map = new HashMap<>();
 			connection = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = connection.prepareStatement("select "
 					+ " estado, count(*) as cantidad"
@@ -569,14 +560,10 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 					+ "	order by  count(*) DESC");
 
 			ResultSet result = s.executeQuery();
-			while (result.next())
-			{
-				Vector<Object> v = new Vector<Object>();
-				v.add(result.getString(1));
-				v.add(result.getLong(2));
-				lista.add(v);
+			while (result.next()){
+				map.put(result.getString(1),result.getLong(2)); //1: estado, 2: cantidad
 			}
-			return lista;
+			return map;
 		}
 		catch (Exception e)
 		{

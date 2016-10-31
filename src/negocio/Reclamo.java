@@ -199,6 +199,10 @@ public class Reclamo {
 		}
 		return listaView;
 	}
+
+	public static Reclamo getUltimoReclamo() {
+		return AdmPersistenciaReclamo.getInstancia().getUltimoReclamo();
+	}
 	
 	
 }

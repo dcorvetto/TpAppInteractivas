@@ -2,8 +2,6 @@ package vista;
 
 
 import controlador.Sistema;
-import ejemploObservador.usuarioObservador;
-import negocio.Observer;
 import negocio.views.ReclamoView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
-public class VistaReclamos extends JFrame implements Observable{
+public class VistaReclamos extends JFrame {
 
 	private static final long serialVersionUID = 6972042471104413480L;
 
@@ -28,7 +26,7 @@ public class VistaReclamos extends JFrame implements Observable{
     private JScrollPane jScrollPane;
     private JButton btnVerEventos;
     
-    private ArrayList<Observer> observadores = new ArrayList<Observer>();
+    
     
     
     public VistaReclamos(Integer codigoUsuario) {
@@ -53,9 +51,7 @@ public class VistaReclamos extends JFrame implements Observable{
         Vector<String> dataReclamo = new Vector<>();
         Vector<Vector<String>> data = new Vector<>();
         Collection<ReclamoView> reclamosParaUsuario = Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario);
-		//Notifico a mis Observadores que voy a relistar los Reclamos
-        notifyObserver();
-        
+	  
         for (ReclamoView reclamoView : reclamosParaUsuario) {
             dataReclamo.add(String.valueOf(reclamoView.getNumero()));
             dataReclamo.add(String.valueOf(reclamoView.getTipoReclamo()));
@@ -129,26 +125,6 @@ public class VistaReclamos extends JFrame implements Observable{
         contentPane.add(btnCancelar);
     }
 
-	@Override
-	public void addObserver(Observer o) {
-		// TODO Auto-generated method stub
-		observadores.add(o);
-	}
-
-	@Override
-	public void removeObserver(Observer o) {
-		// TODO Auto-generated method stub
-		observadores.remove(o);
-	}
-
-	@Override
-	public void notifyObserver() {
-		for (Observer observador :observadores){
-			observador.update();
-		
-		}
 	
-	}
-    
     
 }

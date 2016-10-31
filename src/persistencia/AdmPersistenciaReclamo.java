@@ -1,5 +1,6 @@
 package persistencia;
 
+import negocio.AlarmaNuevoReclamo;
 import negocio.EnumEstado;
 import negocio.EventoReclamo;
 import negocio.Reclamo;
@@ -113,6 +114,9 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			rs.next();
 			int idReclamo = rs.getInt(1);
 			
+			AlarmaNuevoReclamo alarma = new AlarmaNuevoReclamo();
+	       
+
 			/*insertar items*/
 			switch(r.getTipoReclamo()){
 			case PRODUCTO:
@@ -120,30 +124,35 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				for(ItemProductoReclamo item: rp.getItems()){
 					this.insertarItems(idReclamo, item);
 				}
+				alarma.notifyObservers(rp);
 				break;
 			case FALTANTES:
 				ReclamoFaltantes rf = (ReclamoFaltantes) o;
 				for(ItemProductoReclamoFaltantes item: rf.getItems()){
 					this.insertarItems(idReclamo, item);
 				}
+				alarma.notifyObservers(rf);
 				break;
 			case CANTIDAD:
 				ReclamoCantidad rc = (ReclamoCantidad) o;
 				for(ItemProductoReclamo item: rc.getItems()){
 					this.insertarItems(idReclamo, item);
 				}
+				alarma.notifyObservers(rc);
 				break;
 			case FACTURACION:
 				ReclamoFacturacion rfact = (ReclamoFacturacion) o;
 				for(ItemFacturaReclamo item: rfact.getItems()){
 					this.insertarItems(idReclamo, item);
 				}
+				alarma.notifyObservers(rfact);
 				break;
 			case COMPUESTO:
 				ReclamoCompuesto rcomp = (ReclamoCompuesto) o;
 				for(Reclamo rec: rcomp.getReclamos()){
 					this.insertarReclamoCompuesto(idReclamo, rec);
 				}
+				alarma.notifyObservers(rcomp);
 				break;
 			}
 			
@@ -151,7 +160,7 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 			for(EventoReclamo er: r.getEventos()){
 				this.insertEventoReclamo(idReclamo, er);
 			}
-
+			
 		}
 		catch (Exception e)
 		{

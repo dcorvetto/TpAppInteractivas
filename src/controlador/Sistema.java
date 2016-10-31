@@ -182,9 +182,6 @@ public class Sistema {
 		this.setReclamos(listaReclamos);
 
 		r.guardarCambios();
-		
-		AlarmaNuevoReclamo alarma = new AlarmaNuevoReclamo();
-        alarma.notifyObservers();
 	}
 
 	public void crearReclamoCantidades(int dni, Map<Integer, Integer> mapCodigoCantidad, String descripcion, String responsable) { 

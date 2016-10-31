@@ -1,6 +1,7 @@
 package vista;
 
 import controlador.Sistema;
+import negocio.AlarmaNuevoReclamo;
 import negocio.EnumRoles;
 import vista.reclamos.*;
 import vista.reportes.VistaRankingClientesReclamos;
@@ -60,6 +61,10 @@ public class VistaMenu extends JFrame {
             // Reclamo de producto: el cliente no recibe cierto producto y desea recibirlo. Se debe almacenar el producto y la cantidad pedida.
             JMenuItem jMenuReclamoProducto = new JMenuItem();
             jMenuReclamoProducto.setText("Producto");
+            
+            AlarmaNuevoReclamo alarma = new AlarmaNuevoReclamo();
+			alarma.attach(new VistaNuevoReclamoProducto(codigoUsuario));
+            
             jMenuReclamoProducto.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     JFrame nuevoReclamoProductoVista = new VistaNuevoReclamoProducto(codigoUsuario);

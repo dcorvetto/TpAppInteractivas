@@ -1,6 +1,8 @@
 package vista.reclamos;
 
 import controlador.Sistema;
+import negocio.AlarmaNuevoReclamo;
+import negocio.NuevoReclamoObs;
 import negocio.reclamos.TipoReclamo;
 import negocio.views.ClienteView;
 import negocio.views.UsuarioView;
@@ -17,9 +19,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
 import java.util.Vector;
 
-public class VistaNuevoReclamoProducto extends JFrame {
+public class VistaNuevoReclamoProducto extends JFrame implements NuevoReclamoObs{
 
     private static final long serialVersionUID = -277076000511824707L;
     private Integer codigoUsuario;
@@ -34,6 +37,7 @@ public class VistaNuevoReclamoProducto extends JFrame {
 
     private Vector<Vector<String>> data =  new Vector<>();
     private Vector<String> dataProducto = new Vector<>();
+    
 
     public VistaNuevoReclamoProducto(Integer codigoUsuario) {
     	this.setBounds(0, 0, 381, 313);
@@ -167,8 +171,13 @@ public class VistaNuevoReclamoProducto extends JFrame {
                 		comboBoxClientes.getSelectedItem())), mapCodigoCantidad, textAreaDescripcion.getText(),
                 		String.valueOf(comboBoxResp.getSelectedItem()));
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
+                
+                AlarmaNuevoReclamo alarma = new AlarmaNuevoReclamo();
+                alarma.notifyObservers();
+                
                 data.clear();
                 setVisible(false);
+                
             }
         });
         getContentPane().add(btnAceptar);
@@ -205,4 +214,11 @@ public class VistaNuevoReclamoProducto extends JFrame {
         jScrollPaneDescripcion.setBounds(100, 101, textAreaDescripcion.getWidth(), textAreaDescripcion.getHeight());
         getContentPane().add(jScrollPaneDescripcion);
     }
+
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		System.out.println("A refrescar!!!!");
+	}
 }

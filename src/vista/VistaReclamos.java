@@ -2,6 +2,7 @@ package vista;
 
 
 import controlador.Sistema;
+import negocio.NuevoReclamoObs;
 import negocio.views.ReclamoView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -123,8 +124,6 @@ public class VistaReclamos extends JFrame {
         });
         btnCancelar.setBounds(310, 208, 89, 23);
         contentPane.add(btnCancelar);
-    }
-
-	
+    }	
     
 }

@@ -1,6 +1,8 @@
 package vista;
 
 import controlador.Sistema;
+import negocio.AlarmaNuevoReclamo;
+import vista.reclamos.VistaNuevoReclamoProducto;
 
 import javax.swing.*;
 
@@ -22,6 +24,7 @@ public class VistaLogin {
 			public void run() {
 				VistaLogin window = new VistaLogin();
 				window.frmLogin.setVisible(true);
+				
 			}
 		});
 	}

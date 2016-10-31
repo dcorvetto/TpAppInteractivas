@@ -16,8 +16,8 @@ public class usuarioObservador implements Observer{
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		//ACA SE HACE ALGO CUANDO SE SABE QUE CAMBIO LA LISTA!
-		System.out.println("Cambios en la lista de Reclamos!");
+		//ACA SE HACE ALGO CUANDO SE SABE QUE REFRESCAMOS LISTA
+		System.out.println("Refescando lista de Reclamos!");
 	}
 
 }

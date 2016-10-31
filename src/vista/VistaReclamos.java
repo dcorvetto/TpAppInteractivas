@@ -45,7 +45,7 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
 
         setTitle("Reclamos");
         setDefaultCloseOperation(HIDE_ON_CLOSE);
-        setBounds(100, 100, 425, 300);
+        setBounds(100, 100, 425, 320);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);

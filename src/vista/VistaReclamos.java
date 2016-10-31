@@ -146,28 +146,7 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
     		instancia = new VistaReclamos(codigoUsuario);
     	}
     	else{
-    		instancia.lbAlerta.setText("Ultimo Reclamo creado :" + Sistema.getInstancia().getUltimoReclamo().getDescripcion());
-    		Collection<ReclamoView> reclamosParaUsuario = Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario);
-    	  	  
-            for (ReclamoView reclamoView : reclamosParaUsuario) {
-                instancia.dataReclamo.add(String.valueOf(reclamoView.getNumero()));
-                instancia.dataReclamo.add(String.valueOf(reclamoView.getTipoReclamo()));
-                String resp = "";
-                if(reclamoView.isEstaSolucionado()){
-                	resp = "Si";
-                }
-                else{
-                	resp="No";
-                }
-                	
-                instancia.dataReclamo.add(resp);
-                instancia.dataReclamo.add(String.valueOf(reclamoView.getDescripcion()));
-                instancia.data.add(instancia.dataReclamo);
-                instancia.dataReclamo = new Vector<>();
-            }
-            
-    		instancia.revalidate();
-    		instancia.repaint();
+    		instancia.actualizarTabla(instancia.dataReclamo, instancia.data, Sistema.getInstancia().getUltimoReclamo());
     	}
     	return instancia;
     }
@@ -176,6 +155,15 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
 	public void update(Reclamo r) {
 		System.out.println("A refrescar la pantalla!!!!");
 		
+		actualizarTabla(dataReclamo, data, r);
+        this.repaint();
+        this.revalidate();
+     //   this.setVisible(false);
+      // this.setVisible(true);
+
+	}	
+
+	public void actualizarTabla(Vector<String> dataReclamo, Vector<Vector<String>> data, Reclamo r){
 		lbAlerta.setText("Ultimo Reclamo creado :" + r.getDescripcion());
         Collection<ReclamoView> reclamosParaUsuario = Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario);
   	  
@@ -195,11 +183,6 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
             data.add(dataReclamo);
             dataReclamo = new Vector<>();
         }
-        this.repaint();
-        this.revalidate();
-     //   this.setVisible(false);
-      // this.setVisible(true);
-
-	}	
+	}
     
 }

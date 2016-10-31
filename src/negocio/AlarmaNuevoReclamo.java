@@ -20,11 +20,10 @@ public class AlarmaNuevoReclamo implements SubjectObs{
 	}
 
 	@Override
-	public void notifyObservers() {
+	public void notifyObservers(Reclamo r) {
 		// TODO Auto-generated method stub
-		for (int i = 0 ; i < observadores.size(); i++){
-			
-			observadores.get(i).update();
+		for (int i = 0 ; i < observadores.size(); i++){		
+			observadores.get(i).update(r);
 		}
 	}
 

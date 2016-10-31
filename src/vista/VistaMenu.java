@@ -63,7 +63,8 @@ public class VistaMenu extends JFrame {
             jMenuReclamoProducto.setText("Producto");
             
             AlarmaNuevoReclamo alarma = new AlarmaNuevoReclamo();
-			alarma.attach(new VistaReclamos(codigoUsuario));
+            VistaReclamos vr = VistaReclamos.getInstancia(codigoUsuario);
+			alarma.attach(vr);
             
             jMenuReclamoProducto.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -180,8 +181,8 @@ public class VistaMenu extends JFrame {
         jMenuItem1.setText("Ver Reclamos");
         jMenuItem1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                JFrame vistaReclamos = new VistaReclamos(codigoUsuario);
-                vistaReclamos.setVisible(true);
+
+                VistaReclamos.getInstancia(codigoUsuario).setVisible(true);
             }
         });
         jMenu1 = new JMenu();

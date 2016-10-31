@@ -3,7 +3,9 @@ package vista;
 
 import controlador.Sistema;
 import negocio.NuevoReclamoObs;
+import negocio.Reclamo;
 import negocio.views.ReclamoView;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -23,25 +25,33 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
 
 	
 	private static final long serialVersionUID = 6972042471104413480L;
+	private static VistaReclamos instancia;
 
 	private JPanel contentPane;
     private Integer codigoUsuario;
     private JTable table;
     private JScrollPane jScrollPane;
     private JButton btnVerEventos;
+    private JLabel lbAlerta;
+    private Vector<String> dataReclamo = new Vector<>();
+    private Vector<Vector<String>> data = new Vector<>();
    
     
     
-    public VistaReclamos(Integer codigoUsuario) {
+    
+    private VistaReclamos(Integer codigoUsuario) {
         this.codigoUsuario = codigoUsuario;
 
         setTitle("Reclamos");
         setDefaultCloseOperation(HIDE_ON_CLOSE);
-        setBounds(100, 100, 425, 281);
+        setBounds(100, 100, 425, 300);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
+        
+        
+      
 
         //Columnas de la tabla
         Vector<String> nombresColumnas = new Vector<>();
@@ -51,8 +61,7 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
         nombresColumnas.add("Descripcion");
 
         //Se pasan valores de la collection de reclamos a vectores porque la tabla solo acepta Vectores de vectores... :@
-        Vector<String> dataReclamo = new Vector<>();
-        Vector<Vector<String>> data = new Vector<>();
+       
         Collection<ReclamoView> reclamosParaUsuario = Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario);
 	  
         for (ReclamoView reclamoView : reclamosParaUsuario) {
@@ -92,11 +101,11 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
             }
         });
         jScrollPane = new JScrollPane(table);
-        jScrollPane.setBounds(10, 10, table.getWidth(), table.getHeight());
+        jScrollPane.setBounds(10, 50, table.getWidth(), table.getHeight());
         contentPane.add(jScrollPane);
 
         JButton btnAceptar = new JButton("Aceptar");
-        btnAceptar.setBounds(10, 208, 89, 23);
+        btnAceptar.setBounds(10, 258, 89, 23);
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
@@ -105,7 +114,7 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
         contentPane.add(btnAceptar);
 
         btnVerEventos = new JButton("Ver eventos");
-        btnVerEventos.setBounds(142, 208, 120, 23);
+        btnVerEventos.setBounds(142, 258, 120, 23);
         btnVerEventos.setEnabled(false);
         btnVerEventos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -121,22 +130,50 @@ public class VistaReclamos extends JFrame implements NuevoReclamoObs{
         btnCancelar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		data.clear();
+        		lbAlerta.setText("");
         		setVisible(false);
         	}
         });
-        btnCancelar.setBounds(310, 208, 89, 23);
+        btnCancelar.setBounds(310, 258, 89, 23);
         contentPane.add(btnCancelar);
     }
 
-
-
-
+    public static VistaReclamos getInstancia(Integer codigoUsuario){
+    	if(instancia==null){
+    		instancia = new VistaReclamos(codigoUsuario);
+    	}
+    	return instancia;
+    }
+    
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
+	public void update(Reclamo r) {
 		System.out.println("A refrescar la pantalla!!!!");
-		
-		
+		lbAlerta = new JLabel("Ultimo Reclamo creado :" + r.getDescripcion());
+        lbAlerta.setBounds(10,5,400,20);
+        contentPane.add(lbAlerta);
+       
+        Collection<ReclamoView> reclamosParaUsuario = Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario);
+  	  
+        for (ReclamoView reclamoView : reclamosParaUsuario) {
+            dataReclamo.add(String.valueOf(reclamoView.getNumero()));
+            dataReclamo.add(String.valueOf(reclamoView.getTipoReclamo()));
+            String resp = "";
+            if(reclamoView.isEstaSolucionado()){
+            	resp = "Si";
+            }
+            else{
+            	resp="No";
+            }
+            	
+            dataReclamo.add(resp);
+            dataReclamo.add(String.valueOf(reclamoView.getDescripcion()));
+            data.add(dataReclamo);
+            dataReclamo = new Vector<>();
+        }
+        this.repaint();
+        this.setVisible(false);
+        this.setVisible(true);
+
 	}	
     
 }

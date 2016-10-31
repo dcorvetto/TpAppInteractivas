@@ -1,5 +1,5 @@
 package negocio;
 
 public interface NuevoReclamoObs {
-	public void update();
+	public void update(Reclamo r);
 }

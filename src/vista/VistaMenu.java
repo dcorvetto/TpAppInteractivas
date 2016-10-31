@@ -181,8 +181,7 @@ public class VistaMenu extends JFrame {
         jMenuItem1.setText("Ver Reclamos");
         jMenuItem1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-
-                VistaReclamos.getInstancia(codigoUsuario).setVisible(true);
+                 VistaReclamos.getInstancia(codigoUsuario).setVisible(true);
             }
         });
         jMenu1 = new JMenu();

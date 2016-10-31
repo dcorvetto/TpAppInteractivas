@@ -388,5 +388,9 @@ public class Sistema {
 	public Map<String, Long> getRankingTratamientoReclamos(){
 		return Reclamo.getRankingTratamientoReclamos();
 	}
+
+	public Reclamo getUltimoReclamo() {
+		return Reclamo.getUltimoReclamo();
+	}
 	
 }

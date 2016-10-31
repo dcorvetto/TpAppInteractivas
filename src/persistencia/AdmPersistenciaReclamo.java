@@ -154,6 +154,10 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				}
 				alarma.notifyObservers(rcomp);
 				break;
+			case ZONA:
+				Reclamo rz = (Reclamo)o;
+				alarma.notifyObservers(rz);
+				break;
 			}
 			
 			//Inserto eventos
@@ -607,6 +611,49 @@ public class AdmPersistenciaReclamo extends AdministradorPersistencia
 				lista.add(v);
 			}
 			return lista;
+		}
+		catch (Exception e)
+		{
+			System.out.println();
+		}
+		finally {
+			PoolConnection.getPoolConnection().realeaseConnection(connection);
+		}
+		return null;
+	}
+	public Reclamo getUltimoReclamo() {
+		Connection connection=null;
+		try
+		{
+			Reclamo r = null;
+			connection = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = connection.prepareStatement("select top 1 * from Reclamo order by numero DESC");
+			ResultSet result = s.executeQuery();
+			while (result.next())
+			{
+				int cod = result.getInt(1);
+				String descripcion = result.getString(2);
+				int cliente = result.getInt(3);
+				int usuario = result.getInt(4);
+				int responsable = result.getInt(5);
+				boolean solucionado = result.getBoolean(6);
+				float tiempoRespuesta = result.getFloat(7);
+				String zona = result.getString(8);
+				String tipoReclamo = result.getString(9);
+
+				r = new Reclamo();
+				r.setNumero(cod);
+				r.setDescripcion(descripcion);
+				r.setEstaSolucionado(solucionado);
+				r.setOperador(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
+				r.setResponsable(AdmPersistenciaUsuario.getInstancia().buscarUsuario(usuario));
+				r.setTiempoRespuesta(tiempoRespuesta);
+				r.setTipoReclamo(TipoReclamo.getEnumValue(tipoReclamo));
+				r.setZona(zona);
+			}
+
+
+			return r;
 		}
 		catch (Exception e)
 		{

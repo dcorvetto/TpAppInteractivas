@@ -2,8 +2,9 @@ package vista;
 
 
 import controlador.Sistema;
+import ejemploObservador.usuarioObservador;
+import negocio.Observer;
 import negocio.views.ReclamoView;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -12,10 +13,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
-public class VistaReclamos extends JFrame {
+public class VistaReclamos extends JFrame implements Observable{
 
 	private static final long serialVersionUID = 6972042471104413480L;
 
@@ -24,7 +27,10 @@ public class VistaReclamos extends JFrame {
     private JTable table;
     private JScrollPane jScrollPane;
     private JButton btnVerEventos;
-
+    
+    private ArrayList<Observer> observadores = new ArrayList<Observer>();
+    
+    
     public VistaReclamos(Integer codigoUsuario) {
         this.codigoUsuario = codigoUsuario;
 
@@ -47,7 +53,10 @@ public class VistaReclamos extends JFrame {
         Vector<String> dataReclamo = new Vector<>();
         Vector<Vector<String>> data = new Vector<>();
         Collection<ReclamoView> reclamosParaUsuario = Sistema.getInstancia().getReclamosParaUsuario(codigoUsuario);
-		for (ReclamoView reclamoView : reclamosParaUsuario) {
+		//Notifico a mis Observadores que voy a relistar los Reclamos
+        notifyObserver();
+        
+        for (ReclamoView reclamoView : reclamosParaUsuario) {
             dataReclamo.add(String.valueOf(reclamoView.getNumero()));
             dataReclamo.add(String.valueOf(reclamoView.getTipoReclamo()));
             String resp = "";
@@ -103,7 +112,7 @@ public class VistaReclamos extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	int numeroReclamoElegido = Integer.parseInt(data.get(table.getSelectedRow()).get(0)); //Obtengo el numero del reclamo seleccionado en la tabla
             	JFrame vistaEventoReclamo = new VistaEventoReclamo(numeroReclamoElegido, Sistema.getInstancia().puedeCrearEventos(codigoUsuario), codigoUsuario);
-//            	setVisible(false);
+            	setVisible(false);
             	vistaEventoReclamo.setVisible(true);
             }
         });
@@ -119,4 +128,27 @@ public class VistaReclamos extends JFrame {
         btnCancelar.setBounds(310, 208, 89, 23);
         contentPane.add(btnCancelar);
     }
+
+	@Override
+	public void addObserver(Observer o) {
+		// TODO Auto-generated method stub
+		observadores.add(o);
+	}
+
+	@Override
+	public void removeObserver(Observer o) {
+		// TODO Auto-generated method stub
+		observadores.remove(o);
+	}
+
+	@Override
+	public void notifyObserver() {
+		for (Observer observador :observadores){
+			observador.update();
+		
+		}
+	
+	}
+    
+    
 }

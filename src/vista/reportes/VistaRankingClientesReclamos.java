@@ -17,7 +17,7 @@ public class VistaRankingClientesReclamos extends JFrame {
 
 	public VistaRankingClientesReclamos() {
 		this.setBounds(0, 0, 441, 235);
-		setTitle("Ranking Clientes por relcamos");
+		setTitle("Ranking Clientes por reclamos");
 		getContentPane().setLayout(null);
 		
 		JLabel lblRanking = new JLabel("Ranking clientes por cantidad de reclamos:");

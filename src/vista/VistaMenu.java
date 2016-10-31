@@ -130,7 +130,7 @@ public class VistaMenu extends JFrame {
             jMenuReportes.setText("Reportes");
 
             JMenuItem jMenuRankingClientes = new JMenuItem();
-            jMenuRankingClientes.setText("Ranking Clientes por relcamos");
+            jMenuRankingClientes.setText("Ranking Clientes por reclamos");
             jMenuRankingClientes.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     JFrame rankingClientesReclamos = new VistaRankingClientesReclamos();

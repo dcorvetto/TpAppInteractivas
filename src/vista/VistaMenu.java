@@ -63,7 +63,7 @@ public class VistaMenu extends JFrame {
             jMenuReclamoProducto.setText("Producto");
             
             AlarmaNuevoReclamo alarma = new AlarmaNuevoReclamo();
-			alarma.attach(new VistaNuevoReclamoProducto(codigoUsuario));
+			alarma.attach(new VistaReclamos(codigoUsuario));
             
             jMenuReclamoProducto.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {

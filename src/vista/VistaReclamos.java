@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,8 +18,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
-public class VistaReclamos extends JFrame {
+public class VistaReclamos extends JFrame implements NuevoReclamoObs{
 
+
+	
 	private static final long serialVersionUID = 6972042471104413480L;
 
 	private JPanel contentPane;
@@ -26,8 +29,7 @@ public class VistaReclamos extends JFrame {
     private JTable table;
     private JScrollPane jScrollPane;
     private JButton btnVerEventos;
-    
-    
+   
     
     
     public VistaReclamos(Integer codigoUsuario) {
@@ -124,6 +126,17 @@ public class VistaReclamos extends JFrame {
         });
         btnCancelar.setBounds(310, 208, 89, 23);
         contentPane.add(btnCancelar);
-    }	
+    }
+
+
+
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		System.out.println("A refrescar la pantalla!!!!");
+		
+		
+	}	
     
 }

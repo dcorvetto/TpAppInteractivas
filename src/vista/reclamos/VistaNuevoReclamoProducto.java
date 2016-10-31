@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Vector;
 
-public class VistaNuevoReclamoProducto extends JFrame implements NuevoReclamoObs{
+public class VistaNuevoReclamoProducto extends JFrame {
 
     private static final long serialVersionUID = -277076000511824707L;
     private Integer codigoUsuario;
@@ -215,10 +215,4 @@ public class VistaNuevoReclamoProducto extends JFrame implements NuevoReclamoObs
         getContentPane().add(jScrollPaneDescripcion);
     }
 
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		System.out.println("A refrescar!!!!");
-	}
 }

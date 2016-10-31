@@ -172,9 +172,6 @@ public class VistaNuevoReclamoProducto extends JFrame {
                 		String.valueOf(comboBoxResp.getSelectedItem()));
                 JOptionPane.showMessageDialog(null, "Reclamo agregado correctamente");
                 
-                AlarmaNuevoReclamo alarma = new AlarmaNuevoReclamo();
-                alarma.notifyObservers();
-                
                 data.clear();
                 setVisible(false);
                 
